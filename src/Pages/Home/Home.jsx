@@ -1,9 +1,9 @@
 import React from "react";
 import "./Home.css";
-import Header from "../../componentes/header/Header";
-import Footer from "../../componentes/footer/Footer";
-import Categoria from "../../componentes/categories/Categoria";
-import Producto from "../../componentes/products/Producto";
+import Header from "../../Componentes/Header/Header";
+import Footer from "../../Componentes/Footer/Footer";
+import Categoria from "../../Componentes/Categories/Categoria";
+import Producto from "../../Componentes/Products/Producto";
 import banner from "../../assets/guitarras.jpg";
 import guitarra from "../../assets/guitarra1.jpg";
 import bateria from "../../assets/bateria.jpg";
