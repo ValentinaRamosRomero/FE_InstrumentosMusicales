@@ -1,9 +1,9 @@
 import React from "react";
 import "./Home.css";
-import Header from "../../componentes/Header/Header";
-import Footer from "../../componentes/Footer/Footer"; 
-import Categoria from "../../componentes/Categories/Categoria";
-import Producto from "../../componentes/Products/Producto";
+import Header from "../../componentes/header/Header";
+import Footer from "../../componentes/footer/Footer";
+import Categoria from "../../componentes/categories/Categoria";
+import Producto from "../../componentes/products/Producto";
 import banner from "../../assets/guitarras.jpg";
 import guitarra from "../../assets/guitarra1.jpg";
 import bateria from "../../assets/bateria.jpg";
@@ -41,21 +41,18 @@ const Home = () => {
       <div className="banner">
         <img src={banner} alt="Banner" className="item" />
       </div>
-
       <h1>Categorías</h1>
       <div className="categorias-container">
         {categorias.map((cat, index) => (
           <Categoria key={index} {...cat} />
         ))}
       </div>
-
       <h1>Productos para ti</h1>
       <div className="productos">
         {productos.map((prod, index) => (
           <Producto key={index} {...prod} />
         ))}
       </div>
-
       <Footer /> {}
     </div>
   );

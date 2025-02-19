@@ -1,8 +1,8 @@
 import React from "react";
 import "./Landing.css";
-import Header from "../../componentes/Header/Header";
-import Producto from "../../componentes/Products/Producto";
-import Footer from "../../componentes/Footer/Footer";
+import Header from "../../componentes/header/Header";
+import Producto from "../../componentes/products/Producto";
+import Footer from "../../componentes/footer/Footer";
 import landingImage from "../../assets/landing_portada.png";
 
 const Landing = () => {
