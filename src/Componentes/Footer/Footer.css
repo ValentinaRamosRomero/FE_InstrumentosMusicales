@@ -1,0 +1,28 @@
+.footer {
+    width: 100%;
+    background-color: #bc1818;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-family: "Dosis", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    position: relative;
+    bottom: 0;
+  }
+  
+  /* Responsividad */
+  @media (max-width: 768px) {
+    .footer {
+      font-size: 14px;
+      padding: 12px 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .footer {
+      font-size: 12px;
+      padding: 10px 0;
+    }
+  }
+  
