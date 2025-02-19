@@ -23,38 +23,35 @@ const Home = () => {
     { imgSrc: accesorio, nombre: "Accesorios" },
   ];
 
-  const productos = [
-    { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-    { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-    { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-    { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-    { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-    { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-    { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-    { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-    { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-  ];
+  
 
   return (
-    <div className="container">
-      <Header />
-      <div className="banner">
-        <img src={banner} alt="Banner" className="item" />
+    <>
+      <div className="container">
+        <Header />
+        <div className="buscador">
+          <h1>Busca tus instrumentos o accesorios favoritos</h1>
+          <div className="input-group">
+            <input type="text" placeholder="" className="input-container" />
+            <button className="buscar-boton">Buscar</button>
+          </div>
+        </div>
+        <div className="banner">
+          <img src={banner} alt="Banner" className="item" />
+        </div>
+        <h1>Categorías</h1>
+        <div className="categorias-container">
+          {categorias.map((cat, index) => (
+            <Categoria key={index} {...cat} />
+          ))}
+        </div>
+        <h1>Productos para ti</h1>
+        <div className="productos">
+          <Producto />
+        </div>
+        <Footer /> {}
       </div>
-      <h1>Categorías</h1>
-      <div className="categorias-container">
-        {categorias.map((cat, index) => (
-          <Categoria key={index} {...cat} />
-        ))}
-      </div>
-      <h1>Productos para ti</h1>
-      <div className="productos">
-        {productos.map((prod, index) => (
-          <Producto key={index} {...prod} />
-        ))}
-      </div>
-      <Footer /> {}
-    </div>
+    </>
   );
 };
 

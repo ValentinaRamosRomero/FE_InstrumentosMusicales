@@ -1,27 +1,13 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
-
 /* Contenedor de todas las categorías */
 .categorias-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); 
-  width: 90vw; 
-  max-width: 90%;
-  padding: 2vh 5vw;
-  justify-content: center;
-  overflow-x: hidden; 
-}
-
-/* Contenedor de todas las categorías */
-.categorias-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); 
+  grid-template-columns: repeat(3, 1fr);
   gap: 2vh;
   width: 90vw;
-  max-width: 1200px;
   margin: auto;
   padding: 2vh 5vw;
   justify-content: center;
@@ -46,15 +32,12 @@
   overflow: hidden;
 }
 
-/* Imagen dentro de la categoría */
 .categoria img {
-  width: 7vh;
-  height: 7vh;
-  object-fit: contain;
-  margin-right: 2vw;
-  display: block; 
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-/*Texto dentro de la categoría */
 .categoria span {
   font-family: "Dosis", sans-serif;
   font-weight: 600;
@@ -64,7 +47,14 @@
   text-align: center;
   color: white;
   flex-grow: 1;
+  text-align: center;
+  word-wrap: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
 }
+
 
 /* En móviles (≤ 768px), solo se muestra una categoría por fila y sin imagen */
 @media (max-width: 768px) {
@@ -131,57 +121,6 @@
     transform: scale(1.05);
   }
 }
-/* Contenedor de todas las categorías */
-.categorias-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2vh;
-  width: 90vw;
-  max-width: 1200px;
-  margin: auto;
-  padding: 2vh 5vw;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Estilos base para cada categoría */
-.categoria {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #bc1818;
-  width: 100%;
-  min-height: 12vh;
-  height: auto;
-  border-radius: 2vh;
-  border: 0.3vh solid #ccc;
-  transition: all 0.3s ease-in-out;
-  padding: 2vh 1vw;
-  text-align: center;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-/* Imagen dentro de la categoría */
-.categoria img {
-  width: 7vh;
-  height: 7vh;
-  object-fit: contain;
-  margin-right: 2vw;
-  display: block; 
-}
-
-/* Texto dentro de la categoría */
-.categoria span {
-  font-family: "Dosis", sans-serif;
-  font-weight: 600;
-  font-size: 15px;
-  line-height: 18.96px;
-  letter-spacing: 0%;
-  text-align: center;
-  color: white;
-  flex-grow: 1;
-}
 
 /* ✅ Diseño responsivo */
 /* En móviles (≤ 768px), solo se muestra el texto (sin imagen) */
@@ -245,49 +184,7 @@
     transform: scale(1.05);
   }
 }
-}
 
-/* 🔹 Estilos base para cada categoría */
-.categoria {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #bc1818;
-  width: 100%;
-  flex-grow: 1; 
-  min-height: 12vh; 
-  height: auto;
-  border-radius: 2vh;
-  border: 0.3vh solid #ccc;
-  transition: all 0.3s ease-in-out;
-  padding: 2vh 1vw;
-  text-align: center;
-  box-sizing: border-box;
-  overflow: hidden; 
-  flex-direction: column; 
-}
-
-/* Imagen dentro de la categoría */
-.categoria img {
-  width: 30%; 
-  max-width: 50px; 
-  height: auto;
-  object-fit: contain;
-  margin-bottom: 1vh;
-}
-
-/* Texto dentro de la categoría */
-.categoria span {
-  font-size: 1.8vh; 
-  color: white;
-  font-weight: 600;
-  text-align: center;
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
 
 /* Ajustes para Tablets (≥ 600px) */
 @media (min-width: 600px) {

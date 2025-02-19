@@ -13,22 +13,21 @@ const Header = () => {
     <header className="header">
       <img src={logo} alt="Logo" className="logo" />
 
-      {/* ✅ Corrección de la sintaxis de className */}
-      <div className={`input-container ${buscadorAbierto ? "activo" : ""}`}>
+      {/*<div className={`input-container ${buscadorAbierto ? "activo" : ""}`}>
         {!buscadorAbierto ? (
           <FaMagnifyingGlass className="icon" onClick={() => setBuscadorAbierto(true)} />
         ) : (
           <>
-            <input type="text" placeholder="Buscar productos..." />
+            <input type="text" placeholder="" />
             <FaMagnifyingGlass className="icon" />
           </>
         )}
-      </div>
+      </div>*/}
 
       <div className="auth-container">
         <div className="auth-buttons">
-          <button className="btn-login">Iniciar Sesión</button>
-          <button className="btn-register">Registrarse</button>
+          <button className="btn-login">Crear cuenta</button>
+          <button className="btn-register">Iniciar Sesion</button>
         </div>
 
         <div className="mobile-auth">

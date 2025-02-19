@@ -70,26 +70,26 @@
 
 .auth-buttons .btn-login,
 .auth-buttons .btn-register {
-  background-color: #007bff;
-  color: white;
+  background-color: white;
+  color:#000000;
   border: none;
   padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
-  transition: background 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
 
 .auth-buttons .btn-register {
-  background-color: #28a745;
+  background-color:white;
 }
 
 .auth-buttons .btn-login:hover {
-  background-color: #0056b3;
+  background-color: #f2f3f5;
 }
 
 .auth-buttons .btn-register:hover {
-  background-color: #218838;
+  background-color:#f2f3f5;
 }
 
 /* Estilos del icono de usuario en móviles */
@@ -130,7 +130,7 @@
   font-family: "Dosis", sans-serif;
   font-weight: 700;
   color: #333;
-  transition: background 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 .auth-dropdown .dropdown-btn:hover {

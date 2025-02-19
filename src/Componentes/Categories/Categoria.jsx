@@ -3,10 +3,10 @@ import "./Categoria.css";
 
 const Categoria = ({ imgSrc, nombre }) => {
   return (
-    <div className="categoria">
+    <button className="categoria">
       <img src={imgSrc} alt={nombre} />
       <span>{nombre}</span>
-    </div>
+    </button>
   );
 };
 
