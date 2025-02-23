@@ -9,19 +9,20 @@ import bajos from "../../assets/BajoDesktop.png";
 
 const Categoria = () => {
   const categoriasDesktop = [
-    { imgSrc: guitarra, nombre: "Guitarras" },
-    { imgSrc: bateria, nombre: "Baterías" },
-    { imgSrc: piano, nombre: "Pianos" },
-    { imgSrc: bajos, nombre: "Bajos" },
-    { imgSrc: electrico, nombre: "Eléctricos" },
-    { imgSrc: accesorio, nombre: "Accesorios" },
+    { imgSrc: guitarra, imgSrcMobile: guitarra, nombre: "Guitarras" },
+    { imgSrc: bateria, imgSrcMobile: bateria, nombre: "Baterías" },
+    { imgSrc: piano, imgSrcMobile: piano, nombre: "Pianos" },
+    { imgSrc: bajos, imgSrcMobile: bajos, nombre: "Bajos" },
+    { imgSrc: electrico, imgSrcMobile: electrico, nombre: "Eléctricos" },
+    { imgSrc: accesorio, imgSrcMobile: accesorio, nombre: "Accesorios" },
   ];
 
   return (
     <div className="categorias-types">
       {categoriasDesktop.map((cat, index) => (
         <button key={index} className="categoria">
-          <img src={cat.imgSrc} alt={cat.nombre} />
+          <img className="image-desktop" src={cat.imgSrc} alt={cat.nombre} />
+          <img className="image-mobile" src={cat.imgSrcMobile} alt={cat.nombre} />
           <span>{cat.nombre}</span>
         </button>
       ))}

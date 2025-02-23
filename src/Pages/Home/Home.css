@@ -3,10 +3,11 @@
   flex-direction: column;
   align-items: center;
   gap: 30px;
+  min-width: 370px;
 }
 
 .buscador {
-  background-color: #F8D9D9;
+  background-color: #f8d9d9;
   width: 100%;
   display: flex;
   flex-direction: column; /* Acomoda los elementos en columna */
@@ -49,18 +50,19 @@
 }
 
 .categorias-container {
-  background-color: #F8D9D9;
+  width: 100%;
+  background-color: #f8d9d9;
+  text-align: center;
+  margin: 0 auto;
+  padding: 20px 68px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  width: 100%;
-  padding: 30px;
 }
 
-.categorias-container h1{
+.categorias-container h1 {
   font-size: 48px;
+  margin-bottom: 20px;
 }
 
 .navbar {
@@ -95,15 +97,16 @@
 
 .input-container .icon1 {
   position: absolute;
-  right: 260px; 
-  color:black;
+  right: 260px;
+  color: black;
   font-size: 18px;
 }
 
-.icon2, .icon3{
-    width: 32px;
-    height: 32px;
-    color:#E8E8E8;
+.icon2,
+.icon3 {
+  width: 32px;
+  height: 32px;
+  color: #e8e8e8;
 }
 
 .logo {
