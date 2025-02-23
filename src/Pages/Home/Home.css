@@ -51,9 +51,16 @@
 .categorias-container {
   background-color: #F8D9D9;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 15px;
+  width: 100%;
+  padding: 30px;
+}
+
+.categorias-container h1{
+  font-size: 48px;
 }
 
 .navbar {
@@ -118,9 +125,8 @@
   overflow: hidden;
 }
 .productos {
-  background-color: #f5f4f4;
   justify-items: center;
-  padding: 25px;
-  gap: 20px;
+  padding: 30px;
   width: 100%;
+  margin-top: -30px;
 }

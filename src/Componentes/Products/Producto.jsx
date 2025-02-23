@@ -1,13 +1,8 @@
 import React from "react";
 import "./Producto.css";
-import ejemplo from "../../assets/ejemplo.jpg";
+import ejemplo from "../../assets/ejemplo.png";
 
 const productos = [
-  { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-  { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-  { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-  { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-  { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
   { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
   { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
   { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
