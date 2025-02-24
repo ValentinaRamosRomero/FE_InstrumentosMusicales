@@ -1,126 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400;700&display=swap");
+
+/* Establece Aleo como fuente predeterminada */
+body {
+  font-family: "Aleo", serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Contenedor principal */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
-}
-
-.buscador {
-  background-color: #F8D9D9;
+  min-width: 370px;
   width: 100%;
-  display: flex;
-  flex-direction: column; /* Acomoda los elementos en columna */
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  gap: 15px; /* Espaciado entre el texto y el input/botón */
 }
 
-.buscador h2 {
-  text-align: center; /* Asegura que el texto esté centrado */
-  margin-bottom: 10px; /* Espacio entre el texto y los demás elementos */
+/* Títulos de secciones */
+.section-title {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
 }
 
-.input-group {
-  display: flex;
-  gap: 10px; /* Espacio entre el input y el botón */
-  align-items: center; /* Alineación vertical */
-}
-
-.input-container {
-  width: 250px; /* Ancho del input */
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.buscar-boton {
-  background-color: #bc1818;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.buscar-boton:hover {
-  background-color: #a31515;
-}
-
+/* Contenedor de categorías */
 .categorias-container {
-  background-color: #F8D9D9;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
-}
-
-.navbar {
-  width: 100%;
-  height: 95px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #bc1818;
-}
-
-.navbar h1 {
-  font-size: 40px;
-}
-
-.input-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  padding-right: 20px;
-  gap: 15px;
-  width: 268px;
-  height: 33px;
-}
-
-.input-container input {
-  border: none;
-  border-radius: 5px;
-  width: 174px;
-  height: 33px;
-}
-
-.input-container .icon1 {
-  position: absolute;
-  right: 260px; 
-  color:black;
-  font-size: 18px;
-}
-
-.icon2, .icon3{
-    width: 32px;
-    height: 32px;
-    color:#E8E8E8;
-}
-
-.logo {
-  width: 176px;
-  height: 40px;
-}
-
-.banner {
-  position: relative;
-  width: 100%;
-  height: 490px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.banner .item {
-  overflow: hidden;
-}
-.productos {
-  background-color: #f5f4f4;
-  justify-items: center;
-  padding: 25px;
   gap: 20px;
-  width: 100%;
+  width: 90%;
+  max-width: 1200px;
+}
+
+/* Contenedor de productos */
+.productos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 90%;
+  max-width: 1200px;
 }

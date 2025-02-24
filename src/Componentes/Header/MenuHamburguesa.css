@@ -16,14 +16,14 @@
   display: block;
 }
 
-/* Menú completamente oculto cuando está cerrado */
+/* Menú lateral oculto por defecto */
 .menu-links {
   position: fixed;
   top: 0;
-  left: -100%; 
+  left: -100%;
   width: 100vw;
   height: 100vh;
-  background: #bc1818; 
+  background: #bc1818;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -42,30 +42,22 @@
   opacity: 1;
 }
 
-/* Botón de cerrar "X" bien posicionado */
-.menu-icono.cerrar {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 3rem;
+/* Opciones de autenticación como texto */
+.auth-text {
   color: white;
+  font-size: 44px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
 }
 
-/* 🔹 Estilos de los enlaces principales con la fuente correcta */
-.menu-links a {
-  font-family: "Dosis", sans-serif;
-  font-weight: 800;
-  font-size: 48px;
-  line-height: 60.67px;
-  letter-spacing: 18%;
-  text-align: center;
-  color: white;
-  text-decoration: none;
-  padding: 10px;
-  width: 100%;
+.auth-text:hover {
+  text-decoration: underline;
 }
 
-.menu-links a:hover {
-  background: #a61414;
-  border-radius: 5px;
+/* Ocultar el menú hamburguesa en tablet y desktop */
+@media (min-width: 769px) {
+  .menu-hamburguesa {
+    display: none;
+  }
 }
