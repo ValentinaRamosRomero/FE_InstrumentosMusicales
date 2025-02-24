@@ -1,45 +1,55 @@
 import React from "react";
 import "./Home.css";
+
+// Componentes
 import Header from "../../Componentes/Header/Header";
 import Footer from "../../Componentes/Footer/Footer";
 import Categoria from "../../Componentes/Categories/Categoria";
 import Producto from "../../Componentes/Products/Producto";
 import Banner from "../../Componentes/Banner/Banner";
+import SearchBar from "../../Componentes/SearchBar/SearchBar"; // Asegúrate de que este componente exista
 
-import guitarra from "../../assets/guitarra1.jpg";
-import bateria from "../../assets/bateria.jpg";
-import piano from "../../assets/piano.jpg";
-import electrico from "../../assets/electrico.jpg";
-import accesorio from "../../assets/accesorio.jpg";
-import bajos from "../../assets/bajos.jpg";
+// Lista de categorías con imágenes (ubicadas en "public/assets/")
+const categorias = [
+  { imgSrc: "/assets/guitarra1.jpg", nombre: "Guitarras" },
+  { imgSrc: "/assets/bateria.jpg", nombre: "Baterías" },
+  { imgSrc: "/assets/bajos.jpg", nombre: "Bajos" },
+  { imgSrc: "/assets/piano.jpg", nombre: "Teclados" },
+  { imgSrc: "/assets/electrico.jpg", nombre: "Eléctricos" },
+  { imgSrc: "/assets/accesorio.jpg", nombre: "Accesorios" },
+];
 
 const Home = () => {
-  const categorias = [
-    { imgSrc: guitarra, nombre: "Guitarras" },
-    { imgSrc: bateria, nombre: "Baterías" },
-    { imgSrc: bajos, nombre: "Bajos" },
-    { imgSrc: piano, nombre: "Teclados" },
-    { imgSrc: electrico, nombre: "Eléctricos" },
-    { imgSrc: accesorio, nombre: "Accesorios" },
-  ];
-
   return (
     <div className="container">
+      {/* Encabezado y banner */}
       <Header />
       <Banner />
 
-      <h1 className="section-title">Categorías</h1>
-      <div className="categorias-container">
-        {categorias.map((cat, index) => (
-          <Categoria key={index} {...cat} />
-        ))}
+      {/* Barra de búsqueda */}
+      <div className="search-section">
+        <SearchBar />
       </div>
 
-      <h1 className="section-title">Productos para ti</h1>
-      <div className="productos">
-        <Producto />
-      </div>
+      {/* Sección de categorías */}
+      <section className="categories-section">
+        <h1 className="section-title">Categorías</h1>
+        <div className="categorias-container">
+          {categorias.map((categoria, index) => (
+            <Categoria key={index} {...categoria} />
+          ))}
+        </div>
+      </section>
 
+      {/* Sección de productos */}
+      <section className="products-section">
+        <h1 className="section-title">Productos para ti</h1>
+        <div className="productos">
+          <Producto />
+        </div>
+      </section>
+
+      {/* Pie de página */}
       <Footer />
     </div>
   );

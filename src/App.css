@@ -1,13 +1,16 @@
+
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   text-align: center;
   /*Fuente del figma Dosis*/
-  font-family: "Dosis", serif;
+  font-family: "Aleo", serif;
   font-optical-sizing: auto;
   font-style: normal;
   font-weight: 600;
   line-height: 18px;
 }
+
 
 

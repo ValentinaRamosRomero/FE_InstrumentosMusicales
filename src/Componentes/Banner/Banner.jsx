@@ -21,10 +21,7 @@ const Banner = () => {
         </div>
       </div>
 
-      {/* Espacio entre el botón y la barra de búsqueda */}
-      <div className="search-section">
-        <SearchBar />
-      </div>
+
     </div>
   );
 };

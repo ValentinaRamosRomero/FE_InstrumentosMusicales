@@ -1,28 +1,108 @@
 .footer {
-    width: 100%;
-    background-color: #bc1818;
-    color: white;
-    text-align: center;
-    padding: 15px 0;
-    font-family: "Dosis", sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-    position: relative;
-    bottom: 0;
+  width: 100%;
+  height: auto;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 2%;
+}
+
+.footer h2 {
+  padding-top: 20px;
+  font-weight: 400;
+  font-size: 17px;
+}
+.footer-content {
+  width: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  padding-left: 10%;
+  border-bottom: 1px solid #131212;
+}
+
+.footer-content h2 {
+  width: 100%;
+  padding: 0px;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.footer ul {
+  list-style: none;
+}
+
+.footer li {
+  line-height: 2.5rem;
+}
+.footer a {
+  text-decoration: none;
+}
+.footer-right {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+}
+
+.box a {
+  color: #131212;
+}
+.footer-bottom {
+  text-align: center;
+  color: #999;
+  padding-top: 50px;
+}
+.footer-left p {
+  padding-right: 20%;
+}
+
+.socials {
+  display: flex;
+  flex-direction: row;
+}
+
+.socials img {
+  width: 28px;
+  height: 28px;
+}
+
+.socials a {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.socials a i {
+  padding: 10px 12px;
+  font-size: 20px;
+}
+
+@media (max-width: 480px) {
+  .footer{
+    background-color:#424242 ;
   }
-  
-  /* Responsividad */
-  @media (max-width: 768px) {
-    .footer {
-      font-size: 14px;
-      padding: 12px 0;
-    }
+  .footer h2{
+    color: #f0f0f0;
   }
-  
-  @media (max-width: 480px) {
-    .footer {
-      font-size: 12px;
-      padding: 10px 0;
-    }
+  .footer-content {
+    display: none;
   }
-  
+}
