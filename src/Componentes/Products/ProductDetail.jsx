@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './ProductDetail.css';
-import guitarra1 from '../../assets/guitarra1.jpg';
+import guitarra1 from '../../assets/ejemplo.png';
 
 const ProductDetail = () => {
     const { id } = useParams();
