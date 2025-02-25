@@ -7,6 +7,7 @@ const productos = [
   { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
   { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
   { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
+  
 ];
 
 const Producto = () => {
