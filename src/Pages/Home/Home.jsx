@@ -3,12 +3,15 @@ import "./Home.css";
 import Footer from "../../Componentes/Footer/Footer";
 import Categoria from "../../Componentes/Categories/Categoria";
 import Producto from "../../Componentes/products/Producto";
+import Header from "../../Componentes/Header/Header";
+import Banner from "../../Componentes/Banner/Banner";
 
 const Home = () => {
   return (
     <>
       <div className="container">
-
+        <Header />
+        <Banner />
         <div className="categorias-container">
           <h1>Categorías</h1>
           <Categoria />

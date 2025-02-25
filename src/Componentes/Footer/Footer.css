@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 10%;
+  padding-bottom: 5%;
 }
 
 .footer h2 {
@@ -20,7 +20,7 @@
   justify-content: space-around;
   flex-wrap: wrap;
   align-items: flex-start;
-  padding-top: 10%;
+  padding-top: 5%;
   padding-bottom: 5%;
   padding-left: 10%;
   border-bottom: 1px solid #131212;
