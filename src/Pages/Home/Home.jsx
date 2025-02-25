@@ -2,7 +2,7 @@ import React from "react";
 import "./Home.css";
 import Footer from "../../Componentes/Footer/Footer";
 import Categoria from "../../Componentes/Categories/Categoria";
-import Producto from "../../Componentes/products/Producto";
+import Producto from "../../Componentes/Products/Producto";
 import Header from "../../Componentes/Header/Header";
 import Banner from "../../Componentes/Banner/Banner";
 import SearchBar from "../../Componentes/SearchBar/SearchBar";
