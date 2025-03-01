@@ -55,6 +55,37 @@
   text-decoration: underline;
 }
 
+/* Estilos para el perfil de usuario en móviles */
+.mobile-user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.mobile-user-initials {
+  background-color: black;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.mobile-user-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 3px solid white;
+  /* agregar una imagen de avatar como background-image */
+}
+
 /* Ocultar el menú hamburguesa en tablet y desktop */
 @media (min-width: 769px) {
   .menu-hamburguesa {
