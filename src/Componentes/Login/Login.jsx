@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -12,27 +13,37 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    /*try {
-      //Enviar datos al Back End
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const { correo, password } = data;
+
       const response = await axios.post(
         "https://tu-backend.com/api/login",
-        data,
+        { correo, password },
         {
           headers: { "Content-Type": "application/json" },
         }
       );
+      
+      if(response.status === 200){
+        console.log("Inicio de sesión exitoso:", response.data);
+      }
 
-      console.log("Respuesta del servidor:", response.data);
-      // Aquí podrías manejar la respuesta, como guardar un token o redirigir al usuario
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("usuario", JSON.stringify(response.data.usuario));
+      
+      //Redirigir al home personalizado
+      navigate(`/home/${response.data.usuario.id}`)
+    
     } catch (error) {
-      console.error(
-        "Error en el inicio de sesión:",
-        error.response?.data || error.message
-      );
-    }*/
+      const mensajeError = error.response?.data?.message || "Error en el inicio de sesión";
+      setErrorMessage(mensajeError);
+    }
   });
+
   return (
     <>
       <Header />
@@ -62,7 +73,6 @@ const Login = () => {
                   value: 6,
                   message: "Password debe tener al menos 6 caracteres",
                 },
-                /*validate: (value) => {if(value === ){return }else{return "Contraseña incorrecta"}},*/
               })}
             />
             {errors.password && <span>{errors.password.message}</span>}
