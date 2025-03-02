@@ -1,0 +1,101 @@
+.back {
+    background-image: url("/src/assets/background2.png");
+    background-size: cover;
+    background-position: center;
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .login {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 40vh;
+    min-width: 50vh;
+    color: white;
+    border-radius: 12px 0px 12px 0px;
+    background-color: #bc1818;
+    margin: 10px;
+    box-shadow: -8px 10px 7px 2px rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+  }
+  
+  /* Pseudo-elemento para la imagen con opacidad */
+  .login::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url("/src/assets/background1.svg");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.25;
+    z-index: 0;
+  }
+  .login h2 {
+    font-weight: 200;
+    margin: 5%;
+    /* offset-x | offset-y | blur-radius | color */
+    text-shadow: 3px 4px 2px rgba(0, 0, 0, 0.39);
+    width: 70%;
+    position: relative;
+    z-index: 1;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    padding: 5%;
+    text-align: left;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  label {
+    display: block;
+    text-align: left;
+  }
+  input {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 5px 6px 7px -3px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 5px 6px 7px -3px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 5px 6px 7px -3px rgba(0, 0, 0, 0.75);
+  }
+  span {
+    display: block;
+    color: white;
+    font-size: 10px;
+  }
+  form button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #841414;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 48%;
+    border-radius: 25px;
+    align-self: center;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para efecto 3D */
+  }
+  
+  form button:hover {
+    background-color: rgb(170, 62, 62);
+  }
+  
+  form button:active {
+    transform: scale(0.95); /* Hace que el botón se encoja al hacer click */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* Reduce la sombra para efecto de "presionado" */
+  }
