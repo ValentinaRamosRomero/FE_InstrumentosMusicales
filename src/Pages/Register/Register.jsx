@@ -17,8 +17,17 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("https://tu-backend.com/api/register", data, {
-        headers: { "Content-Type": "application/json" },
+      const formData = new FormData();
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key]);
+      });
+      
+      if (data.avatar && data.avatar[0]) {
+        formData.append("avatar", data.avatar[0]);
+      }
+      
+      const response = await axios.post("https://tu-backend.com/api/register", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       if (response.status === 201) {
@@ -38,7 +47,7 @@ const Register = () => {
         {/* Card del formulario */}
         <div className="register">
           <h2>REGISTRO</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
             <label htmlFor="nombre">Nombre</label>
             <input
               type="text"
@@ -77,6 +86,21 @@ const Register = () => {
               })}
             />
             {errors.correo && <span className="error-text">{errors.correo.message}</span>}
+
+            <label htmlFor="phoneCode">Código de país</label>
+            <input type="text" {...register("phoneCode", { required: "El código de país es obligatorio." })} />
+            {errors.phoneCode && <span className="error-text">{errors.phoneCode.message}</span>}
+
+            <label htmlFor="phone">Teléfono</label>
+            <input type="text" {...register("phone", { required: "El teléfono es obligatorio." })} />
+            {errors.phone && <span className="error-text">{errors.phone.message}</span>}
+
+            <label htmlFor="address">Dirección</label>
+            <input type="text" {...register("address", { required: "La dirección es obligatoria." })} />
+            {errors.address && <span className="error-text">{errors.address.message}</span>}
+
+            <label htmlFor="avatar">Avatar</label>
+            <input type="file" {...register("avatar")} accept="image/*" />
 
             <label htmlFor="password">Contraseña</label>
             <input
