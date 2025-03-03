@@ -1,0 +1,185 @@
+@import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400;700&display=swap");
+
+.back_register {
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255,0.5)),
+                url("/src/assets/background1.svg") no-repeat center/cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    justify-content: right;
+    padding-right: 250px;
+    align-items: center;
+    overflow: hidden;
+    gap: 30px; /* Espacio entre tarjetas */
+    flex-direction: row-reverse;
+    position: relative;
+    padding-top: 70px;
+
+}
+
+/* Card de Registro */
+.register {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 500px;
+    min-height: 600px;
+    max-height: 650px; /* Limita el tamaño máximo */
+    color: white;
+    border-radius: 16px;
+    background-color: #bc1818;
+    padding: 20px 50px;
+    box-shadow: -8px 10px 7px 2px rgba(0, 0, 0, 0.75);
+    overflow: hidden;
+    font-family: "Aleo", serif;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Si hay errores, agranda la tarjeta pero sin salir del diseño */
+.register.error-active {
+    max-height: 750px; /* Aumenta solo cuando haya errores */
+    transition: max-height 0.3s ease-in-out;
+}
+
+/* Pseudo-elemento para agregar opacidad al fondo */
+.register::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url("/src/assets/background1.svg");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.25;
+    z-index: 0;
+}
+
+.register h2 {
+    font-weight: 200;
+    margin-top: 10%;
+    text-shadow: 3px 4px 2px rgba(0, 0, 0, 0.39);
+    width: 70%;
+    position: relative;
+}
+
+/* Card de Beneficios */
+.benefits-card {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    width: 500px;
+    height: 400px;
+    border-top-right-radius: 32px;
+    box-shadow: -8px 10px 7px 2px rgba(0, 0, 0, 0.5);
+    text-align: left;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 1;
+}
+
+.benefits-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.benefits-card p {
+    font-size: 14px;
+    text-align: center;
+}
+
+.benefits-card ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.benefits-card ul li {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Estilos del formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Contenedor de errores, ahora dentro de `.register` */
+.error-box {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    max-width: 380px;
+    min-height: 50px;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+    color: rgba(211, 0, 0, 1);
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Ocultar la caja de error si no hay errores */
+.error-box.hidden {
+    opacity: 0;
+    transform: scale(0.9);
+    height: 0;
+    overflow: hidden;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .back_register {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .register {
+        width: 90%;
+        max-width: 400px;
+        height: auto;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: -5px 7px 7px rgba(0, 0, 0, 0.5);
+    }
+
+    .register.error-active {
+        max-height: 800px;
+    }
+
+    .error-box {
+        width: 90%;
+        max-width: 350px;
+    }
+
+    .benefits-card {
+        width: 90%;
+        max-width: 400px;
+        height: auto;
+        padding: 20px;
+        position: static;
+        text-align: center;
+        border-radius: 12px;
+        box-shadow: -5px 7px 7px rgba(0, 0, 0, 0.5);
+    }
+}

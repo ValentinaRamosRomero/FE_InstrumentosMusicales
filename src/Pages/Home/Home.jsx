@@ -11,13 +11,24 @@ const Home = ({ isAuthenticated, userData, onLogout }) => {
   return (
     <>
       <div className="container">
-        <Header
-          isAuthenticated={isAuthenticated}
-          userData={userData}
-          onLogout={onLogout}
+
+       
+        {/* Pasamos las props al Header */}
+        <Header 
+          isAuthenticated={isAuthenticated} 
+          userData={userData} 
+          onLogout={onLogout} 
         />
         <Banner />
-        <SearchBar />
+        <SearchBar/>
+        
+        {/* Opcional: Mensaje de bienvenida personalizado */}
+        {isAuthenticated && userData && (
+          <div className="welcome-message">
+            <h2>Bienvenido, {userData.nombre} {userData.apellido}</h2>
+          </div>
+        )}
+        
         <div className="categorias-container">
           <h1>Categorías</h1>
           <Categoria />

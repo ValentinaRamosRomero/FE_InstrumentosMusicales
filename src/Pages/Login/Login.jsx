@@ -53,7 +53,11 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
 
   return (
     <>
-      <Header isAuthenticated={isAuthenticated} userData={userData} onLogout={() => {}} />
+      <Header
+        isAuthenticated={isAuthenticated}
+        userData={userData}
+        onLogout={() => {}}
+      />
       <div className="back">
         <div className="login">
           <h2>INICIAR SESIÓN</h2>

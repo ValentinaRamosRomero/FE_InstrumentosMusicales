@@ -8,6 +8,10 @@
   background-color: #bc1818;
   padding: 0 20px;
   box-sizing: border-box;
+  position: fixed;
+  top: 0;  /* Distancia desde la parte superior */
+  left: 0;  /* Centrado horizontalmente */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
 }
 
 /* Logo alineado a la izquierda */
@@ -52,9 +56,66 @@
   background-color: #333;
 }
 
+/* Perfil de usuario (después de iniciar sesión) */
+.user-profile {
+width: 115px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.user-initials {
+  background-color: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.user-avatar {
+  
+}
+
+.user-icon {
+  width: 80%;
+}
+
+/* Menú desplegable para cerrar sesión */
+.user-dropdown {
+  position: absolute;
+  top: 70px; 
+  right: 0px;
+  z-index: 1000;
+  width: 150px; 
+}
+
+.btn-logout {
+  width: 100%;
+  padding: 8px 16px;
+  text-align: center;
+  border: none;
+  background-color: #bc1818;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 0px;
+  font-size: 14px;
+}
+
+.btn-logout:hover {
+  background-color: #a01414; 
+}
 /* Ocultar botones de autenticación en móviles */
 @media (max-width: 768px) {
-  .auth-buttons {
+  .auth-buttons, .user-profile {
     display: none;
   }
 }
