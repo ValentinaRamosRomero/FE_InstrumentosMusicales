@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./Login.css";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
+import Header from "../../Componentes/Header/Header";
+import Footer from "../../Componentes/Footer/Footer";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ isAuthenticated, userData, onLogin }) => {
   const {
     register,
     handleSubmit,
@@ -27,26 +27,33 @@ const Login = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      
-      if(response.status === 200){
+
+      if (response.status === 200) {
         console.log("Inicio de sesión exitoso:", response.data);
       }
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("usuario", JSON.stringify(response.data.usuario));
-      
+      /*localStorage.setItem("token", response.data.token);
+      localStorage.setItem("usuario", JSON.stringify(response.data.usuario));*/
+
+      // Llamamos a la función de login recibida como prop
+      onLogin(response.data.token, response.data.usuario);
+
       //Redirigir al home personalizado
-      navigate(`/home/${response.data.usuario.id}`)
-    
+      if (response.data.usuario.id) {
+        navigate(`/home/${response.data.usuario.id}`);
+      } else {
+        navigate("/");
+      }
     } catch (error) {
-      const mensajeError = error.response?.data?.message || "Error en el inicio de sesión";
+      const mensajeError =
+        error.response?.data?.message || "Error en el inicio de sesión";
       setErrorMessage(mensajeError);
     }
   });
 
   return (
     <>
-      <Header />
+      <Header isAuthenticated={isAuthenticated} userData={userData} onLogout={() => {}} />
       <div className="back">
         <div className="login">
           <h2>INICIAR SESIÓN</h2>
@@ -76,7 +83,9 @@ const Login = () => {
               })}
             />
             {errors.password && <span>{errors.password.message}</span>}
-
+            {errorMessage && (
+              <div className="error-message">{errorMessage}</div>
+            )}
             <button type="submit">Iniciar Sesión</button>
           </form>
         </div>

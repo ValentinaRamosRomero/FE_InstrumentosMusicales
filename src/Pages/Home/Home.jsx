@@ -7,13 +7,17 @@ import Header from "../../Componentes/Header/Header";
 import Banner from "../../Componentes/Banner/Banner";
 import SearchBar from "../../Componentes/SearchBar/SearchBar";
 
-const Home = () => {
+const Home = ({ isAuthenticated, userData, onLogout }) => {
   return (
     <>
       <div className="container">
-        <Header />
+        <Header
+          isAuthenticated={isAuthenticated}
+          userData={userData}
+          onLogout={onLogout}
+        />
         <Banner />
-        <SearchBar/>
+        <SearchBar />
         <div className="categorias-container">
           <h1>Categorías</h1>
           <Categoria />
@@ -26,7 +30,7 @@ const Home = () => {
         <Footer />
       </div>
     </>
-  )
-}
+  );
+};
 
 export default Home;
