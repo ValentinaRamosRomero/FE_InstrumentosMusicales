@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Header.css";
 import logo from "../../assets/Logo.svg";
-import user_icon from "../../assets/user-icon.svg"
+import user_icon from "../../assets/user-icon.svg";
 import MenuHamburguesa from "./MenuHamburguesa";
+import { useNavigate } from "react-router-dom"; // Importar useNavigate
 
-const Header = () => {
-  // Estado para controlar si el usuario está autenticado
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  // Estado para almacenar los datos del usuario
-  const [userData, setUserData] = useState({ nombre: "Juan", apellido: "Pérez" });
+const Header = ({ isAuthenticated, userData, onLogout }) => {
   // Estado para controlar el menú desplegable
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate(); // Para navegación
 
   // Función para alternar el menú desplegable
   const toggleDropdown = () => {
@@ -19,19 +17,14 @@ const Header = () => {
 
   // Función para cerrar sesión
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    //lógica para cerrar sesión (llamada API, limpiar localStorage, etc.)
+    onLogout();
+    navigate("/"); // Redirigir al home después de cerrar sesión
   };
 
-  // Simulación de autenticación, reemplazar  con  lógica reaL
-  useEffect(() => {
-    // Ejemplo: verificar si hay un token en localStorage
-    const token = localStorage.getItem('token');
-    if (token) {
-      setIsAuthenticated(true);
-      //  obtener los datos del usuario desde tu API
-    }
-  }, []);
+  // Función para navegar al login
+  const goToLogin = () => {
+    navigate("/login");
+  };
 
   return (
     <header className="header">
@@ -39,11 +32,11 @@ const Header = () => {
       <img src={logo} alt="Logo" className="logo" />
 
       {/* Botones de autenticación o perfil de usuario dependiendo del estado */}
-      {isAuthenticated ? (
+      {isAuthenticated && userData ? (
         <div className="user-profile">
           <div className="user-info" onClick={toggleDropdown}>
             <div className="user-initials">
-              {userData.nombre.charAt(0)}{userData.apellido.charAt(0)}
+              {userData.nombre?.charAt(0)}{userData.apellido?.charAt(0)}
             </div>
             <div className="user-avatar">
               <img src={user_icon} alt="user-avatar" className="user-icon"/>
@@ -60,12 +53,16 @@ const Header = () => {
       ) : (
         <div className="auth-buttons">
           <button className="btn-create-account">Crear cuenta</button>
-          <button className="btn-login">Iniciar Sesión</button>
+          <button className="btn-login" onClick={goToLogin}>Iniciar Sesión</button>
         </div>
       )}
 
       {/* Menú hamburguesa en móviles */}
-      <MenuHamburguesa isAuthenticated={isAuthenticated} userData={userData} onLogout={handleLogout} />
+      <MenuHamburguesa 
+        isAuthenticated={isAuthenticated} 
+        userData={userData} 
+        onLogout={handleLogout} 
+      />
     </header>
   );
 };
