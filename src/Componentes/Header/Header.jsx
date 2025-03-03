@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import logo from "../../assets/Logo.svg";
 import user_icon from "../../assets/user-icon.svg";
 import MenuHamburguesa from "./MenuHamburguesa";
-import { useNavigate } from "react-router-dom"; // Importar useNavigate
+import { useState } from "react";
 
 const Header = ({ isAuthenticated, userData, onLogout }) => {
   // Estado para controlar el menú desplegable
@@ -29,7 +30,13 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
   return (
     <header className="header">
       {/* Logo alineado a la izquierda */}
-      <img src={logo} alt="Logo" className="logo" />
+      <img 
+        src={logo} 
+        alt="Logo" 
+        className="logo" 
+        onClick={() => navigate("/")} // Redirige a Home al hacer clic en el logo
+        style={{ cursor: "pointer" }} // Cambia el cursor para indicar que es clickeable
+      />
 
       {/* Botones de autenticación o perfil de usuario dependiendo del estado */}
       {isAuthenticated && userData ? (
@@ -52,8 +59,8 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
         </div>
       ) : (
         <div className="auth-buttons">
-          <button className="btn-create-account">Crear cuenta</button>
-          <button className="btn-login" onClick={goToLogin}>Iniciar Sesión</button>
+          <button className="btn-create-account" onClick={() => navigate("/register")}>Crear cuenta</button>
+          <button className="btn-login" onClick={() => navigate("/login")}>Iniciar Sesións</button>
         </div>
       )}
 

@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./Pages/Home/Home";
-import ProductDetail from "./Componentes/Products/ProductDetail.jsx";
-import Login from "./Pages/Login/Login"; // Importa el componente Login
-
+import ProductDetail from "./Componentes/Products/ProductDetail";
+import Login from "./Pages/Login/Login";  // ✅ Agregamos la importación de Login
+import RegisterPage from "./Pages/Register/Register";  // ✅ Agregamos la importación de Register
 
 const App = () => {
   // Estados de autenticación centralizados
@@ -53,7 +53,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Ruta principal */}
+¿        {/* Ruta principal */}
         <Route path="/" element={<Home {...authProps} />} />
         
         {/* Ruta de login */}
@@ -72,6 +72,9 @@ const App = () => {
             <Home {...authProps} /> : 
             <Navigate to="/login" />
         } />
+
+        <Route path="/register" element={<RegisterPage />} />  {/* ✅ Nueva ruta */}
+        
       </Routes>
     </Router>
   );
