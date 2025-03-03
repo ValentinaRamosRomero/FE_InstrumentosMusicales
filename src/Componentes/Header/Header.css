@@ -8,6 +8,11 @@
   background-color: #bc1818;
   padding: 0 20px;
   box-sizing: border-box;
+  position: fixed;
+  top: 0;  /* Distancia desde la parte superior */
+  left: 0;  /* Centrado horizontalmente */
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+
 }
 
 /* Logo alineado a la izquierda */

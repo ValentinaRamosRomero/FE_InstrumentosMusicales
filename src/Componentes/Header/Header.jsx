@@ -1,11 +1,11 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Importamos useNavigate
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import logo from "../../assets/Logo.svg";
 import MenuHamburguesa from "./MenuHamburguesa";
 
 const Header = () => {
-  const navigate = useNavigate(); // ✅ Definir navigate para la navegación
+  const navigate = useNavigate(); // Definir navigate para la navegación
 
   return (
     <header className="header">
@@ -14,8 +14,8 @@ const Header = () => {
         src={logo} 
         alt="Logo" 
         className="logo" 
-        onClick={() => navigate("/")} // ✅ Redirige a Home al hacer clic en el logo
-        style={{ cursor: "pointer" }} // ✅ Cambia el cursor para indicar que es clickeable
+        onClick={() => navigate("/")} // Redirige a Home al hacer clic en el logo
+        style={{ cursor: "pointer" }} // Cambia el cursor para indicar que es clickeable
       />
 
       {/* Botones de autenticación en tablet y desktop */}
@@ -24,7 +24,7 @@ const Header = () => {
           Crear cuenta
         </button>
         <button className="btn-login" onClick={() => navigate("/login")}>
-          Iniciar Sesión
+          Iniciar Sesións
         </button>
       </div>
 

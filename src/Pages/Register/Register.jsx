@@ -32,7 +32,7 @@ const Register = () => {
             <input
               type="text"
               {...register("nombre", {
-                required: "El nombre es obligatorio.",
+                required: true,
                 pattern: {
                   value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/i,
                   message: "En los campos de nombre y apellido solo puedes ingresar letras.",
@@ -45,7 +45,7 @@ const Register = () => {
             <input
               type="text"
               {...register("apellido", {
-                required: "El apellido es obligatorio.",
+                required: true,
                 pattern: {
                   value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/i,
                   message: "En los campos de nombre y apellido solo puedes ingresar letras.",
@@ -58,7 +58,7 @@ const Register = () => {
             <input
               type="email"
               {...register("correo", {
-                required: "El correo es obligatorio.",
+                required: true,
                 pattern: {
                   value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                   message: "Ingresa un correo electrónico válido.",
@@ -71,7 +71,7 @@ const Register = () => {
             <input
               type="password"
               {...register("password", {
-                required: "La contraseña es obligatoria.",
+                required: true,
                 minLength: {
                   value: 6,
                   message: "La contraseña debe tener mínimo 6 caracteres.",

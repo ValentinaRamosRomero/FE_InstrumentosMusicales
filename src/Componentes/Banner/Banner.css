@@ -1,46 +1,41 @@
 /* Contenedor del Banner */
 .banner-container {
   width: 100%;
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #f8f8f8;
-  box-sizing: border-box;
-  margin-top: 0;
+  text-align: left;
+  position: relative;
+  padding-top: 70px;
 }
 
-/* Imagen del Banner: Cubre todo el ancho y mantiene proporción */
-.banner-image {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-}
-
-/* Contenedor del texto y botón */
+/* Contenido del banner */
 .banner-content {
   width: 90%;
-  max-width: 800px;
+  max-width: 900px; /* Aumentado el ancho máximo */
   text-align: left;
   padding: 20px;
 }
 
-/* Título responsivo */
+/* Título */
 .banner-title {
-  font-size: 24px;
+  font-size: 36px; /* Aumentado */
   font-weight: bold;
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  line-height: 1.2;
 }
 
-/* Texto responsivo */
+/* Texto */
 .banner-text {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 20px;
+  font-size: 20px; /* Aumentado */
+  color: #444;
+  margin-bottom: 25px;
+  line-height: 1.5;
 }
 
-/* Botón "RENTAR AHORA" */
+/* Botón */
 .button-container {
   display: flex;
   justify-content: center;
@@ -49,10 +44,10 @@
 .banner-button {
   background-color: #BC1818;
   color: white;
-  padding: 12px 24px;
-  font-size: 16px;
+  padding: 14px 28px;
+  font-size: 18px; /* Aumentado */
   border: none;
-  border-radius: 65px;
+  border-radius: 50px;
   cursor: pointer;
   transition: background 0.3s;
 }
@@ -61,49 +56,148 @@
   background-color: #a41515;
 }
 
-/* Espacio entre el contenido y la barra de búsqueda */
-.search-section {
-  margin-top: 0px;
+/* Imagen para dispositivos móviles */
+.banner-image.mobile {
+  display: block;
   width: 100%;
+  height: auto;
 }
 
-/* 🌍 RESPONSIVE DESIGN */
+/* Oculta elementos específicos en mobile */
+.Banner_Desktop {
+  display: none;
+}
 
-/* Ajustes para tablets */
+/* Ajustes para tabletas y escritorio */
 @media screen and (min-width: 768px) {
-  .banner-image {
-    height: 400px;
-  }
-
-  .banner-title {
-    font-size: 28px;
-  }
-
-  .banner-text {
-    font-size: 18px;
-  }
-
-  .banner-button {
-    font-size: 18px;
-    padding: 14px 28px;
-  }
-}
-
-/* Ajustes para Desktop */
-@media screen and (min-width: 1024px) {
-  .banner-image {
-    height: 500px;
+  .banner-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    padding-top: 70px;
   }
 
   .banner-content {
-    max-width: 90%;
+    max-width: 60%;
+    padding: 50px;
   }
 
   .banner-title {
-    font-size: 32px;
+    font-size: 48px; /* Más grande en tablets y escritorio */
   }
 
   .banner-text {
+    font-size: 22px;
+  }
+
+  .banner-button {
     font-size: 20px;
+    padding: 16px 32px;
+  }
+
+  .banner-image.mobile {
+    display: none;
+  }
+
+  .Banner_Desktop {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+
+  .General_Info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    align-items: center;
+  }
+
+  .banner-stats {
+    font-size: 18px;
+    color: #000; /* Texto en negro */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 50%;
+    gap: 30px; /* Espaciado entre elementos */
+  }
+  
+  .banner-stats p {
+    margin: 0;
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* Coloca el texto debajo del número */
+    align-items: center;
+    padding: 0 20px;
+    white-space: nowrap;
+    font-weight: normal; /* Asegura que el texto NO esté en negrita */
+    color: #000; /* Asegura que el texto sea negro */
+  }
+  
+  .banner-stats p strong {
+    font-size: 22px; /* Ajusta el tamaño del número */
+    font-weight: bold;
+  }
+  
+  /* Línea vertical punteada entre elementos */
+  .banner-stats p:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -15px; /* Ajusta la posición de la línea */
+    top: 50%;
+    transform: translateY(-50%);
+    height: 40px; /* Ajusta el alto de la línea */
+    width: 1px;
+    background: black;
+    border-left: 1px dashed #444; /* Línea vertical punteada */
+  }
+  
+  
+
+  .banner-stats p {
+    margin: 8px 0;
+  }
+
+  .banner-image.desktop {
+    display: block;
+    width: 40%;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain;
+  }
+
+  .banner-image.brands {
+    display: block;
+    width: 100%;
+    height: 160px; /* Aumentado */
+    align-self: center;
+  }
+}
+
+/* Ajustes para pantallas grandes */
+@media screen and (min-width: 1024px) {
+  .banner-title {
+    font-size: 56px; /* Aún más grande */
+  }
+
+  .banner-text {
+    font-size: 24px;
+  }
+
+  .banner-button {
+    font-size: 22px;
+    padding: 18px 36px;
+  }
+
+  .banner-stats {
+    font-size: 20px;
+  }
+
+  .banner-image.brands {
+    height: 180px;
   }
 }
