@@ -60,7 +60,7 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
       ) : (
         <div className="auth-buttons">
           <button className="btn-create-account" onClick={() => navigate("/register")}>Crear cuenta</button>
-          <button className="btn-login" onClick={() => navigate("/login")}>Iniciar Sesións</button>
+          <button className="btn-login" onClick={() => navigate("/login")}>Iniciar Sesión</button>
         </div>
       )}
 
