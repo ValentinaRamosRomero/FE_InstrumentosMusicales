@@ -7,11 +7,12 @@ import Header from "../../Componentes/Header/Header";
 import Banner from "../../Componentes/Banner/Banner";
 import SearchBar from "../../Componentes/SearchBar/SearchBar";
 
-// Recibimos las props de autenticación
 const Home = ({ isAuthenticated, userData, onLogout }) => {
   return (
     <>
       <div className="container">
+
+       
         {/* Pasamos las props al Header */}
         <Header 
           isAuthenticated={isAuthenticated} 
