@@ -15,7 +15,7 @@ import medidasIcon from '../../assets/icons/medidas-icon.png';
 import materialIcon from '../../assets/icons/material-icon.png';
 import usoIcon from '../../assets/icons/uso-icon.png';
 
-const ProductDetail = () => {
+const ProductDetail = ({ isAuthenticated, userData, onLogout }) => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ const ProductDetail = () => {
                     name: productData.name,
                     price: productData.price,
                     description: productData.description,
-                    images: [productData.mainImage, ...(productData.secondaryImages || [])],
+                    images: productData.mainImage,
                     characteristics: {
                         marca: productData.brand,
                         modelo: productData.model,
@@ -60,21 +60,24 @@ const ProductDetail = () => {
 
         fetchProduct();
     }, [id]);
-
     if (loading) return <div className="loading">Cargando...</div>;
     if (error) return <div className="error">{error}</div>;
     if (!product) return <div className="not-found">Producto no encontrado</div>;
 
     return (
         <div className="product-page">
-            <Header/>
+            <Header
+                isAuthenticated={isAuthenticated} 
+                userData={userData} 
+                onLogout={onLogout} 
+            />
             <div className="navigation-bar">
                 <div className="home-icon">
                     <a href="/" className="home-link"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg></a>
                 </div>
                 <h2 className="category-title">{product.category}</h2>
                 <div className="back-icon">
-                    <a href="/productos" className="back-link">←</a>
+                    <a href="/" className="back-link">←</a>
                 </div>
             </div>
             
@@ -86,7 +89,7 @@ const ProductDetail = () => {
                     <div className="product-images-container">
                         <div className="main-image-container">
                             <img 
-                                src={product.images[0]} 
+                                src={"https://res.cloudinary.com/dqc7cuyox/image/upload/fl_preserve_transparency/v1740765878/equipomejoras_aefxbm.jpg?_s=public-apps"} 
                                 alt={product.name}
                                 className="main-image"
                             />

@@ -4,6 +4,7 @@
 }
 
 .navigation-bar {
+    margin-top: 70px;
     background-color: #e6e6e6;
     padding: 1rem;
     display: flex;
