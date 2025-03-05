@@ -18,11 +18,11 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const { correo, password } = data;
+      const { email, password } = data;
 
       const response = await axios.post(
        import.meta.env.VITE_API_URL+'/login',
-        { correo, password },
+        { email, password },
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -62,7 +62,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
             <label htmlFor="correo">Correo Electrónico</label>
             <input
               type="email"
-              {...register("correo", {
+              {...register("email", {
                 required: { value: true, message: "Correo es requerido" },
                 pattern: {
                   value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
