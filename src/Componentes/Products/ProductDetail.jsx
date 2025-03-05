@@ -1,38 +1,78 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './ProductDetail.css';
-import guitarra1 from '../../assets/ejemplo.png';
+import axios from 'axios'; 
+
+//importando iconos
+import marcaIcon from '../../assets/icons/marca-icon.png';
+import modeloIcon from '../../assets/icons/modelo-icon.png';
+import condicionIcon from '../../assets/icons/condicion-icon.png';
+import origenIcon from '../../assets/icons/origen-icon.png';
+import lanzamientoIcon from '../../assets/icons/lanzamiento-icon.png';
+import medidasIcon from '../../assets/icons/medidas-icon.png';
+import materialIcon from '../../assets/icons/material-icon.png';
+import usoIcon from '../../assets/icons/uso-icon.png';
 
 const ProductDetail = () => {
     const { id } = useParams();
-    const product = {
-        id: id,
-        name: "Gibson Les Paul Studio Electric Guitar",
-        price: 3999,
-        description: "The Gibson Les Paul Studio Sessions electric guitar is an updated and refined version of the classic Les Paul Studio, designed to meet the demands of today's discerning players. This guitar features an Ultra-Modern weight-relieved mahogany body with an AA figured maple cap, a mahogany neck with a bound ebony fretboard, and a SlimTaper profile with a Modern Contoured Heel for effortless access to the upper frets.",
-        images: [guitarra1],
-        characteristics: {
-            marca: "Gibson",
-            modelo: "Les Paul",
-            condicion: "2 años de uso",
-            origen: "USA",
-            lanzamiento: "2022",
-            medidas: "120 x 40 x 9 cm",
-            material: "Caoba",
-            uso: "Profesional"
-        }
-    };
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                setLoading(true);
+                // endpoint
+                const response = await axios.get(`https://music-store-api.up.railway.app/products/${id}`);
+                
+                // componente
+                const productData = response.data;
+                
+                setProduct({
+                    id: productData.id,
+                    name: productData.name,
+                    price: productData.price,
+                    description: productData.description,
+                    images: [productData.mainImage, ...(productData.secondaryImages || [])],
+                    characteristics: {
+                        marca: productData.brand,
+                        modelo: productData.model,
+                        condicion: productData.product_condition,
+                        origen: productData.origin,
+                        lanzamiento: productData.launchYear,
+                        medidas: productData.size,
+                        material: productData.material,
+                        uso: productData.recommendedUse
+                    },
+                    category: productData.category
+                });
+                
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching product:', err);
+                setError('No se pudo cargar el producto. Por favor, intenta nuevamente más tarde.');
+                setLoading(false);
+            }
+        };
+
+        fetchProduct();
+    }, [id]);
+
+    if (loading) return <div className="loading">Cargando...</div>;
+    if (error) return <div className="error">{error}</div>;
+    if (!product) return <div className="not-found">Producto no encontrado</div>;
 
     return (
         <div className="product-page">
-            <Header />
+            <Header/>
             <div className="navigation-bar">
                 <div className="home-icon">
                     <a href="/" className="home-link"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg></a>
                 </div>
-                <h2 className="category-title">Guitarras</h2>
+                <h2 className="category-title">{product.category}</h2>
                 <div className="back-icon">
                     <a href="/productos" className="back-link">←</a>
                 </div>
@@ -86,44 +126,44 @@ const ProductDetail = () => {
                     <div className="characteristics-grid">
                         <div className="characteristics-column">
                             <div className="characteristic-item">
-                                <span className="characteristic-icon">📌</span>
+                                <img src={marcaIcon} alt="Marca" className="characteristic-icon" />
                                 <span className="characteristic-label">Marca:</span>
                                 <span className="characteristic-value">{product.characteristics.marca}</span>
                             </div>
                             <div className="characteristic-item">
-                                <span className="characteristic-icon">📋</span>
+                                <img src={modeloIcon} alt="Modelo" className="characteristic-icon" />
                                 <span className="characteristic-label">Modelo:</span>
                                 <span className="characteristic-value">{product.characteristics.modelo}</span>
                             </div>
                             <div className="characteristic-item">
-                                <span className="characteristic-icon">📏</span>
+                                <img src={condicionIcon} alt="Condición" className="characteristic-icon" />
                                 <span className="characteristic-label">Condición:</span>
                                 <span className="characteristic-value">{product.characteristics.condicion}</span>
                             </div>
                             <div className="characteristic-item">
-                                <span className="characteristic-icon">🌐</span>
+                                <img src={origenIcon} alt="Origen" className="characteristic-icon" />
                                 <span className="characteristic-label">Origen:</span>
                                 <span className="characteristic-value">{product.characteristics.origen}</span>
                             </div>
                         </div>
                         <div className="characteristics-column">
                             <div className="characteristic-item">
-                                <span className="characteristic-icon">📅</span>
+                                <img src={lanzamientoIcon} alt="Año de lanzamiento" className="characteristic-icon" />
                                 <span className="characteristic-label">Año de lanzamiento:</span>
                                 <span className="characteristic-value">{product.characteristics.lanzamiento}</span>
                             </div>
                             <div className="characteristic-item">
-                                <span className="characteristic-icon">📐</span>
+                                <img src={medidasIcon} alt="Medidas" className="characteristic-icon" />
                                 <span className="characteristic-label">Medidas:</span>
                                 <span className="characteristic-value">{product.characteristics.medidas}</span>
                             </div>
                             <div className="characteristic-item">
-                                <span className="characteristic-icon">🪵</span>
+                                <img src={materialIcon} alt="Material principal" className="characteristic-icon" />
                                 <span className="characteristic-label">Material principal:</span>
                                 <span className="characteristic-value">{product.characteristics.material}</span>
                             </div>
                             <div className="characteristic-item">
-                                <span className="characteristic-icon">🎯</span>
+                                <img src={usoIcon} alt="Uso recomendado" className="characteristic-icon" />
                                 <span className="characteristic-label">Uso recomendado:</span>
                                 <span className="characteristic-value">{product.characteristics.uso}</span>
                             </div>
