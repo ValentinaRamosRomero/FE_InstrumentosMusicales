@@ -3,10 +3,10 @@ import "./Producto.css";
 import ejemplo from "../../assets/ejemplo.png";
 
 const productos = [
-  { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-  { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-  { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
-  { imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
+  { id: 1,imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
+  { id: 2,imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
+  { id: 3,imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
+  { id: 4,imgSrc: ejemplo, nombre: "Nombre Producto", precio: "$179.99" },
   
 ];
 

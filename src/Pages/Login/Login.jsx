@@ -18,11 +18,11 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const { correo, password } = data;
+      const { email, password } = data;
 
       const response = await axios.post(
-        "https://tu-backend.com/api/login",
-        { correo, password },
+       import.meta.env.VITE_API_URL+'/login',
+        { email, password },
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -32,19 +32,15 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
         console.log("Inicio de sesión exitoso:", response.data);
       }
 
-      /*localStorage.setItem("token", response.data.token);
-      localStorage.setItem("usuario", JSON.stringify(response.data.usuario));*/
-
       // Llamamos a la función de login recibida como prop
       onLogin(response.data.token, response.data.usuario);
-
-      // Redirigir al home personalizado
-      if (response.data.usuario.id) {
-        navigate(`/home/${response.data.usuario.id}`); // Corrección del uso de template literals
-      } else {
-        navigate("/");
-      }
       
+      // Redirigir según el rol del usuario
+      if (response.data.usuario.rol === "administrador") {
+        navigate(`/home/${response.data.usuario.id}`); // Redireccionar al home con ID
+      } else {
+        navigate(`/home/${response.data.usuario.id}`); // Usuario regular
+      }
     } catch (error) {
       const mensajeError =
         error.response?.data?.message || "Error en el inicio de sesión";
@@ -54,7 +50,11 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
 
   return (
     <>
-      <Header isAuthenticated={isAuthenticated} userData={userData} onLogout={() => {}} />
+      <Header
+        isAuthenticated={isAuthenticated}
+        userData={userData}
+        onLogout={() => {}}
+      />
       <div className="back">
         <div className="login">
           <h2>INICIAR SESIÓN</h2>
@@ -62,7 +62,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
             <label htmlFor="correo">Correo Electrónico</label>
             <input
               type="email"
-              {...register("correo", {
+              {...register("email", {
                 required: { value: true, message: "Correo es requerido" },
                 pattern: {
                   value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
@@ -70,7 +70,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
                 },
               })}
             />
-            {errors.correo && <span>{errors.correo.message}</span>}
+            {errors.correo && <span className="error-message">❌{errors.correo.message}</span>}
 
             <label htmlFor="password">Contraseña</label>
             <input
@@ -83,10 +83,12 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
                 },
               })}
             />
-            {errors.password && <span>{errors.password.message}</span>}
+            {errors.password && <span className="error-message">❌{errors.password.message}</span>}
+            
             {errorMessage && (
-              <div className="error-message">{errorMessage}</div>
+              <div className="error-message">❌{errorMessage}</div>
             )}
+            
             <button type="submit">Iniciar Sesión</button>
           </form>
         </div>

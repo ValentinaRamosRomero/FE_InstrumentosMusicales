@@ -22,18 +22,21 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
     navigate("/"); // Redirigir al home después de cerrar sesión
   };
 
-  // Función para navegar al login
-  const goToLogin = () => {
-    navigate("/login");
+  // Función para navegar al panel de administrador
+  const goToAdminPanel = () => {
+    navigate("/admin");
   };
+
+  // Verificar si el usuario es administrador
+  const isAdmin = userData && userData.rol === "administrador";
 
   return (
     <header className="header">
       {/* Logo alineado a la izquierda */}
-      <img 
-        src={logo} 
-        alt="Logo" 
-        className="logo" 
+      <img
+        src={logo}
+        alt="Logo"
+        className="logo"
         onClick={() => navigate("/")} // Redirige a Home al hacer clic en el logo
         style={{ cursor: "pointer" }} // Cambia el cursor para indicar que es clickeable
       />
@@ -43,14 +46,21 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
         <div className="user-profile">
           <div className="user-info" onClick={toggleDropdown}>
             <div className="user-initials">
-              {userData.nombre?.charAt(0)}{userData.apellido?.charAt(0)}
+              {userData.nombre?.charAt(0)}
+              {userData.apellido?.charAt(0)}
             </div>
             <div className="user-avatar">
-              <img src={user_icon} alt="user-avatar" className="user-icon"/>
+              <img src={user_icon} alt="user-avatar" className="user-icon" />
             </div>
           </div>
           {dropdownOpen && (
             <div className="user-dropdown">
+              {/* Mostrar botón de Panel Administrador solo si es admin */}
+              {isAdmin && (
+                <button className="btn-admin-panel" onClick={goToAdminPanel}>
+                  Panel Administrador
+                </button>
+              )}
               <button className="btn-logout" onClick={handleLogout}>
                 Cerrar Sesión
               </button>
@@ -59,16 +69,23 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
         </div>
       ) : (
         <div className="auth-buttons">
-          <button className="btn-create-account" onClick={() => navigate("/register")}>Crear cuenta</button>
-          <button className="btn-login" onClick={() => navigate("/login")}>Iniciar Sesións</button>
+          <button
+            className="btn-create-account"
+            onClick={() => navigate("/register")}
+          >
+            Crear cuenta
+          </button>
+          <button className="btn-login" onClick={() => navigate("/login")}>
+            Iniciar Sesión
+          </button>
         </div>
       )}
 
       {/* Menú hamburguesa en móviles */}
-      <MenuHamburguesa 
-        isAuthenticated={isAuthenticated} 
-        userData={userData} 
-        onLogout={handleLogout} 
+      <MenuHamburguesa
+        isAuthenticated={isAuthenticated}
+        userData={userData}
+        onLogout={handleLogout}
       />
     </header>
   );
