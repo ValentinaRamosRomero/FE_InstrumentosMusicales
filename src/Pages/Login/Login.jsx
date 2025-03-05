@@ -21,7 +21,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
       const { correo, password } = data;
 
       const response = await axios.post(
-        "https://tu-backend.com/api/login",
+       import.meta.env.VITE_API_URL+'/login',
         { correo, password },
         {
           headers: { "Content-Type": "application/json" },
@@ -32,17 +32,14 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
         console.log("Inicio de sesión exitoso:", response.data);
       }
 
-      /*localStorage.setItem("token", response.data.token);
-      localStorage.setItem("usuario", JSON.stringify(response.data.usuario));*/
-
       // Llamamos a la función de login recibida como prop
       onLogin(response.data.token, response.data.usuario);
-
-      //Redirigir al home personalizado
-      if (response.data.usuario.id) {
-        navigate(`/home/${response.data.usuario.id}`);
+      
+      // Redirigir según el rol del usuario
+      if (response.data.usuario.rol === "administrador") {
+        navigate(`/home/${response.data.usuario.id}`); // Redireccionar al home con ID
       } else {
-        navigate("/");
+        navigate(`/home/${response.data.usuario.id}`); // Usuario regular
       }
     } catch (error) {
       const mensajeError =
@@ -73,7 +70,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
                 },
               })}
             />
-            {errors.correo && <span>{errors.correo.message}</span>}
+            {errors.correo && <span className="error-message">❌{errors.correo.message}</span>}
 
             <label htmlFor="password">Contraseña</label>
             <input
@@ -86,10 +83,12 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
                 },
               })}
             />
-            {errors.password && <span>{errors.password.message}</span>}
+            {errors.password && <span className="error-message">❌{errors.password.message}</span>}
+            
             {errorMessage && (
-              <div className="error-message">{errorMessage}</div>
+              <div className="error-message">❌{errorMessage}</div>
             )}
+            
             <button type="submit">Iniciar Sesión</button>
           </form>
         </div>

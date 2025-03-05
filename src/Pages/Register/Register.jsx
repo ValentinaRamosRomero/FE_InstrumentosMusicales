@@ -26,7 +26,7 @@ const Register = () => {
         formData.append("avatar", data.avatar[0]);
       }
       
-      const response = await axios.post("https://tu-backend.com/api/register", formData, {
+      const response = await axios.post(import.meta.env.VITE_API_URL+'/register', formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

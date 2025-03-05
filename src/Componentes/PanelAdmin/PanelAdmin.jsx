@@ -3,10 +3,14 @@ import "./PanelAdmin.css";
 import Header from "../Header/Header";
 import { CgCloseR } from "react-icons/cg";
 import { BsCheck2Square } from "react-icons/bs";
-const PanelAdmin = () => {
+const PanelAdmin = ({ isAuthenticated, userData, onLogin }) => {
   return (
     <>
-      <Header />
+      <Header
+        isAuthenticated={isAuthenticated}
+        userData={userData}
+        onLogout={() => {}}
+      />
       <h1>Bienvenido Administrador</h1>
       <div className="admin-panel">
         <table className="admin-table">

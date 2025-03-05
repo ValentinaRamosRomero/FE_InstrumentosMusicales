@@ -9,8 +9,8 @@
   padding: 0 20px;
   box-sizing: border-box;
   position: fixed;
-  top: 0;  /* Distancia desde la parte superior */
-  left: 0;  /* Centrado horizontalmente */
+  top: 0; /* Distancia desde la parte superior */
+  left: 0; /* Centrado horizontalmente */
   z-index: 1000; /* Asegura que esté por encima de otros elementos */
 }
 
@@ -58,7 +58,7 @@
 
 /* Perfil de usuario (después de iniciar sesión) */
 .user-profile {
-width: 115px;
+  width: 115px;
 }
 
 .user-info {
@@ -80,9 +80,8 @@ width: 115px;
   font-weight: bold;
 }
 
-.user-avatar {
-  
-}
+/*.user-avatar {
+}*/
 
 .user-icon {
   width: 80%;
@@ -91,10 +90,10 @@ width: 115px;
 /* Menú desplegable para cerrar sesión */
 .user-dropdown {
   position: absolute;
-  top: 70px; 
+  top: 70px;
   right: 0px;
   z-index: 1000;
-  width: 150px; 
+  width: 150px;
 }
 
 .btn-logout {
@@ -111,11 +110,29 @@ width: 115px;
 }
 
 .btn-logout:hover {
-  background-color: #a01414; 
+  background-color: #a01414;
+}
+
+/* Estilos para el botón del panel de administrador */
+.btn-admin-panel {
+  background-color: #2a7de1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn-admin-panel:hover {
+  background-color: #1c63b8;
 }
 /* Ocultar botones de autenticación en móviles */
 @media (max-width: 768px) {
-  .auth-buttons, .user-profile {
+  .auth-buttons,
+  .user-profile {
     display: none;
   }
 }
