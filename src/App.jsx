@@ -13,37 +13,40 @@ import RegisterPage from "./Pages/Register/Register";
 const App = () => {
   // Estados de autenticación centralizados
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState(null);
-
+  const [userData, setUserData] = useState({toke:null, role:null});
+  
   // Verificar si hay token al cargar la aplicación
   useEffect(() => {
     const token = localStorage.getItem("token");
+    
     if (token) {
       setIsAuthenticated(true);
       try {
         const storedUserData = JSON.parse(
-          localStorage.getItem("usuario") || "{}"
+          localStorage.getItem("user") || "{}"
         );
         setUserData(storedUserData);
       } catch (error) {
         console.error("Error al parsear datos de usuario:", error);
-        localStorage.removeItem("usuario");
+        localStorage.removeItem("user");
       }
     }
   }, []);
 
   // Función para manejar el inicio de sesión
-  const handleLogin = (token, usuario) => {
+  const handleLogin = (token, role) => {
+    console.log(role)
     localStorage.setItem("token", token);
-    localStorage.setItem("usuario", JSON.stringify(usuario));
+    localStorage.setItem("user", JSON.stringify(role));
     setIsAuthenticated(true);
-    setUserData(usuario);
+    setUserData(role);
+    
   };
-
+  console.log(userData);
   // Función para manejar el cierre de sesión
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("usuario");
+    localStorage.removeItem("user");
     setIsAuthenticated(false);
     setUserData(null);
   };
@@ -53,12 +56,12 @@ const App = () => {
     isAuthenticated,
     userData,
     onLogin: handleLogin,
-    onLogout: handleLogout,
+    //onLogout: handleLogout,
   };
 
   // Función para verificar si el usuario es administrador
   const isAdmin = () => {
-    return isAuthenticated && userData && userData.rol === "administrador";
+    return isAuthenticated && userData && userData.role === "ADMIN";
   };
 
   return (

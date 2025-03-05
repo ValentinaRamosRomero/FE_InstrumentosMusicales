@@ -25,7 +25,7 @@ const Register = () => {
       });*/
 
       const response = await axios.post(
-        "https://music-store-api.up.railway.app/users/register",
+        "https://music-store-api.up.railway.app/auth/register",
         jsonData,
         //formData,
         {
