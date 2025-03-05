@@ -56,7 +56,7 @@ const App = () => {
     isAuthenticated,
     userData,
     onLogin: handleLogin,
-    //onLogout: handleLogout,
+    onLogout: handleLogout,
   };
 
   // Función para verificar si el usuario es administrador
