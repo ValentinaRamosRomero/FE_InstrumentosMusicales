@@ -7,6 +7,7 @@ import MenuHamburguesa from "./MenuHamburguesa";
 import { useState } from "react";
 
 const Header = ({ isAuthenticated, userData, onLogout }) => {
+  //console.log(userData)
   // Estado para controlar el menú desplegable
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Para navegación
@@ -28,7 +29,7 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
   };
 
   // Verificar si el usuario es administrador
-  const isAdmin = userData && userData.rol === "administrador";
+  const isAdmin = userData && userData.role === "ADMIN";
 
   return (
     <header className="header">
@@ -42,30 +43,21 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
       />
 
       {/* Botones de autenticación o perfil de usuario dependiendo del estado */}
-      {isAuthenticated && userData ? (
+      {isAuthenticated /*&& userData*/ ? (
         <div className="user-profile">
           <div className="user-info" onClick={toggleDropdown}>
-            <div className="user-initials">
+            {/*} <div className="user-initials">
               {userData.nombre?.charAt(0)}
               {userData.apellido?.charAt(0)}
-            </div>
+            </div>*/}
             <div className="user-avatar">
               <img src={user_icon} alt="user-avatar" className="user-icon" />
             </div>
           </div>
-          {dropdownOpen && (
-            <div className="user-dropdown">
-              {/* Mostrar botón de Panel Administrador solo si es admin */}
-              {isAdmin && (
-                <button className="btn-admin-panel" onClick={goToAdminPanel}>
-                  Panel Administrador
-                </button>
-              )}
-              <button className="btn-logout" onClick={handleLogout}>
-                Cerrar Sesión
-              </button>
-            </div>
-          )}
+
+          <button className="btn-logout" onClick={handleLogout}>
+            Cerrar Sesión
+          </button>
         </div>
       ) : (
         <div className="auth-buttons">
