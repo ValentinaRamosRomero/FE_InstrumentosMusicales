@@ -33,13 +33,15 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
       }
 
       // Llamamos a la función de login recibida como prop
-      onLogin(response.data.token, response.data.usuario);
-      
+      onLogin(response.data.token, response.data.role);
+      console.log(response.data)
+      console.log(isAuthenticated)
+      console.log(userData)
       // Redirigir según el rol del usuario
-      if (response.data.usuario.rol === "administrador") {
-        navigate(`/home/${response.data.usuario.id}`); // Redireccionar al home con ID
+      if (response.data.role === "ADMIN") {
+        navigate(`/home/${response.data.role.id}`); // Redireccionar al home con ID
       } else {
-        navigate(`/home/${response.data.usuario.id}`); // Usuario regular
+        navigate(`/home/${response.data.role.id}`); // Usuario regular
       }
     } catch (error) {
       const mensajeError =
