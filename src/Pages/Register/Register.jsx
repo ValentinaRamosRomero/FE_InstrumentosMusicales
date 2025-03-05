@@ -47,78 +47,69 @@ const Register = () => {
         {/* Card del formulario */}
         <div className="register">
           <h2>REGISTRO</h2>
-          <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+          <form onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="nombre">Nombre</label>
             <input
               type="text"
               {...register("nombre", {
-                required: "El nombre es obligatorio.",
+                required: true,
                 pattern: {
                   value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/i,
                   message: "Solo puedes ingresar letras.",
                 },
               })}
             />
-            {errors.nombre && <span className="error-text">{errors.nombre.message}</span>}
 
             <label htmlFor="apellido">Apellido</label>
             <input
               type="text"
               {...register("apellido", {
-                required: "El apellido es obligatorio.",
+                required: true,
                 pattern: {
                   value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/i,
                   message: "Solo puedes ingresar letras.",
                 },
               })}
             />
-            {errors.apellido && <span className="error-text">{errors.apellido.message}</span>}
 
             <label htmlFor="correo">Correo Electrónico</label>
             <input
               type="email"
               {...register("correo", {
-                required: "El correo es obligatorio.",
+                required: true,
                 pattern: {
                   value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                   message: "Ingresa un correo electrónico válido.",
                 },
               })}
             />
-            {errors.correo && <span className="error-text">{errors.correo.message}</span>}
-
-            <label htmlFor="phoneCode">Código de país</label>
-            <input type="text" {...register("phoneCode", { required: "El código de país es obligatorio." })} />
-            {errors.phoneCode && <span className="error-text">{errors.phoneCode.message}</span>}
-
-            <label htmlFor="phone">Teléfono</label>
-            <input type="text" {...register("phone", { required: "El teléfono es obligatorio." })} />
-            {errors.phone && <span className="error-text">{errors.phone.message}</span>}
-
-            <label htmlFor="address">Dirección</label>
-            <input type="text" {...register("address", { required: "La dirección es obligatoria." })} />
-            {errors.address && <span className="error-text">{errors.address.message}</span>}
-
-            <label htmlFor="avatar">Avatar</label>
-            <input type="file" {...register("avatar")} accept="image/*" />
 
             <label htmlFor="password">Contraseña</label>
             <input
               type="password"
               {...register("password", {
-                required: "La contraseña es obligatoria.",
+                required: true,
                 minLength: {
                   value: 6,
                   message: "La contraseña debe tener mínimo 6 caracteres.",
                 },
               })}
             />
-            {errors.password && <span className="error-text">{errors.password.message}</span>}
 
             <button type="submit">Registrarse</button>
 
             {/* Mensaje de error general */}
             {errorMessage && <p className="error-message">❌ {errorMessage}</p>}
+            
+            {/* Caja de errores debajo del botón */}
+            {Object.keys(errors).length > 0 && (
+              <div className="error-box">
+                {errors.nombre && <p>❌ En los campos de nombre y apellido solo puedes ingresar letras.</p>}
+                {errors.apellido && <p>❌ En los campos de nombre y apellido solo puedes ingresar letras.</p>}
+                {errors.correo && <p>❌ Ingresa un correo electrónico válido.</p>}
+                {errors.password && <p>❌ La contraseña debe tener mínimo 6 caracteres.</p>}
+              </div>
+            )}
           </form>
         </div>
 

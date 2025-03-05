@@ -12,15 +12,15 @@
 
 /* Contenido del banner */
 .banner-content {
-  width: 90%;
-  max-width: 900px; /* Aumentado el ancho máximo */
+  width: 100%;
+  max-width: 900px;
   text-align: left;
   padding: 20px;
 }
 
 /* Título */
 .banner-title {
-  font-size: 36px; /* Aumentado */
+  font-size: 36px;
   font-weight: bold;
   color: #333;
   margin-bottom: 15px;
@@ -29,7 +29,7 @@
 
 /* Texto */
 .banner-text {
-  font-size: 20px; /* Aumentado */
+  font-size: 20px;
   color: #444;
   margin-bottom: 25px;
   line-height: 1.5;
@@ -45,7 +45,7 @@
   background-color: #BC1818;
   color: white;
   padding: 14px 28px;
-  font-size: 18px; /* Aumentado */
+  font-size: 18px;
   border: none;
   border-radius: 50px;
   cursor: pointer;
@@ -78,12 +78,12 @@
   }
 
   .banner-content {
-    max-width: 60%;
+    max-width: 70%;
     padding: 50px;
   }
 
   .banner-title {
-    font-size: 48px; /* Más grande en tablets y escritorio */
+    font-size: 48px;
   }
 
   .banner-text {
@@ -106,23 +106,17 @@
     align-items: center;
   }
 
-  .General_Info {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1200px;
-    align-items: center;
-  }
-
   .banner-stats {
     font-size: 18px;
-    color: #000; /* Texto en negro */
+    color: #000;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    width: 50%;
-    gap: 30px; /* Espaciado entre elementos */
+    align-items: left;
+    position: relative;
+    left: -50%;
+    width: 40%;
+    gap: 35px;
   }
   
   .banner-stats p {
@@ -130,58 +124,49 @@
     position: relative;
     text-align: center;
     display: flex;
-    flex-direction: column; /* Coloca el texto debajo del número */
+    flex-direction: column;
     align-items: center;
     padding: 0 20px;
     white-space: nowrap;
-    font-weight: normal; /* Asegura que el texto NO esté en negrita */
-    color: #000; /* Asegura que el texto sea negro */
+    font-weight: normal;
+    color: #000;
   }
   
   .banner-stats p strong {
-    font-size: 22px; /* Ajusta el tamaño del número */
+    font-size: 30px;
     font-weight: bold;
   }
   
-  /* Línea vertical punteada entre elementos */
-  .banner-stats p:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    right: -15px; /* Ajusta la posición de la línea */
-    top: 50%;
-    transform: translateY(-50%);
-    height: 40px; /* Ajusta el alto de la línea */
-    width: 1px;
-    background: black;
-    border-left: 1px dashed #444; /* Línea vertical punteada */
-  }
   
-  
-
-  .banner-stats p {
-    margin: 8px 0;
-  }
-
   .banner-image.desktop {
     display: block;
-    width: 40%;
+    width: 60%;
     height: auto;
-    max-height: 500px;
     object-fit: contain;
+    position: absolute; /* Permite ubicarlo en cualquier parte del contenedor padre */
+    top: -4%; /* Lo ubica en la mitad del contenedor */
+    left: 40%; /* Lo centra horizontalmente */
+    z-index: 100; /* Asegura que esté por encima de otros elementos */
+    pointer-events: none; /* Para que no bloquee la interacción con otros elementos */
   }
+  
 
   .banner-image.brands {
     display: block;
     width: 100%;
-    height: 160px; /* Aumentado */
+    height: 160px;
     align-self: center;
+  }
+
+  .General_Info{
+    padding-bottom: 10%;
   }
 }
 
 /* Ajustes para pantallas grandes */
 @media screen and (min-width: 1024px) {
   .banner-title {
-    font-size: 56px; /* Aún más grande */
+    font-size: 56px;
   }
 
   .banner-text {
@@ -199,5 +184,16 @@
 
   .banner-image.brands {
     height: 180px;
+  }
+  .banner-image.desktop {
+    display: block;
+    width: 38%;
+    height: auto;
+    object-fit: contain;
+    position: absolute; /* Permite ubicarlo en cualquier parte del contenedor padre */
+    top: -5.4%; /* Lo ubica en la mitad del contenedor */
+    left: 62%; /* Lo centra horizontalmente */
+    z-index: 100; /* Asegura que esté por encima de otros elementos */
+    pointer-events: none; /* Para que no bloquee la interacción con otros elementos */
   }
 }
