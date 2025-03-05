@@ -191,7 +191,7 @@
     height: auto;
     object-fit: contain;
     position: absolute; /* Permite ubicarlo en cualquier parte del contenedor padre */
-    top: -5.4%; /* Lo ubica en la mitad del contenedor */
+    top: 3.3%; /* Lo ubica en la mitad del contenedor */
     left: 62%; /* Lo centra horizontalmente */
     z-index: 100; /* Asegura que esté por encima de otros elementos */
     pointer-events: none; /* Para que no bloquee la interacción con otros elementos */
