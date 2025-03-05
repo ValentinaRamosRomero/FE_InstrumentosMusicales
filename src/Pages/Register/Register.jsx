@@ -25,14 +25,14 @@ const Register = () => {
       });*/
 
       const response = await axios.post(
-        "https://music-store-api.up.railway.app/users/register",
+        "https://music-store-api.up.railway.app/auth/register",
         jsonData,
         //formData,
         {
           headers: { Accept: "application/json" }, // Axios manejará multipart/form-data automáticamente
         }
       );
-
+      
       if (response.status === 200) {
         console.log("Usuario registrado:", response.data);
         navigate("/login"); // Redirige al login tras el registro exitoso
@@ -42,6 +42,7 @@ const Register = () => {
       setErrorMessage(
         error.response?.data?.message || "Error al registrar usuario"
       );
+      console.log(response);
     }
     console.log(data)
   };
