@@ -208,4 +208,30 @@ form {
     .benefits-card {
         display: none;
     }
+
+}
+
+@media screen and (min-width: 1028px) {
+    .back_register {
+        padding-right: 50px;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .register {
+        width: 500px;
+        min-height: 65vh;
+        max-height: 65vh; /* Limita el tamaño máximo */
+        max-width: 100%; /* Evita que se desborde en pantallas más grandes */
+    }
+
+    .benefits-card {
+        width: 500px;
+        height: 40vh;
+        position: relative; /* Evita desplazamientos extraños en pantallas grandes */
+        margin-left: 5%;
+        margin-top: 0%;
+    }
 }
