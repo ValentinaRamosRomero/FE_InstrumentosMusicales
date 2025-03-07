@@ -7,24 +7,23 @@ import {
 } from "react-router-dom";
 import Home from "./Pages/Home/Home";
 import ProductDetail from "./Componentes/Products/ProductDetail";
-import Login from "./Pages/Login/Login"; 
+import Login from "./Pages/Login/Login";
 import RegisterPage from "./Pages/Register/Register";
+import PanelAdmin from "./Componentes/PanelAdmin/PanelAdmin";
 
 const App = () => {
   // Estados de autenticación centralizados
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState({toke:null, role:null});
-  
+  const [userData, setUserData] = useState({ toke: null, role: null });
+
   // Verificar si hay token al cargar la aplicación
   useEffect(() => {
     const token = localStorage.getItem("token");
-    
+
     if (token) {
       setIsAuthenticated(true);
       try {
-        const storedUserData = JSON.parse(
-          localStorage.getItem("user") || "{}"
-        );
+        const storedUserData = JSON.parse(localStorage.getItem("user") || "{}");
         setUserData(storedUserData);
       } catch (error) {
         console.error("Error al parsear datos de usuario:", error);
@@ -35,12 +34,11 @@ const App = () => {
 
   // Función para manejar el inicio de sesión
   const handleLogin = (token, role) => {
-    console.log(role)
+    console.log(role);
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(role));
     setIsAuthenticated(true);
     setUserData(role);
-    
   };
   console.log(userData);
   // Función para manejar el cierre de sesión
@@ -88,7 +86,7 @@ const App = () => {
         {/* ✅ Ruta Registro */}
         <Route path="/register" element={<RegisterPage />} />{" "}
         {/* Ruta del panel de administrador - Protegida */}
-        <Route
+        {/*<Route
           path="/admin"
           element={
             isAdmin() ? (
@@ -104,7 +102,8 @@ const App = () => {
               />
             )
           }
-        />
+        />*/}
+        <Route path="/admin" element={<PanelAdmin/>} />
       </Routes>
     </Router>
   );

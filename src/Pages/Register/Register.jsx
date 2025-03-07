@@ -81,7 +81,7 @@ const Register = () => {
 
             <label htmlFor="correo">Correo Electrónico</label>
             <input
-              type="email"
+              type="text"
               {...register("email", {
                 required: true,
                 pattern: {
@@ -111,19 +111,19 @@ const Register = () => {
             {/* Caja de errores debajo del botón */}
             {Object.keys(errors).length > 0 && (
               <div className="error-box">
-                {errors.nombre && (
+                {errors.firstName && (
                   <p>
                     ❌ En los campos de nombre y apellido solo puedes ingresar
                     letras.
                   </p>
                 )}
-                {errors.apellido && (
+                {errors.lastName && (
                   <p>
                     ❌ En los campos de nombre y apellido solo puedes ingresar
                     letras.
                   </p>
                 )}
-                {errors.correo && (
+                {errors.email && (
                   <p>❌ Ingresa un correo electrónico válido.</p>
                 )}
                 {errors.password && (
