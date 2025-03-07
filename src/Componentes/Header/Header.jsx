@@ -50,6 +50,9 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
               {userData.nombre?.charAt(0)}
               {userData.apellido?.charAt(0)}
             </div>*/}
+            <div className="user-initials">
+              <span>LP</span>
+            </div>
             <div className="user-avatar">
               <img src={user_icon} alt="user-avatar" className="user-icon" />
             </div>

@@ -90,6 +90,10 @@
   font-weight: bold;
 }
 
+.user-initials span{
+  font-size: 1.5rem;
+}
+
 .user-icon {
   width: 80%;
 }

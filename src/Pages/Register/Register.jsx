@@ -32,7 +32,7 @@ const Register = () => {
           headers: { Accept: "application/json" }, // Axios manejará multipart/form-data automáticamente
         }
       );
-
+      
       if (response.status === 200) {
         console.log("Usuario registrado:", response.data);
         navigate("/login"); // Redirige al login tras el registro exitoso
@@ -42,6 +42,7 @@ const Register = () => {
       setErrorMessage(
         error.response?.data?.message || "Error al registrar usuario"
       );
+      console.log(response);
     }
     console.log(data)
   };
@@ -80,7 +81,7 @@ const Register = () => {
 
             <label htmlFor="correo">Correo Electrónico</label>
             <input
-              type="email"
+              type="text"
               {...register("email", {
                 required: true,
                 pattern: {
@@ -110,19 +111,19 @@ const Register = () => {
             {/* Caja de errores debajo del botón */}
             {Object.keys(errors).length > 0 && (
               <div className="error-box">
-                {errors.nombre && (
+                {errors.firstName && (
                   <p>
                     ❌ En los campos de nombre y apellido solo puedes ingresar
                     letras.
                   </p>
                 )}
-                {errors.apellido && (
+                {errors.lastName && (
                   <p>
                     ❌ En los campos de nombre y apellido solo puedes ingresar
                     letras.
                   </p>
                 )}
-                {errors.correo && (
+                {errors.email && (
                   <p>❌ Ingresa un correo electrónico válido.</p>
                 )}
                 {errors.password && (
