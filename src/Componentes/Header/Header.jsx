@@ -30,6 +30,13 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
 
   // Verificar si el usuario es administrador
   const isAdmin = userData && userData.role === "ADMIN";
+  const isInvitado = userData && userData.role === "INVITADO";
+
+  const getUserInitials = () => {
+    if (userData.firstName && userData.lastName) {
+      return `${userData.firstName.charAt(0)}${userData.lastName.charAt(0)}`;
+    }
+  };
 
   return (
     <header className="header">
@@ -38,29 +45,34 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
         src={logo}
         alt="Logo"
         className="logo"
-        onClick={() => navigate("/")} // Redirige a Home al hacer clic en el logo
-        style={{ cursor: "pointer" }} // Cambia el cursor para indicar que es clickeable
+        onClick={() => navigate("/")}
+        style={{ cursor: "pointer" }}
       />
 
       {/* Botones de autenticación o perfil de usuario dependiendo del estado */}
-      {isAuthenticated /*&& userData*/ ? (
+
+      {isAuthenticated ? (
         <div className="user-profile">
           <div className="user-info" onClick={toggleDropdown}>
-            {/*} <div className="user-initials">
-              {userData.nombre?.charAt(0)}
-              {userData.apellido?.charAt(0)}
-            </div>*/}
-            <div className="user-initials">
-              <span>LP</span>
-            </div>
+            <span>{getUserInitials()}</span>
             <div className="user-avatar">
               <img src={user_icon} alt="user-avatar" className="user-icon" />
             </div>
           </div>
-
-          <button className="btn-logout" onClick={handleLogout}>
-            Cerrar Sesión
-          </button>
+          {/* Mostrar botón de Panel Admin si el usuario es administrador */}
+          {isAdmin && (
+            <button className="btn-admin-panel" onClick={goToAdminPanel}>
+              Panel Admin
+            </button>
+          )}
+          {/* Menú desplegable que aparece al hacer clic en el avatar */}
+          {dropdownOpen && (
+            <div className="user-dropdown" style={{ display: "block" }}>
+              <button className="btn-logout" onClick={handleLogout}>
+                Cerrar Sesión
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="auth-buttons">

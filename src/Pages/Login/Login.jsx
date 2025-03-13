@@ -21,7 +21,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
       const { email, password } = data;
 
       const response = await axios.post(
-       import.meta.env.VITE_API_URL+'/auth/login',
+        import.meta.env.VITE_API_URL + "/login",
         { email, password },
         {
           headers: { "Content-Type": "application/json" },
@@ -32,18 +32,22 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
         console.log("Inicio de sesión exitoso:", response.data);
       }
 
-      // Llamamos a la función de login recibida como prop
-      onLogin(response.data.token, response.data.role);
-      console.log(response.data)
-      console.log(isAuthenticated)
-      console.log(userData)
+      if (!response.data.token) {
+        throw new Error("No se recibió un token válido");
+      }
+
+      // Guardamos todos los datos del usuario
+      onLogin(response.data.token, response.data);
+      console.log("Respuesta completa:", response);
+      console.log("Datos de respuesta:", response.data);
+      console.log("Token recibido:", response.data.token);
+      
       // Redirigir según el rol del usuario
-      if (response.data.role === "ADMIN") {
-        navigate(`/home/${response.data.role.id}`); // Redireccionar al home con ID
-      } else {
-        navigate(`/home/${response.data.role.id}`); // Usuario regular
+      if (response.data.role === "ADMIN" || "INVITADO") {
+        navigate("/");
       }
     } catch (error) {
+      console.error("Error en login:", error);
       const mensajeError =
         error.response?.data?.message || "Error en el inicio de sesión";
       setErrorMessage(mensajeError);
@@ -72,7 +76,9 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
                 },
               })}
             />
-            {errors.correo && <span className="error-message">❌{errors.correo.message}</span>}
+            {errors.correo && (
+              <span className="error-message">❌{errors.correo.message}</span>
+            )}
 
             <label htmlFor="password">Contraseña</label>
             <input
@@ -85,12 +91,14 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
                 },
               })}
             />
-            {errors.password && <span className="error-message">❌{errors.password.message}</span>}
-            
+            {errors.password && (
+              <span className="error-message">❌{errors.password.message}</span>
+            )}
+
             {errorMessage && (
               <div className="error-message">❌{errorMessage}</div>
             )}
-            
+
             <button type="submit">Iniciar Sesión</button>
           </form>
         </div>

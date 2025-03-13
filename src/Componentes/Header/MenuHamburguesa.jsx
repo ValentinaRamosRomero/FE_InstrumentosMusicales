@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./MenuHamburguesa.css";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; // Importar useNavigate para redirigir
+import user_icon from "../../assets/user-icon.svg";
 
 const MenuHamburguesa = ({ isAuthenticated, userData, onLogout }) => {
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -45,7 +46,7 @@ const MenuHamburguesa = ({ isAuthenticated, userData, onLogout }) => {
               <div className="mobile-user-initials">
                 {userData?.nombre?.charAt(0)}{userData?.apellido?.charAt(0)}
               </div>
-              <div className="mobile-user-avatar"></div>
+              <img src={user_icon} alt="user-avatar" className="user-icon" />
             </div>
             {/* Opción de cerrar sesión */}
             <p className="auth-text" onClick={handleLogout}>

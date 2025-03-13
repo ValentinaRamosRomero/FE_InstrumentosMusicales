@@ -19,15 +19,10 @@ const Register = () => {
     try {
       // Convertir los datos del formulario a un objeto JSON
       const jsonData = { ...data };
-      /*const formData = new FormData();
-      Object.keys(data).forEach((key) => {
-        formData.append(key, data[key]);
-      });*/
 
       const response = await axios.post(
-        "https://music-store-api.up.railway.app/auth/register",
+        import.meta.env.VITE_API_URL+'/register',
         jsonData,
-        //formData,
         {
           headers: { Accept: "application/json" }, // Axios manejará multipart/form-data automáticamente
         }

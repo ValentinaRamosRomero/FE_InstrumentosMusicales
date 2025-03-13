@@ -14,7 +14,7 @@ import PanelAdmin from "./Componentes/PanelAdmin/PanelAdmin";
 const App = () => {
   // Estados de autenticación centralizados
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState({ toke: null, role: null });
+  const [userData, setUserData] = useState(null);
 
   // Verificar si hay token al cargar la aplicación
   useEffect(() => {
@@ -23,28 +23,29 @@ const App = () => {
     if (token) {
       setIsAuthenticated(true);
       try {
-        const storedUserData = JSON.parse(localStorage.getItem("user") || "{}");
+        const storedUserData = JSON.parse(localStorage.getItem("role") || "{}");
         setUserData(storedUserData);
       } catch (error) {
         console.error("Error al parsear datos de usuario:", error);
-        localStorage.removeItem("user");
+        localStorage.removeItem("role");
+        localStorage.removeItem("token");
       }
     }
   }, []);
 
   // Función para manejar el inicio de sesión
-  const handleLogin = (token, role) => {
-    console.log(role);
+  const handleLogin = (token, userData) => {
+    console.log("Login data:", userData);
     localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(role));
+    localStorage.setItem("role", JSON.stringify(userData));
     setIsAuthenticated(true);
-    setUserData(role);
+    setUserData(userData);
   };
   console.log(userData);
   // Función para manejar el cierre de sesión
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("role");
     setIsAuthenticated(false);
     setUserData(null);
   };
@@ -83,27 +84,28 @@ const App = () => {
             isAuthenticated ? <Home {...authProps} /> : <Navigate to="/login" />
           }
         />
-        {/* ✅ Ruta Registro */}
+        {/* Ruta Registro */}
         <Route path="/register" element={<RegisterPage />} />{" "}
         {/* Ruta del panel de administrador - Protegida */}
-        {/*<Route
-          path="/admin"
-          element={
-            isAdmin() ? (
-              <AdminPanel {...authProps} />
-            ) : (
-              <Navigate
-                to="/"
-                replace
-                state={{
-                  from: "/admin",
-                  message: "No tienes permisos de administrador",
-                }}
-              />
-            )
-          }
-        />*/}
-        <Route path="/admin" element={<PanelAdmin/>} />
+        {
+          <Route
+            path="/admin"
+            element={
+              isAdmin() ? (
+                <PanelAdmin {...authProps} />
+              ) : (
+                <Navigate
+                  to="/"
+                  replace
+                  state={{
+                    from: "/admin",
+                    message: "No tienes permisos de administrador",
+                  }}
+                />
+              )
+            }
+          />
+        }
       </Routes>
     </Router>
   );

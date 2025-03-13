@@ -73,9 +73,9 @@
   gap: 10px;
   cursor: pointer;
 }
-.user-profile:hover .btn-logout {
+/*.user-profile:hover .btn-logout {
   display: block;
-}
+}*/
 
 /* Iniciales del usuario */
 .user-initials {
@@ -110,7 +110,6 @@
 
 /* Botón de cierre de sesión */
 .btn-logout {
-  display: none;
   width: 100%;
   padding: 8px 16px;
   text-align: center;
@@ -167,6 +166,9 @@
   }
   .logo {
     height: 35px;
+  }
+  .user-avatar{
+    display: none;
   }
 }
 
