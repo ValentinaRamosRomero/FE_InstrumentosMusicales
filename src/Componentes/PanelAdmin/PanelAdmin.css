@@ -1,45 +1,220 @@
-h1 {
-  margin-top: 10%;
-  padding-left: 5%;
-}
-.admin-panel {
-  margin-top: 5%;
+.panel-admin-container {
+  width: 100%;
+  min-height: 100vh;
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.main-content {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 60px);
+}
+
+.sidebar {
+  padding-top: 10%;
+  width: 250px;
+  height: auto;
+  background-color: #333;
+  color: white;
+}
+
+.sidebar-item:hover {
+  background-color: #444;
+}
+
+.sidebar-item.active {
+  background-color: #222;
+  font-weight: bold;
+}
+.arrow {
+  margin-right: 10px;
+}
+.content-section {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  padding-top: 12%;
+}
+h1 {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.admin-tables-container {
+  display: flex;
+  gap: 20px;
   flex-wrap: wrap;
-  align-items: center;
-  padding-left: 5%;
+  margin-top: 20px;
+}
+
+.admin-table-wrapper {
+  flex: 1;
+  min-width: 300px;
 }
 
 .admin-table {
-  width: 80%;
+  width: 100%;
   border-collapse: collapse;
+  margin-bottom: 30px;
 }
 
-th[colspan="3"] {
-  font-size: 20px;
+.admin-table th{
   background-color: #bc1818;
   color: white;
+  font-size: 20px;
   padding: 15px;
-}
-
-th {
-  background-color: #ababab;
-}
-
-th,
-td {
+  text-align: center;
   border: 1px solid black;
+}
+
+.admin-table td {
   padding: 10px;
   text-align: center;
+  border: 1px solid black;
 }
 
 .icono-rojo {
   color: red;
   font-size: 20px;
+  cursor: pointer;
 }
 
 .icono-verde {
   color: green;
   font-size: 20px;
+  cursor: pointer;
+}
+
+.minus-icon {
+  display: inline-block;
+  font-size: 24px;
+  color: #777;
+}
+
+.convert-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.confirmation-box{
+  display: flex;
+  align-items: center;
+  background-color: #ffebee;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ffcdd2;
+}
+
+.confirmation-icon{
+  background-color: #ffb300;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.confirmation-message{
+  flex: 1;
+  font-size: 16px;
+}
+
+.confirm-button{
+  background-color: #bc1818;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.confirm-button:hover {
+  background-color: #a31515;
+}
+
+/* Products section styles */
+.products-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.new-product-button{
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.plus-icon{
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+.products-table{
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.products-table th{
+  background-color: #bc1818;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid black;
+}
+
+.products-table td{
+  padding: 10px;
+  text-align: center;
+  border: 1px solid black;
+}
+
+.actions-cell{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.action-button{
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.action-button.view{
+  color: green;
+}
+.action-button.edit{
+  color: orange;
+}
+.action-button.delete{
+  color: red;
+}
+
+.category-form{
+  max-width: 600px;
+  margin-top: 20px;
 }

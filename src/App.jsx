@@ -86,8 +86,9 @@ const App = () => {
         />
         {/* Ruta Registro */}
         <Route path="/register" element={<RegisterPage />} />{" "}
+        <Route path="/admin" element={<PanelAdmin/>} />
         {/* Ruta del panel de administrador - Protegida */}
-        {
+        {/*
           <Route
             path="/admin"
             element={
@@ -105,7 +106,7 @@ const App = () => {
               )
             }
           />
-        }
+        */}
       </Routes>
     </Router>
   );
