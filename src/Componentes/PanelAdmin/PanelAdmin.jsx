@@ -4,11 +4,15 @@ import Header from "../Header/Header";
 import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import UsersSection from "./UsersSection";
 import ProductForm from "./ProductForm";
-const PanelAdmin = ({ isAuthenticated, userData, onLogin }) => {
+import axios from "axios";
+import ProductEditForm from "./ProductEditForm";
+const PanelAdmin = ({ isAuthenticated, userData }) => {
   const [activeSection, setActiveSection] = useState("usuarios");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showProductForm, setShowProductForm] = useState(false);
+  const [showProductEditForm, setShowProductEditForm] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
 
@@ -22,19 +26,32 @@ const PanelAdmin = ({ isAuthenticated, userData, onLogin }) => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        import.meta.env.VITE_API_URL + "/products/find-all"
+      //const { name, imageUrl, pricePerHour, categoryName, description } = data;
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/products/find-all`,
+        {}
       );
-      if (response.ok) {
-        const data = await response.json();
-        setProducts(data);
+      if (response.data && response.data.data) {
+        setProducts(response.data.data);
       } else {
         console.error(
-          "Error fetching products: Server responded with",
-          response.status
+          "La respuesta de la API no tiene el formato esperado:",
+          response.data
         );
       }
     } catch (error) {
+      /*if (error.response) {
+        console.error(
+          "Error del servidor:",
+          error.response.status,
+          error.response.data
+        );
+      } else if (error.request) {
+        console.error("No hubo respuesta del servidor:", error.request);
+      } else {
+        console.error("Error al hacer la petición:", error.message);
+      }*/
       console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
@@ -47,30 +64,30 @@ const PanelAdmin = ({ isAuthenticated, userData, onLogin }) => {
     setShowProductForm(false);
   };
 
-  const handleDeleteProduct = (product) => {
+  const handleUpdateProduct = (updatedProduct) => {
+    // Update the products array with the updated product
+    setProducts(
+      products.map((product) =>
+        product.id === updatedProduct.id ? updatedProduct : product
+      )
+    );
+  };
+
+  /* const handleDeleteProduct = (product) => {
     setProductToDelete(product);
     setShowDeleteConfirmation(true);
-  };
+  };*/
 
   const confirmDelete = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/products/delete/${productToDelete.id}`,
-        {
-          method: "DELETE",
-        }
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/products/delete/${productToDelete.id}`
       );
-
-      if (response.ok) {
-        // Remove the product from the state
-        setProducts(
-          products.filter((product) => product.id !== productToDelete.id)
-        );
-      } else {
-        console.error("Error deleting product");
-      }
+      setProducts(
+        products.filter((product) => product.id !== productToDelete.id)
+      );
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error deleting product:", error);
     }
 
     // Close confirmation dialog
@@ -82,34 +99,6 @@ const PanelAdmin = ({ isAuthenticated, userData, onLogin }) => {
     setShowDeleteConfirmation(false);
     setProductToDelete(null);
   };
-
-  // Mock data for demonstration
-  const mockProducts = [
-    {
-      id: 1,
-      imageUrl: "🎸",
-      name: "Guitar Les Paul Studio",
-      pricePerHour: 399.0,
-      category: "Guitarra",
-      description: "Lorem ipsum bla bla blabla..",
-    },
-    {
-      id: 2,
-      imageUrl: "🎸",
-      name: "Guitar Les Paul Studio",
-      pricePerHour: 399.0,
-      category: "Guitarra",
-      description: "Lorem ipsum bla bla blabla..",
-    },
-    {
-      id: 3,
-      imageUrl: "🎸",
-      name: "Guitar Les Paul Studio",
-      pricePerHour: 399.0,
-      category: "Guitarra",
-      description: "Lorem ipsum bla bla blabla..",
-    },
-  ];
 
   const renderSidebar = () => {
     return (
@@ -185,6 +174,17 @@ const PanelAdmin = ({ isAuthenticated, userData, onLogin }) => {
 
         {showDeleteConfirmation && renderDeleteConfirmation()}
 
+        {showProductEditForm && (
+          <ProductEditForm
+            product={selectedProduct}
+            onClose={() => {
+              setShowProductEditForm(false);
+              setSelectedProduct(null);
+            }}
+            onUpdate={handleUpdateProduct}
+          />
+        )}
+
         <table className="products-table">
           <thead>
             <tr>
@@ -202,18 +202,23 @@ const PanelAdmin = ({ isAuthenticated, userData, onLogin }) => {
                 <td colSpan={6}>Cargando productos...</td>
               </tr>
             ) : products.length > 0 ? (
-              mockProducts.map((product) => (
+              products.map((product) => (
                 <tr key={product.id}>
-                  <td>{product.imageUrl || "🎸"}</td>
+                  <td>
+                    <img src={product.imageUrl} alt={product.name} width="50" />
+                  </td>
                   <td>{product.name}</td>
                   <td>{product.pricePerHour}</td>
-                  <td>{product.category}</td>
+                  <td>{product.categoryName}</td>
                   <td>{product.description}</td>
                   <td className="actions-cell">
                     <button className="action-button view">
                       <FaEye />
                     </button>
-                    <button className="action-button edit">
+                    <button
+                      className="action-button edit "
+                      onClick={() => handleViewProduct(product)}
+                    >
                       <FaEdit />
                     </button>
                     <button

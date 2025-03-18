@@ -29,11 +29,11 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
   };
 
   // Verificar si el usuario es administrador
-  const isAdmin = userData && userData.role === "ADMIN";
-  const isInvitado = userData && userData.role === "INVITADO";
+  const isAdmin = userData && userData?.role === "ADMIN";
+  const isInvitado = userData && userData?.role === "USER";
 
   const getUserInitials = () => {
-    if (userData.firstName && userData.lastName) {
+    if (userData?.firstName && userData?.lastName) {
       return `${userData.firstName.charAt(0)}${userData.lastName.charAt(0)}`;
     }
   };

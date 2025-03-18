@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FaArrowLeft, FaSave } from "react-icons/fa";
+import React, { useRef, useState } from "react";
+import { FaArrowLeft, FaFolder, FaSave } from "react-icons/fa";
 import "./ProductForm.css";
 
 const ProductForm = ({ onSave, onCancel }) => {
@@ -22,6 +22,8 @@ const ProductForm = ({ onSave, onCancel }) => {
   });
 
   const [success, setSuccess] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +31,57 @@ const ProductForm = ({ onSave, onCancel }) => {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleFileButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Muestra el nombre del archivo seleccionado temporalmente
+    setFormData({
+      ...formData,
+      imageUrl: file.name,
+    });
+
+    setUploading(true);
+
+    try {
+      const formDataObj = new FormData();
+      formDataObj.append("image", file);
+
+      const response = await fetch( import.meta.env.VITE_API_URL + "api/upload/image", {
+        method: "POST",
+        body: formDataObj,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // el endpoint devuelve la URL de la imagen subida
+        setFormData({
+          ...formData,
+          imageUrl: data.imageUrl || data.url || data.path || data.location,
+        });
+      } else {
+        console.error("Error uploading image");
+        // Restaurar el valor anterior si hay un error
+        setFormData({
+          ...formData,
+          imageUrl: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setFormData({
+        ...formData,
+        imageUrl: "",
+      });
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -108,13 +161,24 @@ const ProductForm = ({ onSave, onCancel }) => {
                   id="imageUrl"
                   name="imageUrl"
                   value={formData.imageUrl}
-                  onChange={handleChange}
                   placeholder="Selecciona una imagen..."
                   readOnly
                 />
-                <button type="button" className="file-button">
-                  📂
+                <button
+                  type="button"
+                  className="file-button"
+                  onClick={handleFileButtonClick}
+                  disabled={uploading}
+                >
+                  {uploading ? "⏳" : <FaFolder size={14} />}
                 </button>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
               </div>
             </div>
 

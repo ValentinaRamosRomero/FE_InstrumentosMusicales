@@ -14,7 +14,7 @@ import PanelAdmin from "./Componentes/PanelAdmin/PanelAdmin";
 const App = () => {
   // Estados de autenticación centralizados
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({});
 
   // Verificar si hay token al cargar la aplicación
   useEffect(() => {
@@ -24,7 +24,7 @@ const App = () => {
       setIsAuthenticated(true);
       try {
         const storedUserData = JSON.parse(localStorage.getItem("role") || "{}");
-        setUserData(storedUserData);
+        setUserData(JSON.parse(storedUserData));
       } catch (error) {
         console.error("Error al parsear datos de usuario:", error);
         localStorage.removeItem("role");
@@ -35,13 +35,13 @@ const App = () => {
 
   // Función para manejar el inicio de sesión
   const handleLogin = (token, userData) => {
-    console.log("Login data:", userData);
+    console.log("Login data:", { token, userData });
     localStorage.setItem("token", token);
     localStorage.setItem("role", JSON.stringify(userData));
     setIsAuthenticated(true);
-    setUserData(userData);
+    setUserData(JSON.parse(userData));
   };
-  console.log(userData);
+
   // Función para manejar el cierre de sesión
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -60,6 +60,7 @@ const App = () => {
 
   // Función para verificar si el usuario es administrador
   const isAdmin = () => {
+    console.log({ isAuthenticated, userData });
     return isAuthenticated && userData && userData.role === "ADMIN";
   };
 
@@ -86,9 +87,9 @@ const App = () => {
         />
         {/* Ruta Registro */}
         <Route path="/register" element={<RegisterPage />} />{" "}
-        <Route path="/admin" element={<PanelAdmin/>} />
+        {/* <Route path="/admin" element={<PanelAdmin/>} /> */}
         {/* Ruta del panel de administrador - Protegida */}
-        {/*
+        {
           <Route
             path="/admin"
             element={
@@ -106,7 +107,7 @@ const App = () => {
               )
             }
           />
-        */}
+        }
       </Routes>
     </Router>
   );

@@ -21,7 +21,7 @@ const Register = () => {
       const jsonData = { ...data };
 
       const response = await axios.post(
-        import.meta.env.VITE_API_URL+'/register',
+        import.meta.env.VITE_API_URL+'/auth/register',
         jsonData,
         {
           headers: { Accept: "application/json" }, // Axios manejará multipart/form-data automáticamente
