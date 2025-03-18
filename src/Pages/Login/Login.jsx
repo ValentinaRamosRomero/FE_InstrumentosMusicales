@@ -20,32 +20,51 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
     try {
       const { email, password } = data;
 
-      const response = await axios.post(
-        import.meta.env.VITE_API_URL + "/login",
+      const responseLogin = await axios.post(
+        import.meta.env.VITE_API_URL + "/auth/login",
         { email, password },
         {
           headers: { "Content-Type": "application/json" },
         }
       );
 
-      if (response.status === 200) {
-        console.log("Inicio de sesión exitoso:", response.data);
-      }
+      if (responseLogin.status === 200) {  
 
-      if (!response.data.token) {
-        throw new Error("No se recibió un token válido");
-      }
+        const responseLoginData = responseLogin.data.data;
+        console.log("Inicio de sesión exitoso:", responseLoginData);
 
-      // Guardamos todos los datos del usuario
-      onLogin(response.data.token, response.data);
-      console.log("Respuesta completa:", response);
-      console.log("Datos de respuesta:", response.data);
-      console.log("Token recibido:", response.data.token);
+        // const responseUser = await axios.post(
+        //   import.meta.env.VITE_API_URL + "/users/find-by-email",
+        //   { email },
+        //   {
+        //     headers: { 
+        //       "Content-Type": "application/json"
+        //     },
+        //   }
+        // ); 
+
+        // if (responseUser.status === 200) {
+        //   const responseUserData = responseUser.data.data;
+        //   console.log("Usuario encontrado:", responseUserData);    
+        // } else {
+        //   throw new Error("Error al buscar usuario");
+        // }
+        onLogin(responseLoginData.token, JSON.stringify({...responseLoginData}));
+ 
+          // Redirigir según el rol del usuario
+        if (responseLoginData.role === "USER") {
+          navigate("/");
+        } else {  
+          navigate("/admin")
+        }
+      } else {
+        throw new Error("Error en el inicio de sesión");
+      }
+     
+
       
-      // Redirigir según el rol del usuario
-      if (response.data.role === "ADMIN" || "INVITADO") {
-        navigate("/");
-      }
+      
+    
     } catch (error) {
       console.error("Error en login:", error);
       const mensajeError =
