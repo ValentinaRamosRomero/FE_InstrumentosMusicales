@@ -87,7 +87,7 @@ const App = () => {
         {/* Ruta Registro */}
         <Route path="/register" element={<RegisterPage />} />{" "}
         {/* Ruta del panel de administrador - Protegida */}
-        {
+        {/*
           <Route
             path="/admin"
             element={
@@ -101,10 +101,14 @@ const App = () => {
                     from: "/admin",
                     message: "No tienes permisos de administrador",
                   }}
-                />
+            />
               )
             }
           />
+        */
+        
+          <Route path="/admin" element={<PanelAdmin/>} /> 
+        
         }
       </Routes>
     </Router>
