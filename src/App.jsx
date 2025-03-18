@@ -110,6 +110,7 @@ const App = () => {
           <Route path="/admin" element={<PanelAdmin/>} /> 
         
           }
+                  <Route path="/producto/:id" element={<ProductDetail />} />
       </Routes>
     </Router>
   );

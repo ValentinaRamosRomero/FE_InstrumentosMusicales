@@ -1,8 +1,9 @@
-/* Estilos generales */
+/* 📌 Estilos generales */
 .product-page {
     font-family: "Dosis", sans-serif;
 }
 
+/* 📌 Barra de navegación con categoría */
 .navigation-bar {
     margin-top: 70px;
     background-color: #e6e6e6;
@@ -24,99 +25,118 @@
     font-size: 1.5rem;
 }
 
+/* 📌 Contenedor principal */
 .product-detail-container {
     width: 90%;
     max-width: 1200px;
     margin: 2rem auto;
 }
 
+.product-detail-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap:5%;
+}
+
+/* 📌 Título del producto */
 .product-name {
     font-family: "Dosis", sans-serif;
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
 }
 
-/* Layout principal para manejar los diferentes DIVs */
+/* 📌 Organiza el contenido en la misma fila */
 .product-detail-layout {
-    display: grid;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 3rem; /* ✅ Espacio entre imagen y descripción */
 }
 
-/* Contenedor de imágenes del producto (DIV1.1) */
+/* 📌 Contenedor de imágenes */
 .product-images-container {
+    flex: 1;
+    max-width: 400px; /* ✅ Tamaño fijo para evitar que ocupe todo */
     background-color: #e6e6e6;
     border-radius: 8px;
-    padding: 2rem;
-    text-align: center;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .main-image {
-    max-width: 100%;
+    width: 100%;
     height: auto;
+    max-height: 500px; /* ✅ Evita que la imagen se extienda demasiado */
     object-fit: contain;
+    border-radius: 8px;
 }
 
-/* Sección de compra (DIV1.2) */
+/* 📌 Contenedor de información (descripción y compra) */
+.product-info-container {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 📌 Descripción */
+.product-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: justify;
+    max-width: 600px; /* ✅ Evita que el texto se expanda demasiado */
+}
+
+/* 📌 Sección de compra */
 .purchase-section {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     align-items: flex-start;
-    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
 .price-tag {
-    font-family: "Dosis", sans-serif;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #333;
 }
 
-.quantity-controls {
+.purchase-actions {
     display: flex;
-    align-items: center;
     gap: 1rem;
-    width: 100%;
-    justify-content: space-around;
+    align-items: center;
 }
 
 .quantity-select {
-    padding: 0.5rem;
+    padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 3rem;
-    text-align: center;
+    border-radius: 5px;
 }
 
-.add-to-cart-container {
-    display: none; /* Ocultar en desktop, mostrar en tablet/mobile */
-    width: 100%;
-}
-
+/* 📌 Botón "Añadir al carrito" */
 .add-to-cart-button {
     background-color: #bc1818;
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
-    white-space: nowrap;
-    text-align: center;
+    transition: background 0.3s;
 }
 
 .add-to-cart-button:hover {
     background-color: #a61414;
 }
 
-/* Descripción del producto (DIV2) */
-.product-description {
-    line-height: 1.6;
-}
-
-/* Nueva sección de características */
+/* 📌 Sección de características */
 .characteristics-section {
     margin-top: 2rem;
 }
@@ -125,173 +145,91 @@
     background-color: #bc1818;
     color: white;
     padding: 0.75rem 1rem;
-    margin: 0;
     font-size: 1.5rem;
 }
 
 .characteristics-grid {
     display: flex;
     flex-wrap: wrap;
-    padding: 1.5rem;
     background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 5px;
 }
 
 .characteristics-column {
     flex: 1;
-    min-width: 300px;
+    min-width: 280px;
 }
 
 .characteristic-item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.characteristic-icon {
-    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
 }
 
 .characteristic-label {
     font-weight: bold;
     font-size: 1rem;
-    margin-right: 0.5rem;
-    color: black;
 }
 
-.characteristic-value {
-    color: #555;
-    font-weight: bold;
-    font-size: 1rem;
-}
+/* 📌 Diseño Responsivo */
 
-/* LAYOUT PARA ESCRITORIO (más de 1024px) */
-@media (min-width: 1025px) {
+/* ✅ Para tablets */
+@media (max-width: 1024px) {
     .product-detail-layout {
-        grid-template-columns: 1fr 1fr; /* Dos columnas en escritorio */
-        grid-template-areas:
-            "images description"
-            "images purchase";
-    }
-
-    .product-images-container {
-        grid-area: images;
-        min-height: 400px; /* Para mantener la altura consistente */
-    }
-
-    .product-description {
-        grid-area: description;
-    }
-
-    .purchase-section {
-        grid-area: purchase;
-    }
-}
-
-/* LAYOUT PARA TABLET (entre 481px y 1024px) */
-@media (min-width: 481px) and (max-width: 1024px) {
-    .product-detail-layout {
-        grid-template-columns: 1fr 1fr; /* Dos columnas en tablet */
-        grid-template-areas:
-            "images purchase"
-            "description description";
-    }
-
-    .product-images-container {
-        grid-area: images;
-    }
-
-    .purchase-section {
-        grid-area: purchase;
-        align-self: center;
-    }
-
-    .product-description {
-        grid-area: description;
-        margin-top: 1rem;
-    }
-
-    
-
-    .add-to-cart-container {
-        display: none; /* Mostrar el contenedor del botón en tablet */
-    }
-}
-
-/* LAYOUT PARA MÓVIL (hasta 480px) */
-@media (max-width: 480px) {
-    .product-detail-layout {
-        grid-template-columns: 1fr; /* Una sola columna en móvil */
-        grid-template-areas:
-            "images"
-            "purchase"
-            "description";
-    }
-
-    .product-images-container {
-        grid-area: images;
-    }
-
-    .purchase-section {
-        grid-area: purchase;
-        flex-direction: row;
-        justify-content: space-between;
+        flex-direction: column;
         align-items: center;
+        gap: 2rem; /* ✅ Reduce el espacio en tablets */
+    }
+
+    .product-images-container {
+        max-width: 100%;
+    }
+
+    .product-info-container {
+        width: 100%;
+        text-align: center;
     }
 
     .product-description {
-        grid-area: description;
+        max-width: 90%;
+        text-align: center;
+    }
+}
+
+/* ✅ Para móviles */
+@media (max-width: 768px) {
+    .product-detail-container {
+        width: 95%;
     }
 
     .product-name {
         font-size: 1.5rem;
     }
 
-    .product-detail-container {
-        width: 95%;
-        margin: 1rem auto;
+    .product-description {
+        font-size: 0.9rem;
+        max-width: 100%;
+        text-align: center;
     }
 
-    .desktop-button {
-        display: none; /* Ocultar el botón de escritorio en móvil */
+    .purchase-section {
+        align-items: center;
+        width: 100%;
     }
 
-    .add-to-cart-container {
-        display: block; /* Mostrar el contenedor del botón en móvil */
-        width: 50px;
+    .purchase-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .quantity-select {
+        width: 100%;
+        text-align: center;
     }
 
     .add-to-cart-button {
-        padding: 0.5rem;
-    }
-
-    .characteristics-column {
-        min-width: 100%;
-    }
-
-    .characteristic-item {
-        flex-wrap: wrap;
-    }
-}
-
-/* Ajustes específicos para tablets medianas (768px a 834px) */
-@media (min-width: 481px) and (max-width: 834px) {
-    .quantity-controls {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .price-tag {
         width: 100%;
-        text-align: center;
     }
-
-    .add-to-cart-container {
-        display: none;
-        width: 100%;
-        text-align: center;
-        margin-top: 1rem;
-    }
-
-    
 }

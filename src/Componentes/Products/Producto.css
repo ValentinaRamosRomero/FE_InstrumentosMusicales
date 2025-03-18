@@ -1,8 +1,8 @@
+/* Contenedor principal de productos */
 .productos-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  row-gap: 40px;
-  column-gap: 40px; 
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Se adapta al tamaño del contenedor */
+  gap: 40px; 
   justify-items: center;
   width: 90%;
   max-width: 1200px;
@@ -10,73 +10,154 @@
   text-align: center;
 }
 
+/* Título de la sección */
 .productos-title {
   font-weight: 700;
   font-size: 48px;
   margin-bottom: 20px;
 }
 
+/* Tarjetas de producto */
 .producto-card {
   background-color: #f8d9d9;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 426px;
-  height: 490px;
+  max-width: 320px; /* Ajustado para evitar desbordamiento */
+  height: 500px;
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-
+  align-items: center;
+  text-align: center;
 }
 
 /* Imagen de Producto */
 .producto-img {
   width: 100%;
-  height: auto;
+  height: 350px; /* Altura fija para mantener uniformidad */
   object-fit: cover;
   border-radius: 10px;
 }
 
-.producto-nombre,
-.producto-precio{
-  margin: 15px 0px 0px 0px;
-  font-size: 25px;
-  text-align: left;
-
+/* Nombre y precio del producto */
+.producto-nombre {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
+.producto-precio {
+  font-size: 18px;
+  color: #555;
+  margin: 5px 0;
+}
+
+/* Botón de "Añadir al carrito" */
 .producto-boton {
   background-color: #bc1818;
-  font-size: 25px;
-  padding: 8px 20px;
+  font-size: 18px;
+  padding: 10px 15px;
   border: none;
   cursor: pointer;
-  margin-top: 10px;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
+  margin-top: auto; /* Lo empuja al fondo de la card */
   color: white;
   border-radius: 5px;
+  width: 100%;
+  max-width: 80%;
 }
 
 .producto-boton:hover {
   background-color: #a61414;
 }
 
-/* Diseño responsivo para móviles */
+/* Diseño responsivo para tablets */
 @media (max-width: 768px) {
-  .productos-grid {
-    grid-template-columns: 1fr;
+  .productos-container {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .producto-img {
-    height: 180px;
+    height: 250px;
   }
 }
 
+/* Diseño responsivo para móviles */
 @media (max-width: 480px) {
   .productos-container {
     grid-template-columns: repeat(1, 1fr); 
+  }
+
+  .producto-card {
+    max-width: 90%;
+  }
+
+  .producto-img {
+    height: 200px;
+  }
+}
+/* 📌 Contenedor de paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* ✅ Espaciado entre los botones */
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 📌 Botón de paginación */
+.pagination button {
+  background-color: #bc1818;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* 📌 Efecto hover en los botones */
+.pagination button:hover {
+  background-color: #a61414;
+  transform: scale(1.05); /* ✅ Hace que el botón crezca ligeramente */
+}
+
+/* 📌 Botón deshabilitado */
+.pagination button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 📌 Diseño responsivo para móviles */
+@media (max-width: 768px) {
+  .pagination {
+      flex-direction: column;
+      gap: 10px; /* ✅ Menos espacio en móviles */
+      font-size: 16px;
+  }
+
+  .pagination button {
+      width: 100%;
+      max-width: 200px; /* ✅ Para que los botones no sean demasiado grandes */
+      padding: 8px 15px;
+      font-size: 14px;
+  }
+}
+
+/* 📌 Diseño responsivo para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .pagination {
+      gap: 12px;
+      font-size: 17px;
+  }
+
+  .pagination button {
+      padding: 9px 18px;
+      font-size: 15px;
   }
 }
