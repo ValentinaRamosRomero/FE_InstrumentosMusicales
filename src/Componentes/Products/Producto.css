@@ -1,4 +1,4 @@
-/* Contenedor principal de productos */
+/* 📌 Contenedor principal de productos */
 .productos-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Se adapta al tamaño del contenedor */
@@ -10,14 +10,14 @@
   text-align: center;
 }
 
-/* Título de la sección */
+/* 📌 Título de la sección */
 .productos-title {
   font-weight: 700;
   font-size: 48px;
   margin-bottom: 20px;
 }
 
-/* Tarjetas de producto */
+/* 📌 Tarjetas de producto */
 .producto-card {
   background-color: #f8d9d9;
   padding: 20px;
@@ -32,7 +32,7 @@
   text-align: center;
 }
 
-/* Imagen de Producto */
+/* 📌 Imagen del Producto */
 .producto-img {
   width: 100%;
   height: 350px; /* Altura fija para mantener uniformidad */
@@ -40,7 +40,7 @@
   border-radius: 10px;
 }
 
-/* Nombre y precio del producto */
+/* 📌 Nombre y precio del producto */
 .producto-nombre {
   font-size: 20px;
   font-weight: bold;
@@ -53,25 +53,28 @@
   margin: 5px 0;
 }
 
-/* Botón de "Añadir al carrito" */
-.producto-boton {
-  background-color: #bc1818;
-  font-size: 18px;
+/* 📌 Botón "Agregar Producto" */
+.agregar-producto-btn {
+  background-color: #bc1818; 
+  font-size: 16px;
   padding: 10px 15px;
   border: none;
   cursor: pointer;
-  margin-top: auto; /* Lo empuja al fondo de la card */
+  margin-top: auto; /* ✅ Lo empuja al fondo de la tarjeta */
   color: white;
   border-radius: 5px;
   width: 100%;
   max-width: 80%;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.producto-boton:hover {
-  background-color: #a61414;
+/* 📌 Efecto hover en el botón "Agregar Producto" */
+.agregar-producto-btn:hover {
+  background-color: #1c7430; /* ✅ Un verde más oscuro en hover */
+  transform: scale(1.05);
 }
 
-/* Diseño responsivo para tablets */
+/* 📌 Diseño responsivo para tablets */
 @media (max-width: 768px) {
   .productos-container {
     grid-template-columns: repeat(2, 1fr);
@@ -82,7 +85,7 @@
   }
 }
 
-/* Diseño responsivo para móviles */
+/* 📌 Diseño responsivo para móviles */
 @media (max-width: 480px) {
   .productos-container {
     grid-template-columns: repeat(1, 1fr); 
@@ -96,6 +99,7 @@
     height: 200px;
   }
 }
+
 /* 📌 Contenedor de paginación */
 .pagination {
   display: flex;

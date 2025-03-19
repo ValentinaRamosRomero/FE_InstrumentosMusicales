@@ -6,7 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Home from "./Pages/Home/Home";
-import ProductDetail from "./Componentes/Products/ProductDetail";
+{/*import ProductDetail from "./Componentes/Products/ProductDetail";*/}
 import Login from "./Pages/Login/Login";
 import RegisterPage from "./Pages/Register/Register";
 import PanelAdmin from "./Componentes/PanelAdmin/PanelAdmin";
@@ -76,7 +76,7 @@ const App = () => {
           }
         />
         {/* Ruta de detalle de producto */}
-        <Route path="/:id" element={<ProductDetail {...authProps} />} />
+        {/*<Route path="/:id" element={<ProductDetail {...authProps} />} />*/}
         {/* Ruta de home personalizado para después del login */}
         <Route
           path="/home/:id"
@@ -110,7 +110,7 @@ const App = () => {
           <Route path="/admin" element={<PanelAdmin/>} /> 
         
           }
-                  <Route path="/producto/:id" element={<ProductDetail />} />
+          {/*<Route path="/producto/:id" element={<ProductDetail />} />*/}
       </Routes>
     </Router>
   );
