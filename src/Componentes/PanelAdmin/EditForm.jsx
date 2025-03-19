@@ -1,22 +1,22 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { FaCheck, FaTimes } from "react-icons/fa";
+import "./EditForm.css";
 
 const ProductEditForm = ({ product, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
     name: "",
     imageUrl: "",
-    pricePerHour: "",
-    categoryName: "",
+    price: "",
+    categoryId: "",
     description: "",
-    brand: "",
+    brandId: "",
     model: "",
-    condition: "",
-    countryOfOrigin: "",
-    yearOfRelease: "",
-    mainMaterial: "",
-    height: "",
-    width: "",
-    depth: "",
+    productCondition: "",
+    origin: "",
+    lauchYear: "",
+    material: "",
+    size: "",
     recommendedUse: "",
   });
 
@@ -32,15 +32,15 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
         setFormData({
           name: product.name || "",
           imageUrl: product.imageUrl || "",
-          pricePerHour: product.pricePerHour || "",
-          categoryName: product.categoryName || "",
+          price: product.price || "",
+          categoryId: product.categoryId || "",
           description: product.description || "",
-          brand: product.brand || "",
+          brandId: product.brandId || "",
           model: product.model || "",
-          condition: product.condition || "",
-          countryOfOrigin: product.countryOfOrigin || "",
-          yearOfRelease: product.yearOfRelease || "",
-          mainMaterial: product.mainMaterial || "",
+          productCondition: product.productCondition || "",
+          origin: product.origin || "",
+          lauchYear: product.lauchYear || "",
+          material: product.material || "",
           height: product.height || "",
           width: product.width || "",
           depth: product.depth || "",
@@ -66,8 +66,8 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
   const validateForm = () => {
     const requiredFields = [
       "name",
-      "pricePerHour",
-      "categoryName",
+      "price",
+      "categoryId",
       "description",
     ];
     const missingFields = requiredFields.filter((field) => !formData[field]);
@@ -125,7 +125,7 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="form-content">
+          <div className="editform-content">
             <div className="form-row">
               <div className="form-group">
                 <label>Nombre</label>
@@ -158,8 +158,8 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                 <label>Precio</label>
                 <input
                   type="number"
-                  name="pricePerHour"
-                  value={formData.pricePerHour}
+                  name="price"
+                  value={formData.price}
                   onChange={handleChange}
                 />
               </div>
@@ -178,8 +178,8 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
               <div className="form-group">
                 <label>Categoría</label>
                 <select
-                  name="categoryName"
-                  value={formData.categoryName}
+                  name="categoryId"
+                  value={formData.categoryId}
                   onChange={handleChange}
                 >
                   <option value="">Seleccionar categoría</option>
@@ -198,8 +198,8 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                 <label>Marca</label>
                 <input
                   type="text"
-                  name="brand"
-                  value={formData.brand}
+                  name="brandId"
+                  value={formData.brandId}
                   onChange={handleChange}
                 />
               </div>
@@ -219,8 +219,8 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                 <label>Condición</label>
                 <input
                   type="text"
-                  name="condition"
-                  value={formData.condition}
+                  name="productCondition"
+                  value={formData.productCondition}
                   onChange={handleChange}
                 />
               </div>
@@ -228,8 +228,8 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                 <label>País de Origen</label>
                 <input
                   type="text"
-                  name="countryOfOrigin"
-                  value={formData.countryOfOrigin}
+                  name="origin"
+                  value={formData.origin}
                   onChange={handleChange}
                 />
               </div>
@@ -240,8 +240,8 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                 <label>Año de lanzamiento</label>
                 <input
                   type="text"
-                  name="yearOfRelease"
-                  value={formData.yearOfRelease}
+                  name="lauchYear"
+                  value={formData.lauchYear}
                   onChange={handleChange}
                 />
               </div>
@@ -249,8 +249,8 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                 <label>Material Principal</label>
                 <input
                   type="text"
-                  name="mainMaterial"
-                  value={formData.mainMaterial}
+                  name="material"
+                  value={formData.material}
                   onChange={handleChange}
                 />
               </div>
