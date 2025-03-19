@@ -31,7 +31,6 @@ const SearchBar = ({ setSearchResults }) => {
     // Función asíncrona para obtener sugerencias de instrumentos desde la API local
     const fetchSuggestions = async () => {
       try {
-        // Hacemos una solicitud POST a la API local para obtener sugerencias de instrumentos
         const response = await fetch("http://localhost:8080/products/search", {
           method: "POST",
           headers: {
@@ -40,26 +39,53 @@ const SearchBar = ({ setSearchResults }) => {
           body: JSON.stringify({ text: query }),
         });
 
-        // Verificamos si la respuesta es exitosa
         if (!response.ok) {
           throw new Error(`Error obteniendo sugerencias: ${response.statusText}`);
         }
 
-        // Convertimos la respuesta a JSON
         const data = await response.json();
 
-        // Guardamos las primeras 5 sugerencias en el estado
-        if (data) {
-          setSuggestions(data.slice(0, 5));
-        }
+        // ✅ Asegurar que siempre sea un array antes de actualizar el estado
+        setSuggestions(Array.isArray(data) ? data.slice(0, 5) : []);
       } catch (error) {
         console.error("Error obteniendo sugerencias de instrumentos:", error);
       }
     };
 
-    // Llamamos a la función para obtener sugerencias
     fetchSuggestions();
-  }, [query]); // Se ejecuta cuando cambia la consulta
+  }, [query]);
+
+  // Función para manejar la búsqueda al presionar Enter o hacer clic en el botón de búsqueda
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (query.length > 1) {
+      try {
+        const response = await fetch("http://localhost:8080/products/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: query }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error en la búsqueda: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        // ✅ Enviar un array a setSearchResults para evitar errores en Producto.jsx
+        setSearchResults(Array.isArray(data) ? data : []);
+
+        // Limpiar sugerencias después de buscar
+        setSuggestions([]);
+
+      } catch (error) {
+        console.error("Error en la búsqueda:", error);
+        setSearchResults([]);
+      }
+    }
+  };
 
   // Manejo de eventos de teclado para la navegación en la lista de sugerencias
   const handleKeyDown = (e) => {
@@ -69,13 +95,12 @@ const SearchBar = ({ setSearchResults }) => {
       setSelectedIndex((prev) => Math.max(prev - 1, 0));
     } else if (e.key === "Enter" && selectedIndex >= 0) {
       setQuery(suggestions[selectedIndex].name);
-      setSearchResults(suggestions[selectedIndex].name);
+      setSearchResults([suggestions[selectedIndex]]);
       setSuggestions([]);
       e.preventDefault();
     }
   };
 
-  // Retorno del JSX del componente
   return (
     <div className="search-container">
       {/* 📌 Título del bloque de búsqueda */}
@@ -88,13 +113,7 @@ const SearchBar = ({ setSearchResults }) => {
 
       <div className="search-bar-wrapper">
         {/* Formulario de búsqueda */}
-        <form className="search-wrapper" onSubmit={(e) => {
-          e.preventDefault();
-          if (query.length > 1) {
-            setSearchResults(query);
-            setSuggestions([]);
-          }
-        }}>
+        <form className="search-wrapper" onSubmit={handleSearch}>
           {/* Input donde el usuario ingresa la consulta de búsqueda */}
           <input
             type="text"
@@ -123,7 +142,7 @@ const SearchBar = ({ setSearchResults }) => {
               onMouseEnter={() => setSelectedIndex(index)}
               onClick={() => {
                 setQuery(instrument.name);
-                setSearchResults(instrument.name);
+                setSearchResults([instrument]); // ✅ Enviar array con un solo resultado
                 setSuggestions([]);
               }}
             >

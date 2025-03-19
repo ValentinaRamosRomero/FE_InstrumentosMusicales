@@ -60,24 +60,25 @@ const Home = ({ isAuthenticated, userData, onLogout }) => {
     try {
       const response = await fetch("http://localhost:8080/products/search", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: query }), // Enviamos el texto de búsqueda
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: query.trim() }),
       });
-
+  
       if (!response.ok) {
         throw new Error(`Error al buscar instrumentos: ${response.statusText}`);
       }
-
+  
       const data = await response.json();
-
-      // Guardamos los resultados filtrados
-      setFilteredResults(data);
+      console.log("Resultados de búsqueda:", data);
+  
+      // ✅ Asegurar que `filteredResults` siempre es un array
+      setFilteredResults(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error("Error al buscar instrumentos musicales:", error);
+      console.error("Error al buscar instrumentos:", error);
+      setFilteredResults([]);
     }
   };
+  
 
   // Función para manejar la paginación
   const handlePageChange = (newPage) => {

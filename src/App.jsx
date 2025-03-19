@@ -9,7 +9,7 @@ import Home from "./Pages/Home/Home";
 import Login from "./Pages/Login/Login";
 import RegisterPage from "./Pages/Register/Register";
 import PanelAdmin from "./Componentes/PanelAdmin/PanelAdmin";
-// import ProductDetail from "./Componentes/Products/ProductDetail"; // Comentado temporalmente si no se usa
+import ProductDetail from "./Componentes/Products/ProductDetail"; // Comentado temporalmente si no se usa
 
 const App = () => {
   // Estados de autenticación centralizados
@@ -102,7 +102,8 @@ const App = () => {
         />
 
         {/* Ruta de detalle de producto, si se descomenta */}
-        {/* <Route path="/producto/:id" element={<ProductDetail />} /> */}
+        <Route path="/product-details/:id" element={<ProductDetail />} />
+
       </Routes>
     </Router>
   );
