@@ -6,6 +6,8 @@ import { FaSearch } from "react-icons/fa";
 
 // Importamos los estilos CSS específicos para el componente de la barra de búsqueda
 import "./SearchBar.css";
+import AvailabilityCalendar from "./AvailabilityCalendar";
+
 
 // Definimos el componente funcional SearchBar, que recibe una prop:
 // - setSearchResults: función que actualiza los resultados de búsqueda en el estado del componente padre
@@ -123,13 +125,16 @@ const SearchBar = ({ setSearchResults }) => {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
           />
-
+          {/* 📌 Calendario de disponibilidad */}
+          <AvailabilityCalendar />
+          
           {/* Botón de búsqueda */}
           <button className="search-button" type="submit">
             <FaSearch className="search-icon" />
             <span className="search-text-button">Buscar</span>
           </button>
         </form>
+
       </div>
 
       {/* Mostrar sugerencias de instrumentos si hay resultados */}

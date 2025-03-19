@@ -87,6 +87,7 @@
   color: white;
   transition: all 0.3s;
   margin: 0;
+  width: 30%;
 }
 
 .search-button:hover {
