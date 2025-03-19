@@ -1,47 +1,79 @@
+/* 📌 Contenedor principal de la barra de búsqueda */
 .search-container {
   width: 100%;
-  background-color: #BC1818;
-  padding: 20px;
+  background: linear-gradient(135deg, #bc1818, #8a0e0e); /* ✅ Gradiente atractivo */
+  padding: 30px 20px;
   text-align: center;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  position: relative;
+  border-radius: 8px; /* ✅ Bordes redondeados */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* ✅ Sombra para resaltar */
 }
 
-/* Texto de la barra de búsqueda */
-.search-text {
+/* 📌 Título del bloque de búsqueda */
+.search-title {
   color: white;
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 28px;
   font-weight: bold;
-  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: 1px; /* ✅ Mejor separación entre letras */
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Contenedor de la barra y el botón */
+/* 📌 Párrafo informativo debajo del título */
+.search-text {
+  color: #f8d7da;
+  font-size: 18px;
+  margin-bottom: 15px;
+  font-style: italic; /* ✅ Toque estilizado */
+}
+
+/* 📌 Contenedor de la barra de búsqueda y el botón */
 .search-wrapper {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 800px;
-  gap: 10px; /* Espacio entre la barra y el botón */
+  justify-content: space-between;
+  width: 90%;
+  max-width: 1200px;
+  gap: 12px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.15); /* ✅ Fondo translúcido */
+  padding: 10px;
+  border-radius: 8px;
+  backdrop-filter: blur(8px); /* ✅ Efecto de desenfoque */
 }
 
-/* Estilos de la barra de búsqueda */
+.search-bar-wrapper{
+  display: flex;
+  justify-content: center;
+}
+
+/* 📌 Barra de búsqueda */
 .search-input {
-  flex: 1;
-  padding: 12px;
-  border: 2px solid #BC1818;
-  border-radius: 5px;
+  flex-grow: 1;
+  padding: 14px;
+  border-radius: 6px;
   font-size: 16px;
   outline: none;
+  border: none;
   width: 100%;
-  max-width: 100%;
+  position: relative;
+  z-index: 10;
+  background: white;
+  transition: all 0.3s ease;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* ✅ Sombra sutil */
 }
 
-/* Botón de búsqueda */
+.search-input:focus {
+  transform: scale(1.02);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* ✅ Resalta al escribir */
+}
+
+/* 📌 Botón de búsqueda */
 .search-button {
   background: black;
   border: none;
@@ -49,45 +81,95 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 16px;
-  border-radius: 5px;
+  padding: 14px 18px;
+  border-radius: 6px;
   font-size: 16px;
   color: white;
-  transition: background 0.3s;
+  transition: all 0.3s;
+  margin: 0;
+  width: 30%;
 }
 
-/* Icono dentro del botón */
+.search-button:hover {
+  background: #333; /* ✅ Efecto hover */
+  transform: scale(1.05);
+}
+
+/* 📌 Icono dentro del botón */
 .search-icon {
   color: white;
   font-size: 20px;
 }
 
-/* Ocultar el texto "Buscar" en móviles */
-.search-text-button {
-  display: none;
+/* 📌 Contenedor de sugerencias flotante debajo de la barra */
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 250px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin-top: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  border-radius: 8px;
+  opacity: 0.95;
 }
 
-/* 📌 Estilos responsivos */
-@media screen and (min-width: 768px) {
-  .search-wrapper {
-    max-width: 700px;
-  }
+/* 📌 Elementos dentro de las sugerencias */
+.suggestions-list li {
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
 }
 
-@media screen and (min-width: 1024px) {
+.suggestions-list li:hover,
+.suggestion-selected {
+  background: #f0f0f0;
+  transform: scale(1.02);
+}
+
+/* 📌 Imagen dentro de la sugerencia */
+.suggestions-list img {
+  width: 50px;
+  height: 70px;
+  margin-right: 12px;
+  border-radius: 5px;
+  object-fit: cover;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 📌 Diseño responsivo */
+@media screen and (max-width: 768px) {
   .search-wrapper {
-    max-width: 800px;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
   }
 
-  /* En pantallas grandes, mostrar el texto "Buscar" dentro del botón */
-  .search-text-button {
-    display: block;
-    margin-left: 8px;
+  .search-input {
+    width: 100%;
+    font-size: 14px;
+    padding: 12px;
   }
 
   .search-button {
-    display: flex;
-    flex-direction: row;
-    padding: 12px 20px;
+    width: 100%;
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .search-title {
+    font-size: 24px;
+  }
+
+  .search-text {
+    font-size: 16px;
   }
 }

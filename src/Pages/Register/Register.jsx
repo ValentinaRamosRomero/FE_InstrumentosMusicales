@@ -17,18 +17,29 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("https://tu-backend.com/api/register", data, {
-        headers: { "Content-Type": "application/json" },
-      });
+      // Convertir los datos del formulario a un objeto JSON
+      const jsonData = { ...data };
 
-      if (response.status === 201) {
+      const response = await axios.post(
+        import.meta.env.VITE_API_URL+'/auth/register',
+        jsonData,
+        {
+          headers: { Accept: "application/json" }, // Axios manejará multipart/form-data automáticamente
+        }
+      );
+      
+      if (response.status === 200) {
         console.log("Usuario registrado:", response.data);
         navigate("/login"); // Redirige al login tras el registro exitoso
       }
     } catch (error) {
       console.error("Error en el registro:", error);
-      setErrorMessage(error.response?.data?.message || "Error al registrar usuario");
+      setErrorMessage(
+        error.response?.data?.message || "Error al registrar usuario"
+      );
+      console.log(response);
     }
+    console.log(data)
   };
 
   return (
@@ -42,7 +53,7 @@ const Register = () => {
             <label htmlFor="nombre">Nombre</label>
             <input
               type="text"
-              {...register("nombre", {
+              {...register("firstName", {
                 required: true,
                 pattern: {
                   value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/i,
@@ -54,7 +65,7 @@ const Register = () => {
             <label htmlFor="apellido">Apellido</label>
             <input
               type="text"
-              {...register("apellido", {
+              {...register("lastName", {
                 required: true,
                 pattern: {
                   value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/i,
@@ -65,8 +76,8 @@ const Register = () => {
 
             <label htmlFor="correo">Correo Electrónico</label>
             <input
-              type="email"
-              {...register("correo", {
+              type="text"
+              {...register("email", {
                 required: true,
                 pattern: {
                   value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
@@ -91,14 +102,28 @@ const Register = () => {
 
             {/* Mensaje de error general */}
             {errorMessage && <p className="error-message">❌ {errorMessage}</p>}
-            
+
             {/* Caja de errores debajo del botón */}
             {Object.keys(errors).length > 0 && (
               <div className="error-box">
-                {errors.nombre && <p>❌ En los campos de nombre y apellido solo puedes ingresar letras.</p>}
-                {errors.apellido && <p>❌ En los campos de nombre y apellido solo puedes ingresar letras.</p>}
-                {errors.correo && <p>❌ Ingresa un correo electrónico válido.</p>}
-                {errors.password && <p>❌ La contraseña debe tener mínimo 6 caracteres.</p>}
+                {errors.firstName && (
+                  <p>
+                    ❌ En los campos de nombre y apellido solo puedes ingresar
+                    letras.
+                  </p>
+                )}
+                {errors.lastName && (
+                  <p>
+                    ❌ En los campos de nombre y apellido solo puedes ingresar
+                    letras.
+                  </p>
+                )}
+                {errors.email && (
+                  <p>❌ Ingresa un correo electrónico válido.</p>
+                )}
+                {errors.password && (
+                  <p>❌ La contraseña debe tener mínimo 6 caracteres.</p>
+                )}
               </div>
             )}
           </form>
@@ -107,7 +132,10 @@ const Register = () => {
         {/* Card de Beneficios */}
         <div className="benefits-card">
           <h3>🎵 Únete a SoundKeeper y disfruta de más beneficios 🎶</h3>
-          <p>Regístrate ahora y accede a nuestra colección de instrumentos musicales. Como usuario registrado, podrás:</p>
+          <p>
+            Regístrate ahora y accede a nuestra colección de instrumentos
+            musicales. Como usuario registrado, podrás:
+          </p>
           <ul>
             <li>✅ Reservar instrumentos antes que nadie.</li>
             <li>✅ Rentar fácilmente con opciones flexibles.</li>
