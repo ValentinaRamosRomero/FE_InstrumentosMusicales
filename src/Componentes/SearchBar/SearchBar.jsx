@@ -33,7 +33,7 @@ const SearchBar = ({ setSearchResults }) => {
     // Función asíncrona para obtener sugerencias de instrumentos desde la API local
     const fetchSuggestions = async () => {
       try {
-        const response = await fetch("http://localhost:8080/products/search", {
+        const response = await fetch(import.meta.env.VITE_API_URL+"/search", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const SearchBar = ({ setSearchResults }) => {
     e.preventDefault();
     if (query.length > 1) {
       try {
-        const response = await fetch("http://localhost:8080/products/search", {
+        const response = await fetch(import.meta.env.VITE_API_URL+"/products/search", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

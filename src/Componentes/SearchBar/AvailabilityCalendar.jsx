@@ -17,7 +17,8 @@ const AvailabilityCalendar = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('https://g3pibackend-production.up.railway.app/products');
+                const response = await axios.get(import.meta.env.VITE_API_URL + "/products");
+                
                 setProducts(response.data);
                 setFilteredProducts(response.data);
             } catch (error) {
@@ -27,7 +28,7 @@ const AvailabilityCalendar = () => {
 
         const fetchAvailability = async () => {
             try {
-                const response = await axios.get('https://g3pibackend-production.up.railway.app/reservations');
+                const response = await axios.get(import.meta.env.VITE_API_URL + "/reservations");
                 const reservations = response.data.data;
                 
                 const groupedReservations = {};

@@ -33,7 +33,7 @@ const Home = ({ isAuthenticated, userData, onLogout }) => {
   // Función para obtener todos los instrumentos recomendados desde el backend
   const fetchRecommendedInstruments = async () => {
     try {
-      const response = await fetch("http://localhost:8080/products/search", {
+      const response = await fetch(import.meta.env.VITE_API_URL+"/products/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const Home = ({ isAuthenticated, userData, onLogout }) => {
   // Función para buscar productos por un término (desde la barra de búsqueda o categorías)
   const fetchInstruments = async (query) => {
     try {
-      const response = await fetch("http://localhost:8080/products/search", {
+      const response = await fetch(import.meta.env.VITE_API_URL+"/products/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: query.trim() }),
