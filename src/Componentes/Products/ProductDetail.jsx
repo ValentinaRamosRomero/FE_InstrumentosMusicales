@@ -40,7 +40,7 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout }) => {
         setAvailabilityError(null);
         
         try {
-            const response = await axios.get(`https://g3pibackend-production.up.railway.app/reservations/products/${id}`);
+            const response = await axios.get( import.meta.env.VITE_API_URL + `/reservations/products/${id}`);
             const reservationData = response.data.data;
             
             setBookedDateRanges(reservationData.map(reservation => ({
@@ -61,7 +61,7 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout }) => {
             try {
                 setLoading(true);
                 
-                const productResponse = await axios.get(`https://g3pibackend-production.up.railway.app/products/${id}`);
+                const productResponse = await axios.get(import.meta.env.VITE_API_URL + `/products/${id}`);
                 const productData = productResponse.data;
                 
                 setProduct({
@@ -162,7 +162,7 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout }) => {
             const formattedStartDate = startDate.toISOString().split('T')[0];
             const formattedEndDate = endDate.toISOString().split('T')[0];
 
-            const response = await axios.post('https://g3pibackend-production.up.railway.app/reservations', {
+            const response = await axios.post(import.meta.env.VITE_API_URL + '/reservations', {
                 productId: id,
                 userId: userData.id,
                 startDate: formattedStartDate,

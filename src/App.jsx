@@ -77,7 +77,7 @@ const App = () => {
           }
         />
         {/* Ruta de detalle de producto */}
-        <Route path="/:id" element={<ProductDetail {...authProps} />} />
+        <Route path="product-details/:id" element={<ProductDetail {...authProps} />} />
         {/* Ruta de home personalizado para después del login */}
         <Route
           path="/home/:id"
