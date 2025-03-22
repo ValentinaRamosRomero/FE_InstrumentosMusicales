@@ -5,7 +5,7 @@ import { FaEdit, FaEye, FaTrash } from "react-icons/fa";
 import UsersSection from "./UsersSection";
 import ProductForm from "./ProductForm";
 import axios from "axios";
-import ProductEditForm from "./ProductEditForm";
+import ProductEditForm from "./EditForm";
 const PanelAdmin = ({ isAuthenticated, userData }) => {
   const [activeSection, setActiveSection] = useState("usuarios");
   const [products, setProducts] = useState([]);
@@ -26,8 +26,6 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      //const { name, imageUrl, pricePerHour, categoryName, description } = data;
-
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/products/find-all`,
         {}
@@ -41,17 +39,6 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
         );
       }
     } catch (error) {
-      /*if (error.response) {
-        console.error(
-          "Error del servidor:",
-          error.response.status,
-          error.response.data
-        );
-      } else if (error.request) {
-        console.error("No hubo respuesta del servidor:", error.request);
-      } else {
-        console.error("Error al hacer la petición:", error.message);
-      }*/
       console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
@@ -62,6 +49,11 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
     // Update products array with the newly created product
     setProducts([...products, newProduct]);
     setShowProductForm(false);
+  };
+
+  const handleViewProduct = (product) => {
+    setSelectedProduct(product);
+    setShowProductEditForm(true);
   };
 
   const handleUpdateProduct = (updatedProduct) => {

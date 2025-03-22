@@ -1,17 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaArrowLeft, FaFolder, FaSave } from "react-icons/fa";
 import "./ProductForm.css";
+import axios from "axios";
+import UploadImage from "./UploadImage";
 
 const ProductForm = ({ onSave, onCancel }) => {
   const [formData, setFormData] = useState({
     name: "",
     imageUrl: "",
     price: "",
-    category: "",
+    categoryId: "",
     description: "",
-    brand: "",
+    brandId: "",
     model: "",
-    product_condition: "",
+    productCondition: "",
     origin: "",
     launchYear: "",
     material: "",
@@ -21,9 +23,28 @@ const ProductForm = ({ onSave, onCancel }) => {
     recommendedUse: "",
   });
 
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [success, setSuccess] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const fileInputRef = useRef(null);
+  
+  useEffect(() => {
+    // Obtener categorías y marcas desde los endpoints
+    const fetchData = async () => {
+      try {
+        const [categoriesRes, brandsRes] = await Promise.all([
+          axios.get(import.meta.env.VITE_API_URL + "/categories"),
+          axios.get(import.meta.env.VITE_API_URL + "/brands"),
+        ]);
+        console.log("Categorías recibidas:", categoriesRes.data);
+        console.log("Marcas recibidas:", brandsRes.data);
+        setCategories(categoriesRes.data.data);
+        setBrands(brandsRes.data.data);
+      } catch (error) {
+        console.error("Error fetching categories and brands", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,92 +54,30 @@ const ProductForm = ({ onSave, onCancel }) => {
     });
   };
 
-  const handleFileButtonClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Muestra el nombre del archivo seleccionado temporalmente
-    setFormData({
-      ...formData,
-      imageUrl: file.name,
-    });
-
-    setUploading(true);
-
-    try {
-      const formDataObj = new FormData();
-      formDataObj.append("image", file);
-
-      const response = await fetch( import.meta.env.VITE_API_URL + "api/upload/image", {
-        method: "POST",
-        body: formDataObj,
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        // el endpoint devuelve la URL de la imagen subida
-        setFormData({
-          ...formData,
-          imageUrl: data.imageUrl || data.url || data.path || data.location,
-        });
-      } else {
-        console.error("Error uploading image");
-        // Restaurar el valor anterior si hay un error
-        setFormData({
-          ...formData,
-          imageUrl: "",
-        });
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setFormData({
-        ...formData,
-        imageUrl: "",
-      });
-    } finally {
-      setUploading(false);
-    }
-  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const productData = {
+      ...formData,
+      price: parseFloat(formData.price),
+      size: `${formData.width}x${formData.height}x${formData.depth}`,
+    };
 
     try {
-      // Prepare data for API
-      const productData = {
-        ...formData,
-        pricePerHour: parseFloat(formData.price),
-      };
-
-      // Call the API to save the product
-      const response = await fetch(
+      const response = await axios.post(
         import.meta.env.VITE_API_URL + "/products/save",
+        productData,
         {
-          method: "POST",
           headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(productData),
         }
       );
-
-      if (response.ok) {
-        const savedProduct = await response.json();
-        setSuccess(true);
-
-        // Wait 2 seconds before returning to product list
-        setTimeout(() => {
-          onSave(savedProduct);
-        }, 2000);
-      } else {
-        console.error("Error saving product");
-      }
+      onSave(response.data);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error saving product", error);
     }
   };
 
@@ -153,34 +112,7 @@ const ProductForm = ({ onSave, onCancel }) => {
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="imageUrl">Imagen</label>
-              <div className="file-input-container">
-                <input
-                  type="text"
-                  id="imageUrl"
-                  name="imageUrl"
-                  value={formData.imageUrl}
-                  placeholder="Selecciona una imagen..."
-                  readOnly
-                />
-                <button
-                  type="button"
-                  className="file-button"
-                  onClick={handleFileButtonClick}
-                  disabled={uploading}
-                >
-                  {uploading ? "⏳" : <FaFolder size={14} />}
-                </button>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
-              </div>
-            </div>
+            <UploadImage formData={formData} setFormData={setFormData}/>
 
             <div className="form-group">
               <label htmlFor="price">Precio</label>
@@ -196,19 +128,29 @@ const ProductForm = ({ onSave, onCancel }) => {
 
             <div className="form-group">
               <label htmlFor="category">Categoría</label>
+
               <select
-                id="category"
-                name="category"
-                value={formData.category}
+                id="categoryId"
+                name="categoryId"
+                value={formData.categoryId}
                 onChange={handleChange}
                 required
               >
+                <option value="">Seleccione una categoría</option>
+                {categories?.length > 0 &&
+                  categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
+              </select>
+              {/*
                 <option value="">Seleccione una categoría</option>
                 <option value="Guitarra">Guitarra</option>
                 <option value="Batería">Batería</option>
                 <option value="Piano">Piano</option>
                 <option value="Bajo">Bajo</option>
-              </select>
+              </select>*/}
             </div>
 
             <div className="form-group">
@@ -226,13 +168,19 @@ const ProductForm = ({ onSave, onCancel }) => {
 
             <div className="form-group">
               <label htmlFor="brand">Marca</label>
-              <input
-                type="text"
-                id="brand"
-                name="brand"
-                value={formData.brand}
+              <select
+                name="brandId"
+                value={formData.brandId}
                 onChange={handleChange}
-              />
+                required
+              >
+                <option value="">Seleccione una marca</option>
+                {brands?.length > 0 && brands.map((brand) => (
+                  <option key={brand.id} value={brand.id}>
+                    {brand.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="form-group">
