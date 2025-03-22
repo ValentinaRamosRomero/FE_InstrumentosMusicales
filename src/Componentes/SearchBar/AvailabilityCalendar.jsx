@@ -95,11 +95,11 @@ const AvailabilityCalendar = () => {
                     />
                 </div>
             )}
-            <ul className="product-list">
+            {/*<ul className="product-list">
                 {filteredProducts.map(product => (
                     <li key={product.id} className="product-item">{product.name}</li>
                 ))}
-            </ul>
+            </ul>*/}
         </div>
     );
 };
