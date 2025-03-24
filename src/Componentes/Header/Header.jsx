@@ -23,10 +23,10 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
     navigate("/"); // Redirigir al home después de cerrar sesión
   };
 
-  // Función para navegar al panel de administrador
+  {/*Función para navegar al panel de administrador
   const goToAdminPanel = () => {
     navigate("/admin");
-  };
+  };*/}
 
   // Verificar si el usuario es administrador
   const isAdmin = userData && userData?.role === "ADMIN";
@@ -60,11 +60,11 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
             </div>
           </div>
           {/* Mostrar botón de Panel Admin si el usuario es administrador */}
-          {isAdmin && (
+          {/*isAdmin && (
             <button className="btn-admin-panel" onClick={goToAdminPanel}>
               Panel Admin
             </button>
-          )}
+          )*/}
           {/* Menú desplegable que aparece al hacer clic en el avatar */}
           {dropdownOpen && (
             <div className="user-dropdown" style={{ display: "block" }}>

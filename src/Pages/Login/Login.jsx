@@ -54,10 +54,10 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
         );
 
         // Redirigir según el rol del usuario
-        if (responseLoginData.role === "USER") {
-          navigate("/");
-        } else {
+        if (responseLoginData.role === "ADMIN") {
           navigate("/admin");
+        } else {
+          navigate("/");
         }
       } else {
         throw new Error("Error en el inicio de sesión");
