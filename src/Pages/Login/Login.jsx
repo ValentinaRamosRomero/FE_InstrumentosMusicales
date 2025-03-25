@@ -32,32 +32,43 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
         const responseLoginData = responseLogin.data.data;
         console.log("Inicio de sesión exitoso:", responseLoginData);
 
-        // const responseUser = await axios.post(
-        //   import.meta.env.VITE_API_URL + "/users/find-by-email",
-        //   { email },
-        //   {
-        //     headers: {
-        //       "Content-Type": "application/json"
-        //     },
-        //   }
-        // );
+        localStorage.setItem("email", email)
+        //peticion para guardar las iniciales del usuario
+        const responseUser = await axios.post(
+          import.meta.env.VITE_API_URL + "/users/find-by-email",
+          { email },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${responseLoginData.token}`,
+            },
+          }
+        );
 
-        // if (responseUser.status === 200) {
-        //   const responseUserData = responseUser.data.data;
-        //   console.log("Usuario encontrado:", responseUserData);
-        // } else {
-        //   throw new Error("Error al buscar usuario");
-        // }
+        if(responseUser.status === 200){
+         const{ firstName, lastName } = responseUser.data.data;
+
+         // Obtener las iniciales
+          const initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`;
+
+          // Guardar las iniciales en el localStorage
+          localStorage.setItem('iniciales', initials);
+
+          console.log("Iniciales guardadas en localStorage:", initials);
+      }else{
+        throw new Error("Error al buscar Usuario")
+      }
+
         onLogin(
           responseLoginData.token,
           JSON.stringify({ ...responseLoginData })
         );
 
         // Redirigir según el rol del usuario
-        if (responseLoginData.role === "ADMIN") {
-          navigate("/admin");
-        } else {
+        if (responseLoginData.role === "USER") {
           navigate("/");
+        } else {
+          navigate("/admin");
         }
       } else {
         throw new Error("Error en el inicio de sesión");
