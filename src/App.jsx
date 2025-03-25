@@ -19,8 +19,9 @@ const App = () => {
   // Verificar si hay token al cargar la aplicación
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
 
-    if (token) {
+    if (token && email) {
       setIsAuthenticated(true);
       try {
         const storedUserData = JSON.parse(localStorage.getItem("role") || "{}");
@@ -29,6 +30,9 @@ const App = () => {
         console.error("Error al parsear datos de usuario:", error);
         localStorage.removeItem("role");
         localStorage.removeItem("token");
+        //borrado del email e iniciales del usuario
+        localStorage.removeItem("email");
+        localStorage.removeItem("iniciales");
       }
     }
   }, []);
@@ -46,6 +50,10 @@ const App = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+
+    localStorage.removeItem("email");
+    localStorage.removeItem("iniciales");
+    
     setIsAuthenticated(false);
     setUserData(null);
   };
