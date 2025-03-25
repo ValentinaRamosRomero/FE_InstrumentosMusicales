@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import logo from "../../assets/Logo.svg";
@@ -11,9 +11,6 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
   // Estado para controlar el menú desplegable
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Para navegación
-
-  //estado para almacenar las iniciales
-  const [initials, setInitials] = useState("");
 
   // Función para alternar el menú desplegable
   const toggleDropdown = () => {
@@ -35,17 +32,11 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
   const isAdmin = userData && userData?.role === "ADMIN";
   const isInvitado = userData && userData?.role === "USER";
 
-
-
-  // Recuperacion de las iniciales del user desde el LocalStorage
-  useEffect(() => {
-    const inicialesGuardadas = localStorage.getItem("iniciales");
-    if(inicialesGuardadas){
-      setInitials(inicialesGuardadas)
+  const getUserInitials = () => {
+    if (userData?.firstName && userData?.lastName) {
+      return `${userData.firstName.charAt(0)}${userData.lastName.charAt(0)}`;
     }
-  }, []);
-
-
+  };
 
   return (
     <header className="header">
@@ -63,8 +54,9 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
       {isAuthenticated ? (
         <div className="user-profile">
           <div className="user-info" onClick={toggleDropdown}>
-          <div className="user-icon">
-              <span className="initials">{initials}</span> {/* Iniciales dentro del círculo */}
+            <span>{getUserInitials()}</span>
+            <div className="user-avatar">
+              <img src={user_icon} alt="user-avatar" className="user-icon" />
             </div>
           </div>
           {/* Mostrar botón de Panel Admin si el usuario es administrador */}

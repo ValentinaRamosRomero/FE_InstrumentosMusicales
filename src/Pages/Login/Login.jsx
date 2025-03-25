@@ -32,33 +32,22 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
         const responseLoginData = responseLogin.data.data;
         console.log("Inicio de sesión exitoso:", responseLoginData);
 
-        localStorage.setItem("email", email)
-        //peticion para guardar las iniciales del usuario
-        const responseUser = await axios.post(
-          import.meta.env.VITE_API_URL + "/users/find-by-email",
-          { email },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${responseLoginData.token}`,
-            },
-          }
-        );
+        // const responseUser = await axios.post(
+        //   import.meta.env.VITE_API_URL + "/users/find-by-email",
+        //   { email },
+        //   {
+        //     headers: {
+        //       "Content-Type": "application/json"
+        //     },
+        //   }
+        // );
 
-        if(responseUser.status === 200){
-         const{ firstName, lastName } = responseUser.data.data;
-
-         // Obtener las iniciales
-          const initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`;
-
-          // Guardar las iniciales en el localStorage
-          localStorage.setItem('iniciales', initials);
-
-          console.log("Iniciales guardadas en localStorage:", initials);
-      }else{
-        throw new Error("Error al buscar Usuario")
-      }
-
+        // if (responseUser.status === 200) {
+        //   const responseUserData = responseUser.data.data;
+        //   console.log("Usuario encontrado:", responseUserData);
+        // } else {
+        //   throw new Error("Error al buscar usuario");
+        // }
         onLogin(
           responseLoginData.token,
           JSON.stringify({ ...responseLoginData })

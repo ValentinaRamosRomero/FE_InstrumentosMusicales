@@ -144,7 +144,13 @@ const ProductForm = ({ onSave, onCancel }) => {
                     </option>
                   ))}
               </select>
-             
+              {/*
+                <option value="">Seleccione una categoría</option>
+                <option value="Guitarra">Guitarra</option>
+                <option value="Batería">Batería</option>
+                <option value="Piano">Piano</option>
+                <option value="Bajo">Bajo</option>
+              </select>*/}
             </div>
 
             <div className="form-group">
