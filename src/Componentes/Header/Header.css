@@ -90,13 +90,31 @@
   font-weight: bold;
 }
 
+.initials {
+  font-size: 16px; /* Tamaño de la fuente de las iniciales */
+  font-weight: bold; /* Negrita */
+  color: #333; /* Color del texto */
+  font-family: "Aleo", serif;
+}
+
 .user-initials span{
   font-size: 1.5rem;
 }
 
 .user-icon {
-  width: 80%;
+  width: 40px;
+  height: 40px;
+  background-color: #fff; 
+  border-radius: 50%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #ddd;
+  margin: 5px;
 }
+
 
 /* Menú desplegable del usuario */
 .user-dropdown {
@@ -189,3 +207,4 @@
     height: 28px;
   }
 }
+
