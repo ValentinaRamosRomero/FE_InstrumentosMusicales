@@ -1,10 +1,9 @@
 /* Contenedor principal */
 .reservations-container {
   padding-top: 10%;
-  width: 60%;
+  width: 95%;
   margin: auto;
   text-align: center;
-  font-family: Arial, sans-serif;
 }
 
 /* Contenedor principal */
@@ -28,6 +27,7 @@
   color: white;
   position: relative;
   z-index: 2;
+  flex-shrink: 0;
 }
 
 /* Círculo completado */
@@ -75,6 +75,7 @@
   font-size: 14px;
   font-weight: 500;
   color: #333;
+  white-space: nowrap;
 }
 
 /* Texto para indicador de progreso */
@@ -94,13 +95,13 @@
   color: #333;
 }
 
-.reservationProduct-info{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 800px;
-    padding: 20px;
-    margin: 0 auto;
+.reservationProduct-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  padding: 20px;
+  margin: 0 auto;
 }
 
 /* Imagen del reservationProducto */
@@ -116,7 +117,7 @@
 .reservationChars-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 10px;
   width: 100%;
   margin-top: 20px;
 }
@@ -124,14 +125,17 @@
 /* Cada elemento de característica */
 .reservationChar-item {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   padding: 10px;
   border-bottom: 1px solid #eee;
+  min-width: 0;
 }
 
 .reservationChar-icon {
   width: 24px;
   height: 24px;
+  min-width: 20px;
   margin-right: 10px;
   opacity: 0.8;
 }
@@ -141,6 +145,7 @@
   font-size: 1rem;
   margin-right: 0.5rem;
   color: black;
+  white-space: nowrap;
 }
 
 .reservationChar-value {
@@ -149,3 +154,42 @@
   font-size: 1rem;
 }
 
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .reservations-container {
+    padding-top: 15%;
+  }
+  .reservationProduct-info {
+    padding-top: 3%;
+  }
+
+  .step-circle {
+    width: 35px;
+    height: 35px;
+  }
+
+  .reservationProduct-info {
+    padding: 10px 10px;
+  }
+
+  .reservationChars-grid {
+    gap: 5px;
+  }
+
+  /* Cada elemento de característica */
+  .reservationChar-item {
+    padding: 10px 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    height: 100%;
+  }
+  .reservationChar-icon {
+    margin-right: 5px;
+    margin-bottom: 4px;
+  }
+  .reservationChar-label,
+  .reservationChar-value {
+    font-size: 0.8rem;
+  }
+}
