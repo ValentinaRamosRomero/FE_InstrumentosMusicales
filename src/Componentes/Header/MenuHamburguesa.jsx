@@ -43,10 +43,11 @@ const MenuHamburguesa = ({ isAuthenticated, userData, onLogout }) => {
           <>
             {/* Mostrar perfil de usuario cuando está autenticado */}
             <div className="mobile-user-profile">
-              <div className="mobile-user-initials">
-                {userData?.nombre?.charAt(0)}{userData?.apellido?.charAt(0)}
-              </div>
               <img src={user_icon} alt="user-avatar" className="user-icon" />
+              <div className="mobile-user-initials">
+                {userData?.nombre?.charAt(0)}
+                {userData?.apellido?.charAt(0)}
+              </div>
             </div>
             {/* Opción de cerrar sesión */}
             <p className="auth-text" onClick={handleLogout}>

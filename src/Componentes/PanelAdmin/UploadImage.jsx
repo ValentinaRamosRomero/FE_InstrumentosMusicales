@@ -89,4 +89,3 @@ const uploadImage = ({ formData, setFormData }) => {
 };
 
 export default uploadImage;
-

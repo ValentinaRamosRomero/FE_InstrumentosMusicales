@@ -2,9 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import "./EditForm.css";
+import UploadImage from "./UploadImage";
 
 const ProductEditForm = ({ product, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
+    id: "",
     name: "",
     imageUrl: "",
     price: "",
@@ -16,10 +18,14 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
     origin: "",
     lauchYear: "",
     material: "",
-    size: "",
+    height: "",
+    width: "",
+    depth: "",
     recommendedUse: "",
   });
 
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -27,26 +33,42 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
   const [fieldsError, setFieldsError] = useState(false);
 
   useEffect(() => {
-    if (product) {
-      if (product) {
-        setFormData({
-          name: product.name || "",
-          imageUrl: product.imageUrl || "",
-          price: product.price || "",
-          categoryId: product.categoryId || "",
-          description: product.description || "",
-          brandId: product.brandId || "",
-          model: product.model || "",
-          productCondition: product.productCondition || "",
-          origin: product.origin || "",
-          lauchYear: product.lauchYear || "",
-          material: product.material || "",
-          height: product.height || "",
-          width: product.width || "",
-          depth: product.depth || "",
-          recommendedUse: product.recommendedUse || "",
-        });
+    // Fetch categories and brands
+    const fetchData = async () => {
+      try {
+        const [categoriesRes, brandsRes] = await Promise.all([
+          axios.get(import.meta.env.VITE_API_URL + "/categories"),
+          axios.get(import.meta.env.VITE_API_URL + "/brands"),
+        ]);
+        setCategories(categoriesRes.data.data);
+        setBrands(brandsRes.data.data);
+      } catch (error) {
+        console.error("Error fetching categories and brands", error);
       }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (product && product.id) {
+      setFormData({
+        id: product.id || "", // Add product ID for update
+        name: product.name || "",
+        imageUrl: product.imageUrl || "",
+        price: product.price || "",
+        categoryId: product.categoryId || "",
+        description: product.description || "",
+        brandId: product.brandId || "",
+        model: product.model || "",
+        productCondition: product.productCondition || "",
+        origin: product.origin || "",
+        lauchYear: product.lauchYear || "",
+        material: product.material || "",
+        height: product.height || "",
+        width: product.width || "",
+        depth: product.depth || "",
+        recommendedUse: product.recommendedUse || "",
+      });
     }
   }, [product]);
 
@@ -57,19 +79,14 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
       [name]: value,
     });
 
-    //Clear errors when user types
+    // Clear errors when user types
     setError(null);
     setNameError(false);
     setFieldsError(false);
   };
 
   const validateForm = () => {
-    const requiredFields = [
-      "name",
-      "price",
-      "categoryId",
-      "description",
-    ];
+    const requiredFields = ["name", "price", "categoryId", "description"];
     const missingFields = requiredFields.filter((field) => !formData[field]);
 
     if (missingFields.length > 0) {
@@ -78,6 +95,7 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
     }
     return true;
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -85,14 +103,45 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
       return;
     }
 
+    // Ensure product ID is included
+    if (!formData.id) {
+      console.error("No product ID found");
+      setError("No se puede actualizar: ID de producto no encontrado");
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setSuccess(false);
 
+    const productData = {
+      ...formData,
+      price: parseFloat(formData.price) || 0,
+      size:
+        formData.width && formData.height && formData.depth
+          ? `${formData.width}x${formData.height}x${formData.depth}`
+          : "",
+    };
+
+    // Remove undefined or null values
+    Object.keys(productData).forEach((key) =>
+      productData[key] === undefined || productData[key] === null
+        ? delete productData[key]
+        : {}
+    );
+
     try {
+      console.log("Sending product data:", productData); // Log the data being sent
+
       const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/products/update/${product.id}`,
-        formData
+        `${import.meta.env.VITE_API_URL}/products/update`,
+        productData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       setSuccess(true);
 
@@ -101,10 +150,21 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
         onUpdate(response.data.data);
       }
     } catch (error) {
-      console.error("Error updating product:", error);
-      setError(
-        error.response?.data?.message || "Error al actualizar el producto"
-      );
+      console.error("Full error response:", error.response); // Log full error response
+
+      if (error.response) {
+        setError(
+          error.response.data?.message ||
+            error.response.data?.error ||
+            "Error al actualizar el producto"
+        );
+      } else if (error.request) {
+        setError("No se recibió respuesta del servidor");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError("Error al configurar la solicitud");
+        console.error("Request setup error:", error.message);
+      }
 
       if (error.response?.data?.message?.includes("nombre en uso")) {
         setNameError(true);
@@ -113,6 +173,10 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
       setLoading(false);
     }
   };
+
+  if (!product || !product.id) {
+    return <p>Cargando datos del producto...</p>; // 🔹 Evita renderizar el formulario sin datos
+  }
 
   return (
     <div className="product-edit-overlay">
@@ -137,20 +201,8 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                   className={nameError ? "input-error" : ""}
                 />
               </div>
-              <div className="form-group">
-                <label>Imagen</label>
-                <div className="image-input-container">
-                  <input
-                    type="text"
-                    name="imageUrl"
-                    value={formData.imageUrl}
-                    onChange={handleChange}
-                  />
-                  <button type="button" className="browse-button">
-                    B
-                  </button>
-                </div>
-              </div>
+
+              <UploadImage formData={formData} setFormData={setFormData} />
             </div>
 
             <div className="form-row">
@@ -181,12 +233,15 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                   name="categoryId"
                   value={formData.categoryId}
                   onChange={handleChange}
+                  required
                 >
                   <option value="">Seleccionar categoría</option>
-                  <option value="Guitarras">Guitarras</option>
-                  <option value="Bajos">Bajos</option>
-                  <option value="Teclados">Teclados</option>
-                  <option value="Baterías">Baterías</option>
+                  {categories?.length > 0 &&
+                    categories.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
@@ -196,12 +251,20 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
             <div className="form-row">
               <div className="form-group">
                 <label>Marca</label>
-                <input
-                  type="text"
+                <select
                   name="brandId"
                   value={formData.brandId}
                   onChange={handleChange}
-                />
+                  required
+                >
+                  <option value="">Seleccione una marca</option>
+                  {brands?.length > 0 &&
+                    brands.map((brand) => (
+                      <option key={brand.id} value={brand.id}>
+                        {brand.name}
+                      </option>
+                    ))}
+                </select>
               </div>
               <div className="form-group">
                 <label>Modelo</label>

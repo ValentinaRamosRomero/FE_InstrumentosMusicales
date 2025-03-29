@@ -72,10 +72,8 @@
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  margin-right: 20%;
 }
-/*.user-profile:hover .btn-logout {
-  display: block;
-}*/
 
 /* Iniciales del usuario */
 .user-initials {
@@ -90,12 +88,29 @@
   font-weight: bold;
 }
 
+.initials {
+  font-size: 16px; /* Tamaño de la fuente de las iniciales */
+  font-weight: bold; /* Negrita */
+  color:  white;
+  font-family: "Aleo", serif;
+}
+
 .user-initials span{
   font-size: 1.5rem;
 }
 
 .user-icon {
-  width: 80%;
+  width: 40px;
+  height: 40px;
+  background-color: rgb(101, 100, 100); 
+  border-radius: 50%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #ddd;
+  margin: 5px;
 }
 
 /* Menú desplegable del usuario */
@@ -127,22 +142,27 @@
 
 /* Estilos para el botón del panel de administrador */
 .btn-admin-panel {
-  background-color: #2a7de1;
-  color: white;
+  background-color: #f2dede;
+  color: #444444; 
   border: none;
-  border-radius: 5px;
-  padding: 8px 12px;
+  border-radius: 6px; 
+  padding: 6px 12px; 
   font-size: 14px;
   cursor: pointer;
-  margin-bottom: 8px;
-  transition: background-color 0.3s;
+  font-weight: 600;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  height: 32px; 
+  white-space: nowrap; 
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+  text-transform: none; 
 }
 
 .btn-admin-panel:hover {
-  background-color: #1c63b8;
+  background-color: #fde9e9;
+  
 }
-
-/* RESPONSIVIDAD */
 
 /* Ajustes para tablets */
 @media (max-width: 1024px) {
@@ -189,3 +209,4 @@
     height: 28px;
   }
 }
+
