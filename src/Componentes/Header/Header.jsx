@@ -35,17 +35,13 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
   const isAdmin = userData && userData?.role === "ADMIN";
   const isInvitado = userData && userData?.role === "USER";
 
-
-
   // Recuperacion de las iniciales del user desde el LocalStorage
   useEffect(() => {
     const inicialesGuardadas = localStorage.getItem("iniciales");
-    if(inicialesGuardadas){
-      setInitials(inicialesGuardadas)
+    if (inicialesGuardadas) {
+      setInitials(inicialesGuardadas);
     }
   }, []);
-
-
 
   return (
     <header className="header">
@@ -63,10 +59,13 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
       {isAuthenticated ? (
         <div className="user-profile">
           <div className="user-info" onClick={toggleDropdown}>
-          <div className="user-icon">
-              <span className="initials">{initials}</span> {/* Iniciales dentro del círculo */}
+            <img src={user_icon} alt="user-avatar" className="user-icon" />
+            <div className="user-icon">
+              <span className="initials">{initials}</span>{" "}
+              {/* Iniciales dentro del círculo */}
             </div>
           </div>
+
           {/* Mostrar botón de Panel Admin si el usuario es administrador */}
           {isAdmin && (
             <button className="btn-admin-panel" onClick={goToAdminPanel}>

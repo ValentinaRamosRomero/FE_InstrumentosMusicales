@@ -11,7 +11,7 @@ import lanzamientoIcon from "../../assets/icons/lanzamiento-icon.png";
 import medidasIcon from "../../assets/icons/medidas-icon.png";
 import Footer from "../Footer/Footer";
 
-const Reservations = ({ product }) => {
+const Reservations = ({ product,isAuthenticated, userData }) => {
   if (!product) {
     return <p>Cargando...</p>;
   }
@@ -36,7 +36,11 @@ const Reservations = ({ product }) => {
 
   return (
     <>
-      <Header />
+      <Header
+        isAuthenticated={isAuthenticated}
+        userData={userData}
+        onLogout={() => {}}
+      />
       <div className="reservations-container">
         <div class="progress-container">
           <div class="step-label">
