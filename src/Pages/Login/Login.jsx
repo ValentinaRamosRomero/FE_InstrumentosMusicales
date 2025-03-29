@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ isAuthenticated, userData, onLogin }) => {
+const Login = ({ isAuthenticated, userData, onLogin, onLogout }) => {
   const {
     register,
     handleSubmit,
@@ -86,7 +86,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
       <Header
         isAuthenticated={isAuthenticated}
         userData={userData}
-        onLogout={() => {}}
+        onLogout={onLogout}
       />
       <div className="back">
         <div className="login">

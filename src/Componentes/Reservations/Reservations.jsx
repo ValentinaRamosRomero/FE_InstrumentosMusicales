@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "../Products/ProductDetail.css";
 import "./Reservations.css";
 import Header from "../Header/Header";
@@ -39,7 +39,7 @@ const Reservations = ({ product,isAuthenticated, userData }) => {
       <Header
         isAuthenticated={isAuthenticated}
         userData={userData}
-        onLogout={() => {}}
+        onLogout={onLogout}
       />
       <div className="reservations-container">
         <div class="progress-container">
