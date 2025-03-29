@@ -1,14 +1,6 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@400;700&display=swap");
 
-/* Configuración general */
-body {
-  font-family: "Aleo", serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 .container-success {
     font-family: "Aleo", serif;
     color: black;
