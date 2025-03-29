@@ -1,0 +1,151 @@
+/* Contenedor principal */
+.reservations-container {
+  padding-top: 10%;
+  width: 60%;
+  margin: auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+/* Contenedor principal */
+.progress-container {
+  display: flex;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+/* Estilos para los círculos numerados */
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+  position: relative;
+  z-index: 2;
+}
+
+/* Círculo completado */
+.step-completed {
+  background-color: #e74c4c; /* Color rojo para paso completado */
+}
+
+/* Círculo activo */
+.step-active {
+  background-color: #e74c4c; /* Color rojo para paso activo */
+}
+
+/* Círculo pendiente */
+.step-pending {
+  background-color: white;
+  color: #333;
+  border: 1px solid #cccccc;
+}
+
+/* Líneas conectoras entre círculos */
+.connector-line {
+  flex-grow: 1;
+  height: 2px;
+  background-color: #cccccc;
+  margin: 0 10px;
+}
+
+/* Línea completada */
+.connector-completed {
+  background-color: #e74c4c;
+}
+
+/* Etiquetas para los pasos */
+.step-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  text-align: center;
+}
+
+/* Texto de la etiqueta */
+.label-text {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Texto para indicador de progreso */
+.progress-text {
+  position: absolute;
+  right: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Título del reservationProducto */
+.reservationProduct-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.reservationProduct-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+/* Imagen del reservationProducto */
+.reservationProduct-image {
+  max-width: 300px;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  object-fit: contain;
+}
+
+/* Grid de características */
+.reservationChars-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Cada elemento de característica */
+.reservationChar-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.reservationChar-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  opacity: 0.8;
+}
+
+.reservationChar-label {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  color: black;
+}
+
+.reservationChar-value {
+  color: #333;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
