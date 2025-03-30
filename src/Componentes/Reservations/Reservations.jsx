@@ -133,6 +133,21 @@ const Reservations = ({ product, isAuthenticated, userData }) => {
   
   if (!product) return <p>Cargando...</p>;
 
+  useEffect(() => {
+    const storedStart = localStorage.getItem("fechaInicio");
+    const storedEnd = localStorage.getItem("fechaFin");
+    
+    const parseLocalDate = (str) => {
+      const [year, month, day] = str.split("-");
+      return new Date(Number(year), Number(month) - 1, Number(day));
+    };
+    
+    if (storedStart) setStartDate(parseLocalDate(storedStart));
+    if (storedEnd) setEndDate(parseLocalDate(storedEnd));    
+    
+  }, []);
+  
+
   // Traer datos desde localStorage si todo lo demás falla
   const nombre = localStorage.getItem("nombre");
   const apellido = localStorage.getItem("apellido");

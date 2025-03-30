@@ -127,7 +127,25 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
+  
+    // Guardar fechas en localStorage
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = `${date.getMonth() + 1}`.padStart(2, "0");
+      const day = `${date.getDate()}`.padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+    
+    if (start) {
+      localStorage.setItem("fechaInicio", formatDate(start));
+    }
+    if (end) {
+      localStorage.setItem("fechaFin", formatDate(end));
+    }
+    
+    
   };
+  
 
   const handleReservationSubmit = async () => {
     if (!startDate || !endDate) {
@@ -170,9 +188,9 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
           "El rango de fechas seleccionado incluye fechas no disponibles"
         );
       }
-
-      const formattedStartDate = startDate.toISOString().split("T")[0];
-      const formattedEndDate = endDate.toISOString().split("T")[0];
+      const formattedStartDate = startDate.toLocaleDateString("en-CA"); // YYYY-MM-DD
+      const formattedEndDate = endDate.toLocaleDateString("en-CA");
+      
 
       const response = await axios.post(
         import.meta.env.VITE_API_URL + "/reservations",
