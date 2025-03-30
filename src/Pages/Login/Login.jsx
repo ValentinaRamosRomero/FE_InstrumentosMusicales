@@ -30,41 +30,45 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
 
       if (responseLogin.status === 200) {
         const responseLoginData = responseLogin.data.data;
+        const token = responseLoginData.token;
+
         console.log("Inicio de sesión exitoso:", responseLoginData);
 
-        localStorage.setItem("email", email)
-        //peticion para guardar las iniciales del usuario
+        // Guardar el token y email
+        localStorage.setItem("token", token);
+        localStorage.setItem("email", email);
+
+        // Obtener datos del usuario
         const responseUser = await axios.post(
           import.meta.env.VITE_API_URL + "/users/find-by-email",
           { email },
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${responseLoginData.token}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
 
-        if(responseUser.status === 200){
-         const{ firstName, lastName } = responseUser.data.data;
+        if (responseUser.status === 200) {
+          const { firstName, lastName } = responseUser.data.data;
 
-         // Obtener las iniciales
-          const initials = `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`;
+          // Guardar info en localStorage
+          localStorage.setItem("nombre", firstName);
+          localStorage.setItem("apellido", lastName);
+          localStorage.setItem("iniciales", `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`);
 
-          // Guardar las iniciales en el localStorage
-          localStorage.setItem('iniciales', initials);
+          console.log("Datos del usuario guardados en localStorage:");
+          console.log("Nombre:", firstName);
+          console.log("Apellido:", lastName);
+        } else {
+          throw new Error("Error al obtener los datos del usuario");
+        }
 
-          console.log("Iniciales guardadas en localStorage:", initials);
-      }else{
-        throw new Error("Error al buscar Usuario")
-      }
+        // Enviar token e info al estado global si usas contexto o props
+        onLogin(token, JSON.stringify({ ...responseLoginData }));
 
-        onLogin(
-          responseLoginData.token,
-          JSON.stringify({ ...responseLoginData })
-        );
-
-        // Redirigir según el rol del usuario
+        // Redireccionar según rol
         if (responseLoginData.role === "USER") {
           navigate("/");
         } else {
@@ -103,8 +107,8 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
                 },
               })}
             />
-            {errors.correo && (
-              <span className="error-message">❌{errors.correo.message}</span>
+            {errors.email && (
+              <span className="error-message">❌{errors.email.message}</span>
             )}
 
             <label htmlFor="password">Contraseña</label>
@@ -114,7 +118,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
                 required: { value: true, message: "Contraseña es requerida" },
                 minLength: {
                   value: 6,
-                  message: "Password debe tener al menos 6 caracteres",
+                  message: "La contraseña debe tener al menos 6 caracteres",
                 },
               })}
             />
@@ -130,7 +134,6 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
           </form>
         </div>
       </div>
-
       <Footer />
     </>
   );
