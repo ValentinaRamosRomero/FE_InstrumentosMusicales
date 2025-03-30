@@ -47,7 +47,8 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
 
   const handleSaveProduct = (newProduct) => {
     // Update products array with the newly created product
-    setProducts([...products, newProduct]);
+    //setProducts([...products, newProduct]);
+    fetchProducts();
     setShowProductForm(false);
   };
 
@@ -65,10 +66,10 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
     );
   };
 
-  /* const handleDeleteProduct = (product) => {
+  const handleDeleteProduct = (product) => {
     setProductToDelete(product);
     setShowDeleteConfirmation(true);
-  };*/
+  };
 
   const confirmDelete = async () => {
     try {
