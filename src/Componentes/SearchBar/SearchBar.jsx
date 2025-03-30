@@ -78,17 +78,18 @@ const SearchBar = ({ setSearchResults, onSearchByDate }) => {
 
       <div className="search-bar-wrapper">
         <form className="search-wrapper" onSubmit={handleSearch}>
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Buscar instrumentos..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
+          <div className="Calendar_Input">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Buscar instrumentos..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
 
-          <AvailabilityCalendar onFilterByDate={onSearchByDate} />
-
+            <AvailabilityCalendar onFilterByDate={onSearchByDate} />
+          </div>
           <button className="search-button" type="submit">
             <FaSearch className="search-icon" />
             <span className="search-text-button">Buscar</span>
