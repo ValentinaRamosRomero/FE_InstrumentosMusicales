@@ -7,24 +7,53 @@ import electrico from "../../assets/ElectronicoDesktop.png";
 import accesorio from "../../assets/AccesorioDesktop.png";
 import bajos from "../../assets/BajoDesktop.png";
 
-const Categoria = () => {
+const Categoria = ({ setSearchResults }) => {
   const categoriasDesktop = [
-    { imgSrc: guitarra, imgSrcMobile: guitarra, nombre: "Guitarras" },
-    { imgSrc: bateria, imgSrcMobile: bateria, nombre: "Baterías" },
-    { imgSrc: piano, imgSrcMobile: piano, nombre: "Pianos" },
-    { imgSrc: bajos, imgSrcMobile: bajos, nombre: "Bajos" },
-    { imgSrc: electrico, imgSrcMobile: electrico, nombre: "Eléctricos" },
-    { imgSrc: accesorio, imgSrcMobile: accesorio, nombre: "Accesorios" },
+    { imgSrc: guitarra, nombre: "Guitarras" },
+    { imgSrc: bateria, nombre: "Baterías" },
+    { imgSrc: piano, nombre: "Pianos" },
+    { imgSrc: bajos, nombre: "Bajos" },
+    { imgSrc: electrico, nombre: "Eléctricos" },
+    { imgSrc: accesorio, nombre: "Accesorios" },
   ];
+
+  const handleCategoryClick = async (category) => {
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/products/search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: category }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error al filtrar por categoría: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setSearchResults(data);
+    } catch (error) {
+      console.error("Error al filtrar productos:", error);
+    }
+  };
 
   return (
     <div className="categorias-types">
       {categoriasDesktop.map((cat, index) => (
-        <button key={index} className="categoria">
+        <div
+          key={index}
+          className="categoria"
+          role="button"
+          tabIndex="0"
+          onClick={() => handleCategoryClick(cat.nombre)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              handleCategoryClick(cat.nombre);
+            }
+          }}
+        >
           <img className="image-desktop" src={cat.imgSrc} alt={cat.nombre} />
-          <img className="image-mobile" src={cat.imgSrcMobile} alt={cat.nombre} />
-          <span>{cat.nombre}</span>
-        </button>
+          <span className="d-none d-md-block">{cat.nombre}</span>
+        </div>
       ))}
     </div>
   );
