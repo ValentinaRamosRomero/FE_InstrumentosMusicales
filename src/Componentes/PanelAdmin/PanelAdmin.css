@@ -12,29 +12,74 @@
 }
 
 .sidebar {
+  width: 240px;
+  height: 100%;
   padding-top: 10%;
-  width: 250px;
-  height: auto;
-  background-color: #333;
-  color: white;
+  background: linear-gradient(180deg, #1e1e1e 0%, #2d2d2d 100%);
+  color: #f8f8f8;
+  padding: 20px 0;
+  border-right: 1px solid #444;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-item {
+  padding: 12px 20px;
+  margin: 20px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
 }
 
 .sidebar-item:hover {
-  background-color: #444;
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: translateX(3px);
 }
 
 .sidebar-item.active {
-  background-color: #222;
-  font-weight: bold;
+  background-color: #e61919;
+  color: white;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 .arrow {
+  margin-right: 15px;
+  font-size: 11px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  padding-left: 10px;
+}
+.sidebar-item:hover .arrow,
+.sidebar-item.active .arrow {
+  opacity: 1;
+}
+
+/* Optional: Add a logo/title section at the top */
+.sidebar-header {
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #444;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+/* Optional: Add icons to menu items */
+.sidebar-icon {
   margin-right: 10px;
+  width: 20px;
+  text-align: center;
 }
 .content-section {
   flex: 1;
-  padding: 20px;
+  padding: 30px;
   overflow-y: auto;
-  padding-top: 12%;
+  padding-top: 6%;
 }
 h1 {
   margin-top: 20px;
@@ -64,7 +109,7 @@ h2 {
   margin-bottom: 30px;
 }
 
-.admin-table th{
+.admin-table th {
   background-color: #bc1818;
   color: white;
   font-size: 20px;
@@ -104,7 +149,7 @@ h2 {
   padding: 0;
 }
 
-.confirmation-box{
+.confirmation-box {
   display: flex;
   align-items: center;
   background-color: #ffebee;
@@ -114,7 +159,7 @@ h2 {
   border: 1px solid #ffcdd2;
 }
 
-.confirmation-icon{
+.confirmation-icon {
   background-color: #ffb300;
   color: white;
   width: 30px;
@@ -127,12 +172,12 @@ h2 {
   margin-right: 15px;
 }
 
-.confirmation-message{
+.confirmation-message {
   flex: 1;
   font-size: 16px;
 }
 
-.confirm-button{
+.confirm-button {
   background-color: #bc1818;
   color: white;
   border: none;
@@ -147,14 +192,14 @@ h2 {
 }
 
 /* Products section styles */
-.products-header{
+.products-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin: 40px 20px 20px 20px;
 }
 
-.new-product-button{
+.new-product-button {
   background-color: #28a745;
   color: white;
   border: none;
@@ -166,18 +211,18 @@ h2 {
   align-items: center;
 }
 
-.plus-icon{
+.plus-icon {
   font-size: 20px;
   margin-right: 5px;
 }
 
-.products-table{
+.products-table {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid black;
 }
 
-.products-table th{
+.products-table th {
   background-color: #bc1818;
   color: white;
   padding: 12px;
@@ -185,35 +230,90 @@ h2 {
   border: 1px solid black;
 }
 
-.products-table td{
+.products-table td {
   padding: 10px;
   text-align: center;
   border: 1px solid black;
 }
 
-.actions-cell{
+.actions-cell {
   margin-right: 50%;
-  align-items: center; 
+  align-items: center;
   gap: 10px;
 }
-.action-button{
+.action-button {
   border: none;
   background: none;
   cursor: pointer;
   font-size: 18px;
 }
 
-.action-button.view{
+.action-button.view {
   color: green;
 }
-.action-button.edit{
+.action-button.edit {
   color: orange;
 }
-.action-button.delete{
+.action-button.delete {
   color: red;
 }
 
-.category-form{
+.category-form {
   max-width: 600px;
   margin-top: 20px;
+}
+.mobile-error-panel{
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Imagen para dispositivos móviles */
+  .mobile-error-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    height: 100vh;
+    justify-content: center;
+  }
+
+  .mobile-error-icon-container {
+    background-color: #ffe0e0;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(255, 0, 0, 0.1);
+  }
+
+  .mobile-error-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .mobile-error-title {
+    color: #d32f2f;
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+  }
+
+  .mobile-error-message {
+    color: #5f5f5f;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+    text-align: center;
+    max-width: 280px;
+  }
+
+  /* Oculta elementos específicos en mobile */
+  .panel-admin-container {
+    display: none;
+  }
 }

@@ -9,6 +9,7 @@ const Banner = () => {
     <div className="banner-container">
       {/* Imagen para dispositivos móviles */}
       <img src={mobileImage} alt="Banner móvil" className="banner-image mobile" />
+
       {/* Contenido del banner */}
       <div className="banner-content">
         <h1 className="banner-title">Encuentra el Sonido Perfecto para Ti</h1>
@@ -19,23 +20,20 @@ const Banner = () => {
         <div className="button-container">
           <button className="banner-button">RENTAR AHORA</button>
         </div>
-
       </div>
+
+      {/* Sección exclusiva para escritorio y tablet */}
       <div className="Banner_Desktop">
         <div className="General_Info">
           <div className="banner-stats">
             <p><strong>200+</strong> Marcas Internacionales</p>
             <p><strong>2,000+</strong> Productos de calidad</p>
             <p><strong>30,000+</strong> Clientes Satisfechos</p>
-          </div>  
-          {/* Imagen para tabletas y escritorio */}
+          </div>
           <img src={desktopImage} alt="Músico" className="banner-image desktop" />
         </div>
-        {/* Imagen de marcas en la parte inferior en desktop y tablet */}
         <img src={brandsImage} alt="Marcas" className="banner-image brands" />
       </div>
-      
-
     </div>
   );
 };

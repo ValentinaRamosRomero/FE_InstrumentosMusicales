@@ -8,7 +8,6 @@ import accesorio from "../../assets/AccesorioDesktop.png";
 import bajos from "../../assets/BajoDesktop.png";
 
 const Categoria = ({ setSearchResults }) => {
-  // Lista de categorías disponibles
   const categoriasDesktop = [
     { imgSrc: guitarra, nombre: "Guitarras" },
     { imgSrc: bateria, nombre: "Baterías" },
@@ -18,16 +17,12 @@ const Categoria = ({ setSearchResults }) => {
     { imgSrc: accesorio, nombre: "Accesorios" },
   ];
 
-  // Función para filtrar productos por categoría
   const handleCategoryClick = async (category) => {
     try {
-      // Hacemos una solicitud POST al backend con la categoría seleccionada
-      const response = await fetch(import.meta.env.VITE_API_URL+"/products/search", {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/products/search", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: category }), // Enviamos la categoría como parámetro de búsqueda
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: category }),
       });
 
       if (!response.ok) {
@@ -35,8 +30,6 @@ const Categoria = ({ setSearchResults }) => {
       }
 
       const data = await response.json();
-
-      // Actualizamos los resultados en la lista de productos
       setSearchResults(data);
     } catch (error) {
       console.error("Error al filtrar productos:", error);
@@ -46,10 +39,21 @@ const Categoria = ({ setSearchResults }) => {
   return (
     <div className="categorias-types">
       {categoriasDesktop.map((cat, index) => (
-        <button key={index} className="categoria" onClick={() => handleCategoryClick(cat.nombre)}>
+        <div
+          key={index}
+          className="categoria"
+          role="button"
+          tabIndex="0"
+          onClick={() => handleCategoryClick(cat.nombre)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              handleCategoryClick(cat.nombre);
+            }
+          }}
+        >
           <img className="image-desktop" src={cat.imgSrc} alt={cat.nombre} />
-          <span>{cat.nombre}</span>
-        </button>
+          <span className="d-none d-md-block">{cat.nombre}</span>
+        </div>
       ))}
     </div>
   );

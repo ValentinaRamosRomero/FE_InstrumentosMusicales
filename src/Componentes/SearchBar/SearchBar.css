@@ -1,15 +1,15 @@
 /* 📌 Contenedor principal de la barra de búsqueda */
 .search-container {
   width: 100%;
-  background: linear-gradient(135deg, #bc1818, #8a0e0e); /* ✅ Gradiente atractivo */
+  background: linear-gradient(135deg, #bc1818, #8a0e0e);
   padding: 30px 20px;
   text-align: center;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
   position: relative;
-  border-radius: 8px; /* ✅ Bordes redondeados */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* ✅ Sombra para resaltar */
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* 📌 Título del bloque de búsqueda */
@@ -18,7 +18,7 @@
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 8px;
-  letter-spacing: 1px; /* ✅ Mejor separación entre letras */
+  letter-spacing: 1px;
   text-transform: uppercase;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
@@ -28,50 +28,59 @@
   color: #f8d7da;
   font-size: 18px;
   margin-bottom: 15px;
-  font-style: italic; /* ✅ Toque estilizado */
+  font-style: italic;
 }
 
-/* 📌 Contenedor de la barra de búsqueda y el botón */
-.search-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 90%;
-  max-width: 1200px;
-  gap: 12px;
-  position: relative;
-  background: rgba(255, 255, 255, 0.15); /* ✅ Fondo translúcido */
-  padding: 10px;
-  border-radius: 8px;
-  backdrop-filter: blur(8px); /* ✅ Efecto de desenfoque */
-}
-
-.search-bar-wrapper{
+/* 📌 Contenedor general de la barra de búsqueda */
+.search-bar-wrapper {
   display: flex;
   justify-content: center;
 }
 
-/* 📌 Barra de búsqueda */
-.search-input {
-  flex-grow: 1;
+/* 📌 Wrapper de formulario de búsqueda */
+.search-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  gap: 12px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 10px;
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+}
+
+/* 📌 Contenedor del input y calendario */
+.Calendar_Input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+/* 📌 Input de búsqueda */
+.Calendar_Input .search-input {
+  flex: 1;
+  min-width: 200px;
   padding: 14px;
   border-radius: 6px;
   font-size: 16px;
   outline: none;
   border: none;
-  width: 100%;
   position: relative;
   z-index: 10;
   background: white;
   transition: all 0.3s ease;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* ✅ Sombra sutil */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .search-input:focus {
   transform: scale(1.02);
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); /* ✅ Resalta al escribir */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
+
 
 /* 📌 Botón de búsqueda */
 .search-button {
@@ -88,10 +97,11 @@
   transition: all 0.3s;
   margin: 0;
   width: 30%;
+  flex-shrink: 0;
 }
 
 .search-button:hover {
-  background: #333; /* ✅ Efecto hover */
+  background: #333;
   transform: scale(1.05);
 }
 
@@ -101,7 +111,7 @@
   font-size: 20px;
 }
 
-/* 📌 Contenedor de sugerencias flotante debajo de la barra */
+/* 📌 Contenedor de sugerencias */
 .suggestions-list {
   position: absolute;
   top: 100%;
@@ -120,7 +130,7 @@
   opacity: 0.95;
 }
 
-/* 📌 Elementos dentro de las sugerencias */
+/* 📌 Elementos dentro de sugerencias */
 .suggestions-list li {
   padding: 12px;
   display: flex;
@@ -135,7 +145,7 @@
   transform: scale(1.02);
 }
 
-/* 📌 Imagen dentro de la sugerencia */
+/* 📌 Imagen dentro de sugerencia */
 .suggestions-list img {
   width: 50px;
   height: 70px;
@@ -151,12 +161,6 @@
     flex-direction: column;
     gap: 12px;
     padding: 15px;
-  }
-
-  .search-input {
-    width: 100%;
-    font-size: 14px;
-    padding: 12px;
   }
 
   .search-button {

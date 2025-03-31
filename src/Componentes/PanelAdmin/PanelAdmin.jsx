@@ -6,7 +6,10 @@ import UsersSection from "./UsersSection";
 import ProductForm from "./ProductForm";
 import axios from "axios";
 import ProductEditForm from "./EditForm";
-const PanelAdmin = ({ isAuthenticated, userData }) => {
+import { useNavigate } from "react-router-dom";
+import ErrorReserva from "../../assets/ReservaError.png";
+
+const PanelAdmin = ({ isAuthenticated, userData, onLogout }) => {
   const [activeSection, setActiveSection] = useState("usuarios");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,6 +18,8 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
+
+  const navigate = useNavigate();
 
   //Fecth Productos from API
   useEffect(() => {
@@ -52,9 +57,21 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
     setShowProductForm(false);
   };
 
-  const handleViewProduct = (product) => {
-    setSelectedProduct(product);
-    setShowProductEditForm(true);
+  const handleViewProduct = async (productId) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/products/${productId}`
+      );
+      if (response.data) {
+        setSelectedProduct(response.data); // Guardar datos completos en el estado
+        setShowProductEditForm(true); // Abrir el formulario después de obtener los datos
+      }
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUpdateProduct = (updatedProduct) => {
@@ -69,6 +86,12 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
   const handleDeleteProduct = (product) => {
     setProductToDelete(product);
     setShowDeleteConfirmation(true);
+  };
+
+  //manejador del boton de cerrado, para q se actualice la lista
+  const handleCloseEditForm = () => {
+    fetchProducts();
+    setShowProductEditForm(false);
   };
 
   const confirmDelete = async () => {
@@ -96,13 +119,21 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
   const renderSidebar = () => {
     return (
       <div className="sidebar">
+        <div className="sidebar-header">
+          <div className="sidebar-title">Admin Panel</div>
+        </div>
+
         <div
           className={`sidebar-item ${
             activeSection === "usuarios" ? "active" : ""
           }`}
           onClick={() => setActiveSection("usuarios")}
         >
-          <span className="arrow">►</span>Usuarios
+          <span className="sidebar-icon">
+            <i className="fas fa-users"></i>
+          </span>
+          <span>Usuarios</span>
+          {activeSection === "usuarios" && <span className="arrow">►</span>}
         </div>
 
         <div
@@ -111,15 +142,11 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
           }`}
           onClick={() => setActiveSection("productos")}
         >
-          <span className="arrow">►</span>Productos
-        </div>
-        <div
-          className={`sidebar-item ${
-            activeSection === "crear-categoria" ? "active" : ""
-          }`}
-          onClick={() => setActiveSection("crear-categoria")}
-        >
-          Crear categoría
+          <span className="sidebar-icon">
+            <i className="fas fa-guitar"></i>
+          </span>
+          <span>Productos</span>
+          {activeSection === "productos" && <span className="arrow">►</span>}
         </div>
       </div>
     );
@@ -171,6 +198,7 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
           <ProductEditForm
             product={selectedProduct}
             onClose={() => {
+              handleCloseEditForm();
               setShowProductEditForm(false);
               setSelectedProduct(null);
             }}
@@ -205,12 +233,15 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
                   <td>{product.categoryName}</td>
                   <td>{product.description}</td>
                   <td className="actions-cell">
-                    <button className="action-button view">
+                    <button
+                      className="action-button view"
+                      onClick={() => navigate(`/product-details/${product.id}`)}
+                    >
                       <FaEye />
                     </button>
                     <button
                       className="action-button edit "
-                      onClick={() => handleViewProduct(product)}
+                      onClick={() => handleViewProduct(product.id)}
                     >
                       <FaEdit />
                     </button>
@@ -246,17 +277,33 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
   };
 
   return (
-    <div className="panel-admin-container">
-      <Header
-        isAuthenticated={isAuthenticated}
-        userData={userData}
-        onLogout={() => {}}
-      />
-      <div className="main-content">
-        {renderSidebar()}
-        {renderContent()}
+    <>
+      {/* Notificación en Móviles*/}
+      <div className="mobile-error-panel">
+        <div className="mobile-error-icon-container">
+          <img
+            src={ErrorReserva}
+            alt="Error Icon"
+            className="mobile-error-icon"
+          />
+        </div>
+        <h2 className="mobile-error-title">Ha ocurrido un error</h2>
+        <p className="mobile-error-message">
+          El panel del administrador solo está disponible para la versión desktop.
+        </p>
       </div>
-    </div>
+      <div className="panel-admin-container">
+        <Header
+          isAuthenticated={isAuthenticated}
+          userData={userData}
+          onLogout={onLogout}
+        />
+        <div className="main-content">
+          {renderSidebar()}
+          {renderContent()}
+        </div>
+      </div>
+    </>
   );
 };
 

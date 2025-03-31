@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { set } from "react-hook-form";
 import { FaFolder } from "react-icons/fa";
 
-const uploadImage = ({ formData, setFormData }) => {
+const uploadImage = ({ formData, setFormData, defaultImageUrl, isNewProduct }) => {
   const [uploading, setUploading] = useState(false);
   const [fileName, setFileName] = useState("");
   const fileInputRef = useRef(null);
@@ -11,6 +11,7 @@ const uploadImage = ({ formData, setFormData }) => {
   const handleFileButtonClick = () => {
     fileInputRef.current.click();
   };
+
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -56,6 +57,10 @@ const uploadImage = ({ formData, setFormData }) => {
       setUploading(false);
     }
   };
+
+   // Si no hay una nueva imagen cargada, usamos la imagen por defecto (defaultImageUrl)
+  const imageUrlToUse = formData.imageUrl || defaultImageUrl;
+
   return (
     <div className="form-group">
       <label htmlFor="imageUrl">Imagen</label>
@@ -64,7 +69,7 @@ const uploadImage = ({ formData, setFormData }) => {
           type="text"
           id="imageUrl"
           name="imageUrl"
-          value={fileName}
+          value={fileName || imageUrlToUse}
           placeholder="Selecciona una imagen..."
           readOnly
         />
@@ -84,6 +89,10 @@ const uploadImage = ({ formData, setFormData }) => {
           onChange={handleFileChange}
         />
       </div>
+      {/* 👇 Validación: Si estamos creando el producto, la imagen es obligatoria */}
+      {isNewProduct && !formData.imageUrl && (
+        <div className="error-message">La imagen es obligatoria</div>
+      )}
     </div>
   );
 };

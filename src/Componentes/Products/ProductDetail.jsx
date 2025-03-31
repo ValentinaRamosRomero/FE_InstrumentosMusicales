@@ -26,15 +26,10 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
   const [availabilityLoading, setAvailabilityLoading] = useState(true);
   const [availabilityError, setAvailabilityError] = useState(null);
   const [bookedDateRanges, setBookedDateRanges] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(null);
-  const [reservationStatus, setReservationStatus] = useState({
-    loading: false,
-    error: null,
-    success: false,
-  });
+  const [startDate, setStartDate] = useState(null); // Inicializado como null
+  const [endDate, setEndDate] = useState(null); // Inicializado como null
   const [showModal, setShowModal] = useState(false);
-  
+  const navigate = useNavigate();
 
   const fetchAvailability = async () => {
     setAvailabilityLoading(true);
@@ -127,76 +122,20 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-  };
 
-  const handleReservationSubmit = async () => {
-    if (!startDate || !endDate) {
-      setReservationStatus({
-        loading: false,
-        error: "Por favor selecciona las fechas de inicio y fin",
-        success: false,
-      });
-      return;
+    // Guardar fechas en localStorage
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = `${date.getMonth() + 1}`.padStart(2, "0");
+      const day = `${date.getDate()}`.padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+
+    if (start) {
+      localStorage.setItem("fechaInicio", formatDate(start));
     }
-
-    if (!isAuthenticated) {
-      setReservationStatus({
-        loading: false,
-        error: "Debes iniciar sesión para hacer una reserva",
-        success: false,
-      });
-      return;
-    }
-
-    setReservationStatus({
-      loading: true,
-      error: null,
-      success: false,
-    });
-
-    try {
-      const isRangeBooked = bookedDateRanges.some((range) => {
-        const rangeStart = new Date(range.startDate);
-        const rangeEnd = new Date(range.endDate);
-        return (
-          (startDate >= rangeStart && startDate <= rangeEnd) ||
-          (endDate >= rangeStart && endDate <= rangeEnd) ||
-          (startDate <= rangeStart && endDate >= rangeEnd)
-        );
-      });
-
-      if (isRangeBooked) {
-        throw new Error(
-          "El rango de fechas seleccionado incluye fechas no disponibles"
-        );
-      }
-
-      const formattedStartDate = startDate.toISOString().split("T")[0];
-      const formattedEndDate = endDate.toISOString().split("T")[0];
-
-      const response = await axios.post(
-        import.meta.env.VITE_API_URL + "/reservations",
-        {
-          productId: id,
-          userId: userData.id,
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-        }
-      );
-
-      setReservationStatus({
-        loading: false,
-        error: null,
-        success: true,
-      });
-
-      await fetchAvailability();
-    } catch (error) {
-      setReservationStatus({
-        loading: false,
-        error: error.response?.data?.message || error.message,
-        success: false,
-      });
+    if (end) {
+      localStorage.setItem("fechaFin", formatDate(end));
     }
   };
 
@@ -206,6 +145,14 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
 
   const closeAvailabilityModal = () => {
     setShowModal(false);
+  };
+
+  const handleReserveClick = () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+    onReserve(product);
   };
 
   if (loading) return <div className="loading">Cargando...</div>;
@@ -282,7 +229,7 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
                     width="48px"
                     fill="#FFFFFF"
                   >
-                    <path d="M286.79-81Q257-81 236-102.21t-21-51Q215-183 236.21-204t51-21Q317-225 338-203.79t21 51Q359-123 337.79-102t-51 21Zm400 0Q657-81 636-102.21t-21-51Q615-183 636.21-204t51-21Q717-225 738-203.79t21 51Q759-123 737.79-102t-51 21ZM235-741l110 228h288l125-228H235Zm-30-60h589.07q22.97 0 34.95 21 11.98 21-.02 42L694-495q-11 19-28.56 30.5T627-453H324l-56 104h491v60H277q-42 0-60.5-28t.5-63l64-118-152-322H51v-60h117l37 79Zm140 288h288-288Z" />
+                    <path d="M286.79-81Q257-81 236-102.21t-21-51Q215-183 236.21-204t51-21Q317-225 338-203.79t21 51Q759-123 737.79-102t-51 21Zm400 0Q657-81 636-102.21t-21-51Q615-183 636.21-204t51-21Q717-225 738-203.79t21 51ZM235-741l110 228h288l125-228H235Zm-30-60h589.07q22.97 0 34.95 21 11.98 21-.02 42L694-495q-11 19-28.56 30.5T627-453H324l-56 104h491v60H277q-42 0-60.5-28t.5-63l64-118-152-322H51v-60h117l37 79Zm140 288h288-288Z" />
                   </svg>
                 </button>
               </div>
@@ -358,34 +305,9 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
                     />
 
                     <div className="reservation-controls mt-4">
-                      <button
-                        onClick={handleReservationSubmit}
-                        disabled={
-                          reservationStatus.loading || !startDate || !endDate
-                        }
-                        className={`w-full py-2 px-4 rounded-md font-medium text-white 
-                                                    ${
-                                                      !startDate || !endDate
-                                                        ? "bg-gray-400 cursor-not-allowed"
-                                                        : "bg-blue-600 hover:bg-blue-700 transition-colors"
-                                                    }`}
-                      >
-                        {reservationStatus.loading
-                          ? "Procesando..."
-                          : "ACEPTAR"}
+                      <button onClick={handleReserveClick} disabled={!product} className= 'reservation-button'>
+                        Reservar
                       </button>
-
-                      {reservationStatus.error && (
-                        <div className="mt-2 text-red-600 text-sm">
-                          {reservationStatus.error}
-                        </div>
-                      )}
-
-                      {reservationStatus.success && (
-                        <div className="mt-2 text-green-600 text-sm">
-                          ¡Reserva confirmada exitosamente!
-                        </div>
-                      )}
                     </div>
 
                     <div className="calendar-legend">
@@ -510,9 +432,6 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
             </div>
           </div>
         </div>
-        <button onClick={() => onReserve(product)} disabled={!product}>
-          Reservar
-        </button>
       </div>
 
       <Footer />
