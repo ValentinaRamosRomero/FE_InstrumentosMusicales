@@ -130,7 +130,7 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
     const size = `${formData.height}x${formData.width}x${formData.depth}`;
     const productData = {
       ...formData,
-      price: parseFloat(formData.price) || 0,
+      price: parseFloat(formData.price).toFixed(1),
       size,
       imageUrl: formData.imageUrl || product.mainImage,
     };
@@ -238,6 +238,7 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                 <input
                   type="number"
                   name="price"
+                  step="0.01"
                   value={formData.price}
                   onChange={handleChange}
                 />

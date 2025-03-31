@@ -12,7 +12,6 @@ const uploadImage = ({ formData, setFormData, defaultImageUrl, isNewProduct }) =
     fileInputRef.current.click();
   };
 
-  //AAAAAAAAAAAAAAAAAAAAAA
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
