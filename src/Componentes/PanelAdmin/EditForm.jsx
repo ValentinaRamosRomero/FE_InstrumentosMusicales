@@ -16,7 +16,7 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
     model: "",
     productCondition: "",
     origin: "",
-    lauchYear: "",
+    launchYear: "",
     material: "",
     height: "",
     width: "",
@@ -49,28 +49,41 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
+  //Funciones para mapear categorias, marcas a su id correspondiente
+   const getCategoryId = (categoryName) => {
+    const category = categories.find((cat) => cat.name === categoryName);
+    return category ? category.id : "";
+  };
+  const getBrandId = (brandName) => {
+    const brand = brands.find((b) => b.name === brandName);
+    return brand ? brand.id : "";
+  };
+
+  useEffect(() => {    
     if (product && product.id) {
+      // Separacion del campo size en alto, ancho y profundidad
+      const sizeArray = product.size ? product.size.split("x") : [];
+      
       setFormData({
         id: product.id || "", // Add product ID for update
         name: product.name || "",
-        imageUrl: product.imageUrl || "",
+        imageUrl: product.mainImage || "",
         price: product.price || "",
-        categoryId: product.categoryId || "",
+        categoryId: getCategoryId(product.category) || "",
         description: product.description || "",
-        brandId: product.brandId || "",
+        brandId: getBrandId(product.brand) || "",
         model: product.model || "",
-        productCondition: product.productCondition || "",
+        productCondition: product.product_condition || "",
         origin: product.origin || "",
-        lauchYear: product.lauchYear || "",
+        launchYear: product.launchYear || "",
         material: product.material || "",
-        height: product.height || "",
-        width: product.width || "",
-        depth: product.depth || "",
+        height: sizeArray[0] || "",
+        width: sizeArray[1] || "",
+        depth: sizeArray[2] || "",
         recommendedUse: product.recommendedUse || "",
       });
     }
-  }, [product]);
+  }, [product, categories, brands]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -109,19 +122,23 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
       setError("No se puede actualizar: ID de producto no encontrado");
       return;
     }
-
     setLoading(true);
     setError(null);
     setSuccess(false);
 
+    //seteo del campo size a formato "0x0x0"
+    const size = `${formData.height}x${formData.width}x${formData.depth}`;
     const productData = {
       ...formData,
       price: parseFloat(formData.price) || 0,
-      size:
-        formData.width && formData.height && formData.depth
-          ? `${formData.width}x${formData.height}x${formData.depth}`
-          : "",
+      size,
+      imageUrl: formData.imageUrl || product.mainImage,
     };
+
+    //eliminacion del body los campos height, deep, width
+    delete productData.height;
+    delete productData.width;
+    delete productData.depth;
 
     // Remove undefined or null values
     Object.keys(productData).forEach((key) =>
@@ -143,11 +160,17 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
           },
         }
       );
-      setSuccess(true);
+      if(response.data && response.data.mensaje){
+        console.log("Product update success:", response.data.mensaje);
+        setSuccess(true);
+      } else {
+        console.log("Unexpected server response:", response.data);
+        setError("Unexpected response format");
+      }
 
       // Notify parent component of the update
       if (onUpdate) {
-        onUpdate(response.data.data);
+        onUpdate(response.data);
       }
     } catch (error) {
       console.error("Full error response:", error.response); // Log full error response
@@ -202,7 +225,11 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                 />
               </div>
 
-              <UploadImage formData={formData} setFormData={setFormData} />
+              <UploadImage formData={formData} 
+              setFormData={setFormData} 
+              defaultImageUrl={product.mainImage}
+              isNewProduct ={false}
+              />
             </div>
 
             <div className="form-row">
@@ -303,8 +330,8 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                 <label>Año de lanzamiento</label>
                 <input
                   type="text"
-                  name="lauchYear"
-                  value={formData.lauchYear}
+                  name="launchYear"
+                  value={formData.launchYear}
                   onChange={handleChange}
                 />
               </div>
@@ -329,6 +356,7 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                   name="height"
                   value={formData.height}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group dimension">
@@ -338,6 +366,7 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                   name="width"
                   value={formData.width}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="form-group dimension">
@@ -347,6 +376,7 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                   name="depth"
                   value={formData.depth}
                   onChange={handleChange}
+                  required
                 />
               </div>
             </div>

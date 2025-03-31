@@ -112,7 +112,11 @@ const ProductForm = ({ onSave, onCancel }) => {
               />
             </div>
 
-            <UploadImage formData={formData} setFormData={setFormData}/>
+            <UploadImage formData={formData} 
+            setFormData={setFormData} 
+            defaultImageUrl={null}
+            isNewProduct ={true}
+            />
 
             <div className="form-group">
               <label htmlFor="price">Precio</label>
@@ -242,6 +246,7 @@ const ProductForm = ({ onSave, onCancel }) => {
                   name="height"
                   value={formData.height}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
@@ -253,6 +258,7 @@ const ProductForm = ({ onSave, onCancel }) => {
                   name="width"
                   value={formData.width}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
@@ -264,6 +270,7 @@ const ProductForm = ({ onSave, onCancel }) => {
                   name="depth"
                   value={formData.depth}
                   onChange={handleChange}
+                  required
                 />
               </div>
             </div>
