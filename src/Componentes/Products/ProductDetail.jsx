@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import "./ProductDetail.css";
@@ -20,16 +20,40 @@ import calendarIcon from "../../assets/icons/calendar-icon.png";
 
 const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
   const { id } = useParams();
+  const location = useLocation();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [availabilityLoading, setAvailabilityLoading] = useState(true);
   const [availabilityError, setAvailabilityError] = useState(null);
   const [bookedDateRanges, setBookedDateRanges] = useState([]);
-  const [startDate, setStartDate] = useState(null); // Inicializado como null
-  const [endDate, setEndDate] = useState(null); // Inicializado como null
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+
+  // Recuperar fechas guardadas del localStorage al cargar el componente
+  // pero solo si son para este producto específico
+  useEffect(() => {
+    const savedProductId = localStorage.getItem("selectedProductId");
+    
+    // Solo cargar las fechas si corresponden al producto actual
+    if (savedProductId === id) {
+      const savedStartDate = localStorage.getItem("fechaInicio");
+      const savedEndDate = localStorage.getItem("fechaFin");
+      
+      if (savedStartDate) {
+        setStartDate(new Date(savedStartDate));
+      }
+      if (savedEndDate) {
+        setEndDate(new Date(savedEndDate));
+      }
+    } else {
+      // Si es un producto diferente, limpiar las fechas seleccionadas
+      setStartDate(null);
+      setEndDate(null);
+    }
+  }, [id]);
 
   const fetchAvailability = async () => {
     setAvailabilityLoading(true);
@@ -131,11 +155,19 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
       return `${year}-${month}-${day}`;
     };
 
+    // Guardar también el ID del producto para asociar las fechas con este producto específico
+    localStorage.setItem("selectedProductId", id);
+    
     if (start) {
       localStorage.setItem("fechaInicio", formatDate(start));
+    } else {
+      localStorage.removeItem("fechaInicio");
     }
+    
     if (end) {
       localStorage.setItem("fechaFin", formatDate(end));
+    } else {
+      localStorage.removeItem("fechaFin");
     }
   };
 
@@ -149,6 +181,12 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
 
   const handleReserveClick = () => {
     if (!isAuthenticated) {
+      // Guardar la ruta actual exacta (con ID del producto) para redireccionar después del login
+      localStorage.setItem("redirectAfterLogin", window.location.pathname);
+      
+      // Guardar el ID del producto actual para poder recuperar las fechas específicas al volver
+      localStorage.setItem("selectedProductId", id);
+      
       navigate("/login");
       return;
     }
