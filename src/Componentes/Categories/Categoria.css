@@ -30,6 +30,7 @@
   position: relative;
   box-sizing: border-box;
   flex-shrink: 0;
+
 }
 
 .categoria img.image-desktop {
@@ -49,6 +50,34 @@
   padding: 7px;
   border-radius: 16px;
 }
+
+.categoria {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer; /* 👈 cursor de mano */
+}
+
+.categoria:hover {
+  transform: scale(1.02); /* ligero aumento */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* sombra flotante */
+}
+
+/* Tooltip con pseudoelemento (opcional) */
+.categoria:hover::after {
+  content: "Haz clic para filtrar por esta categoría";
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+}
+
 
 /* =================== DESKTOP =================== */
 @media (min-width: 835px) {
