@@ -45,6 +45,10 @@ const AvailabilityCalendar = ({ onFilterByDate }) => {
     setShowCalendar(false);
   };
 
+  const handleCloseCalendar = () => {
+    setShowCalendar(false);
+  };
+
   return (
     <div className="availability-calendar">
       <div className="calendar-icon-container" onClick={toggleCalendar}>
@@ -67,7 +71,10 @@ const AvailabilityCalendar = ({ onFilterByDate }) => {
             selectsRange
             inline
           />
-          <button onClick={handleApplyFilter} className="apply-button">Aplicar</button>
+          <div className="calendar-buttons">
+            <button onClick={handleApplyFilter} className="apply-button">Aplicar</button>
+            <button onClick={handleCloseCalendar} className="close-button mobile-only">Cerrar</button>
+          </div>
         </div>
       )}
     </div>

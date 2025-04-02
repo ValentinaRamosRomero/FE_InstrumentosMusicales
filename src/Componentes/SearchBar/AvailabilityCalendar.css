@@ -1,5 +1,6 @@
 .availability-calendar {
-  position: relative;
+  position: relative; /* Necesario para que el popup flotante se posicione bien */
+  z-index: 1000;
   text-align: center;
   display: flex;
   align-items: center;
@@ -32,7 +33,7 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 8px;
-  z-index: 1000;
+  z-index: 99999;
 }
 
 /* Botón de aplicar */
@@ -50,6 +51,11 @@
 .apply-button:hover {
   background-color: #45a049;
 }
+
+.mobile-only {
+  display: none;
+}
+
 
 /* ========= MOBILE ========= */
 @media screen and (max-width: 768px) {
@@ -81,4 +87,31 @@
     width: 24px;
     height: 24px;
   }
+
+  .mobile-only {
+    display: inline-block;
+  }
+
+  .calendar-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.close-button {
+  padding: 8px 16px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.close-button:hover {
+  background-color: #d32f2f;
+}
+
 }

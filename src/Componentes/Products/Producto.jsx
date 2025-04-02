@@ -23,7 +23,7 @@ const Producto = ({ data, pagina, setPagina, totalPaginas }) => {
   }
 
   return (
-    <div className="productos-container"  id="productos">
+    <div className="productos-container" id="productos">
       {data.length === 0 ? (
         <p>No hay instrumentos disponibles.</p>
       ) : (
@@ -38,8 +38,13 @@ const Producto = ({ data, pagina, setPagina, totalPaginas }) => {
             />
             <h3 className="producto-nombre">{instrument.name}</h3>
             <h4 className="producto-precio">${instrument.pricePerHour} / hora</h4>
-
-            <button className="agregar-producto-btn">Agregar Producto</button>
+  
+            <button
+              className="agregar-producto-btn"
+              onClick={() => navigate(`/product-details/${instrument.id}`)}
+            >
+              Ver producto
+            </button>
           </div>
         ))
       )}
