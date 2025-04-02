@@ -31,8 +31,8 @@ const Home = ({ isAuthenticated, userData, onLogout }) => {
       if (!response.ok) throw new Error(`Error al obtener instrumentos: ${response.statusText}`);
 
       const data = await response.json();
-      setInstruments(data);
-      setTotalPaginas(Math.ceil(data.length / 6));
+      setInstruments(Array.isArray(data.data) ? data.data : []);
+      setTotalPaginas(Math.ceil((data.data?.length || 0) / 6));
     } catch (error) {
       console.error("Error al obtener instrumentos musicales:", error);
     }
