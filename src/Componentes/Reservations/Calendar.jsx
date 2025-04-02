@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Calendar.css";
 
-const Calendar = ({ startDate, endDate, onChange, isDateBooked }) => {
+const Calendar = ({ startDate, endDate, onChange, bookedDateRanges = [] }) => {
+  useEffect(() => {
+    console.log("📆 Fechas reservadas recibidas en Calendar:", bookedDateRanges);
+  }, [bookedDateRanges]);
+
   return (
     <div className="calendar-box">
       <DatePicker
@@ -15,8 +19,21 @@ const Calendar = ({ startDate, endDate, onChange, isDateBooked }) => {
         selectsRange
         inline
         minDate={new Date()}
+        excludeDateIntervals={bookedDateRanges}
         dayClassName={(date) =>
-          isDateBooked(date) ? "booked-date" : undefined
+          bookedDateRanges.some((range) => {
+            const check = new Date(date);
+            check.setHours(0, 0, 0, 0);
+
+            const start = new Date(range.startDate);
+            const end = new Date(range.endDate);
+            start.setHours(0, 0, 0, 0);
+            end.setHours(0, 0, 0, 0);
+
+            return check >= start && check <= end;
+          })
+            ? "booked-date"
+            : undefined
         }
       />
     </div>
