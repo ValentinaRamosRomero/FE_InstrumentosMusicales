@@ -209,7 +209,7 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
           <div className="purchase-section">
             <div className="quantity-controls">
               <div className="price-tag">${product.price}</div>
-              <select className="quantity-select" defaultValue="1">
+              {/*<select className="quantity-select" defaultValue="1">
                 {[...Array(4)].map((_, i) => (
                   <option key={i + 1} value={i + 1}>
                     {i + 1}
@@ -218,7 +218,7 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
               </select>
               <button className="add-to-cart-button desktop-button">
                 Agregar al carrito
-              </button>
+              </button>*/}
 
               <div className="add-to-cart-container">
                 <button className="add-to-cart-button">
