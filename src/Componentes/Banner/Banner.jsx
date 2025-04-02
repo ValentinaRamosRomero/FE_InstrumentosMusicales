@@ -18,7 +18,9 @@ const Banner = () => {
           ¡Calidad, variedad y el mejor sonido te esperan!
         </p>
         <div className="button-container">
-          <button className="banner-button">RENTAR AHORA</button>
+          <a href="#productos">
+            <button className="banner-button">VER PRODUCTOS</button>
+          </a>
         </div>
       </div>
 
