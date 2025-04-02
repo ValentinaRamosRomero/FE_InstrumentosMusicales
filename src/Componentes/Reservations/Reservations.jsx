@@ -5,16 +5,14 @@ import Header from "../Header/Header";
 import Calendar from "./Calendar";
 import Footer from "../Footer/Footer";
 import { FaCalendarAlt } from "react-icons/fa";
-
 import marcaIcon from "../../assets/icons/marca-icon.png";
 import modeloIcon from "../../assets/icons/modelo-icon.png";
 import condicionIcon from "../../assets/icons/condicion-icon.png";
 import origenIcon from "../../assets/icons/origen-icon.png";
 import lanzamientoIcon from "../../assets/icons/lanzamiento-icon.png";
 import medidasIcon from "../../assets/icons/medidas-icon.png";
-
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
   const { id } = useParams();
@@ -23,6 +21,7 @@ const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
   const [bookedDateRanges, setBookedDateRanges] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAvailability = async () => {
@@ -97,100 +96,145 @@ const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
       alert("Por favor selecciona un rango de fechas válido.");
       return;
     }
-  
+
+    // Guardar fechas en localStorage para que estén disponibles en el componente Confirmation
+    localStorage.setItem("fechaInicio", startDate.toISOString().split("T")[0]);
+    localStorage.setItem("fechaFin", endDate.toISOString().split("T")[0]);
+
     // Formatear fechas a YYYY-MM-DD
     const formattedStart = startDate.toISOString().split("T")[0];
     const formattedEnd = endDate.toISOString().split("T")[0];
-  
+
+    // Asegurarse de que hay un email válido
+    const userEmail = currentUser?.email || localStorage.getItem("email");
+
+    if (!userEmail) {
+      alert(
+        "No se ha podido identificar su correo electrónico. Por favor, inicie sesión nuevamente."
+      );
+      return;
+    }
+
     const reservationData = {
-      productId: product.id,
-      nombre: currentUser?.nombre,
-      apellido: currentUser?.apellido,
-      email: currentUser?.email,
       startDate: formattedStart,
       endDate: formattedEnd,
+      userEmail: userEmail,
+      productId: Number(product.id),
     };
-  
+    console.log("Datos enviados:", reservationData);
+    // Primero navegar a la página de confirmación con estado de carga
+    //navigate("/confirmation", { state: { isLoading: true } });
     try {
-      await axios.post(
-        import.meta.env.VITE_API_URL + "/reservations",
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No se encontró un token de autenticación.");
+        alert("Tu sesión ha expirado. Inicia sesión nuevamente.");
+        return;
+      }
+
+      const response = await axios.post(
+        import.meta.env.VITE_API_URL + "/reservations/save",
         reservationData,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         }
       );
-  
-      alert("Reserva confirmada exitosamente.");
-      // Aquí podrías redirigir o limpiar el formulario si deseas
+
+      console.log("Respuesta exitosa:", response.data);
+
+      // Solo navegar UNA vez después de completar la operación
+      navigate("/confirmation", {
+        state: {
+          reservationData: reservationData,
+        },
+      });
     } catch (error) {
-      console.error("Error al confirmar la reserva:", error);
-      alert("Ocurrió un error al guardar la reserva.");
+      console.error(
+        "Error al confirmar la reserva:",
+        error.response ? error.response.data : error.message
+      );
+      navigate("/confirmation", {
+        state: {
+          isLoading: false,
+          isSuccess: false,
+        },
+      });
     }
   };
-  
-  
+
   if (!product) return <p>Cargando...</p>;
 
   useEffect(() => {
     const storedStart = localStorage.getItem("fechaInicio");
     const storedEnd = localStorage.getItem("fechaFin");
-    
+
     const parseLocalDate = (str) => {
+      if (!str) return null;
       const [year, month, day] = str.split("-");
       return new Date(Number(year), Number(month) - 1, Number(day));
     };
-    
-    if (storedStart) setStartDate(parseLocalDate(storedStart));
-    if (storedEnd) setEndDate(parseLocalDate(storedEnd));    
-    
-  }, []);
-  
 
-  // Traer datos desde localStorage si todo lo demás falla
-  const nombre = localStorage.getItem("nombre");
-  const apellido = localStorage.getItem("apellido");
-  const email = localStorage.getItem("email");
+    if (storedStart) setStartDate(parseLocalDate(storedStart));
+    if (storedEnd) setEndDate(parseLocalDate(storedEnd));
+  }, []);
 
   const fallbackUser = {
     nombre: localStorage.getItem("nombre") || "",
     apellido: localStorage.getItem("apellido") || "",
     email: localStorage.getItem("email") || "",
   };
-  
+
   const currentUser = userData?.nombre
     ? userData
     : userInfo?.nombre
     ? userInfo
     : fallbackUser;
-  
+
   const { characteristics } = product;
   const characteristicList = [
     { icon: marcaIcon, label: "Marca", value: characteristics.marca },
     { icon: modeloIcon, label: "Modelo", value: characteristics.modelo },
-    { icon: condicionIcon, label: "Condición", value: characteristics.condicion },
+    {
+      icon: condicionIcon,
+      label: "Condición",
+      value: characteristics.condicion,
+    },
     { icon: origenIcon, label: "Origen", value: characteristics.origen },
-    { icon: lanzamientoIcon, label: "Año de lanzamiento", value: characteristics.lanzamiento },
+    {
+      icon: lanzamientoIcon,
+      label: "Año de lanzamiento",
+      value: characteristics.lanzamiento,
+    },
     { icon: medidasIcon, label: "Medidas", value: characteristics.medidas },
   ];
 
   return (
     <>
-      <Header isAuthenticated={isAuthenticated} userData={currentUser} onLogout={onLogout} />
+      <Header
+        isAuthenticated={isAuthenticated}
+        userData={currentUser}
+        onLogout={onLogout}
+      />
 
       <div className="reservations-container">
         {/* Barra de progreso */}
         <div className="progress-container">
           <div className="step-label">
-            <div className="step-circle step-completed"><span className="checkmark">✓</span></div>
+            <div className="step-circle step-completed">
+              <span className="checkmark">✓</span>
+            </div>
             <span className="label-text">Tus datos</span>
           </div>
           <div className="connector-line connector-completed"></div>
-          <div className="step-circle step-active"><span>2</span></div>
+          <div className="step-circle step-active">
+            <span>2</span>
+          </div>
           <div className="connector-line"></div>
           <div className="step-label">
-            <div className="step-circle step-pending"><span className="checkmark">3</span></div>
+            <div className="step-circle step-pending">
+              <span className="checkmark">3</span>
+            </div>
             <span className="label-text">Paso 2 de 3</span>
           </div>
         </div>
@@ -198,11 +242,19 @@ const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
         {/* Información del producto */}
         <h2 className="reservationProduct-title">{product.name}</h2>
         <div className="reservationProduct-info">
-          <img src={product.images} alt={product.name} className="reservationProduct-image" />
+          <img
+            src={product.images}
+            alt={product.name}
+            className="reservationProduct-image"
+          />
           <div className="reservationChars-grid">
             {characteristicList.map((item, index) => (
               <div key={index} className="reservationChar-item">
-                <img src={item.icon} alt={item.label} className="reservationChar-icon" />
+                <img
+                  src={item.icon}
+                  alt={item.label}
+                  className="reservationChar-icon"
+                />
                 <span className="reservationChar-label">{item.label}:</span>
                 <span className="reservationChar-value">{item.value}</span>
               </div>
@@ -214,15 +266,28 @@ const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
         <div className="Detalles-reservacion">
           <div className="user-info-row">
             <div className="user-info-grid">
-              <div><strong>Nombre:</strong> {currentUser?.nombre} {currentUser?.apellido}</div>
-              <div><strong>Correo electrónico:</strong> {currentUser?.email}</div>
+              <div>
+                <strong>Nombre:</strong> {currentUser?.nombre}{" "}
+                {currentUser?.apellido}
+              </div>
+              <div>
+                <strong>Correo electrónico:</strong> {currentUser?.email}
+              </div>
             </div>
           </div>
 
           <div className="fechas-seleccionadas">
-            <p><strong>Fecha de entrega:</strong> {startDate ? startDate.toLocaleDateString() : "No seleccionada"}</p>
-            <p><strong>Fecha de devolución:</strong> {endDate ? endDate.toLocaleDateString() : "No seleccionada"}</p>
-            <p><strong>Duración total del alquiler:</strong> {calcularDuracion()}</p>
+            <p>
+              <strong>Fecha de entrega:</strong>{" "}
+              {startDate ? startDate.toLocaleDateString() : "No seleccionada"}
+            </p>
+            <p>
+              <strong>Fecha de devolución:</strong>{" "}
+              {endDate ? endDate.toLocaleDateString() : "No seleccionada"}
+            </p>
+            <p>
+              <strong>Duración total del alquiler:</strong> {calcularDuracion()}
+            </p>
           </div>
         </div>
 
