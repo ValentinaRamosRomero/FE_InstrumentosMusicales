@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ isAuthenticated, userData, onLogin }) => {
+const Login = ({ isAuthenticated, userData, onLogin, onLogout }) => {
   const {
     register,
     handleSubmit,
@@ -68,11 +68,23 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
         // Enviar token e info al estado global si usas contexto o props
         onLogin(token, JSON.stringify({ ...responseLoginData }));
 
-        // Redireccionar según rol
-        if (responseLoginData.role === "USER") {
-          navigate("/");
+        // Verificar si hay una ruta guardada para redireccionar después del login
+        const redirectPath = localStorage.getItem("redirectAfterLogin");
+        
+        if (redirectPath) {
+          // Limpiar la ruta guardada después de usarla
+          localStorage.removeItem("redirectAfterLogin");
+          
+          // Hacemos una redirección directa a la URL completa usando window.location
+          // para asegurar un refresco completo de la página y cargar el componente correctamente
+          window.location.href = redirectPath;
         } else {
-          navigate("/admin");
+          // Redireccionar según rol (comportamiento original)
+          if (responseLoginData.role === "USER") {
+            navigate("/");
+          } else {
+            navigate("/admin");
+          }
         }
       } else {
         throw new Error("Error en el inicio de sesión");
@@ -90,7 +102,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
       <Header
         isAuthenticated={isAuthenticated}
         userData={userData}
-        onLogout={() => {}}
+        onLogout={onLogout}
       />
       <div className="back">
         <div className="login">

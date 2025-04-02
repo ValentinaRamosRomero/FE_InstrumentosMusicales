@@ -16,7 +16,7 @@ import medidasIcon from "../../assets/icons/medidas-icon.png";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const Reservations = ({ product, isAuthenticated, userData }) => {
+const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
   const { id } = useParams();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -177,7 +177,7 @@ const Reservations = ({ product, isAuthenticated, userData }) => {
 
   return (
     <>
-      <Header isAuthenticated={isAuthenticated} userData={currentUser} onLogout={() => {}} />
+      <Header isAuthenticated={isAuthenticated} userData={currentUser} onLogout={onLogout} />
 
       <div className="reservations-container">
         {/* Barra de progreso */}

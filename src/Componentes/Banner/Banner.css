@@ -1,43 +1,41 @@
-/* Contenedor del Banner */
 .banner-container {
   width: 100%;
+  min-height: 100vh;
+  background-color: #f8f8f8;
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+/* === MOBILE === */
+.banner-image.mobile {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.banner-content.mobile {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f8f8f8;
-  text-align: left;
-  position: relative;
-  padding-top: 70px;
+  padding: 2rem;
+  text-align: center;
 }
 
-
-
-/* Contenido del banner */
-.banner-content {
-  width: 100%;
-  max-width: 900px;
-  text-align: left;
-  padding: 20px;
-}
-
-/* Título */
 .banner-title {
-  font-size: 36px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 15px;
-  line-height: 1.2;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #BC1818;
+  margin-bottom: 1rem;
 }
 
-/* Texto */
 .banner-text {
-  font-size: 20px;
+  font-size: 1.125rem;
   color: #444;
-  margin-bottom: 25px;
+  margin-bottom: 1.5rem;
   line-height: 1.5;
 }
 
-/* Botón */
 .button-container {
   display: flex;
   justify-content: center;
@@ -46,155 +44,181 @@
 .banner-button {
   background-color: #BC1818;
   color: white;
-  padding: 14px 28px;
-  font-size: 18px;
+  padding: 0.75rem 2rem;
   border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition:0.3s;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(188, 24, 24, 0.3);
 }
 
 .banner-button:hover {
   background-color: #b36161;
+  transform: translateY(-2px) scale(1.05);
 }
 
-/* Imagen para dispositivos móviles */
-.banner-image.mobile {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* Oculta elementos específicos en mobile */
-.Banner_Desktop {
+/* === DESKTOP === */
+.banner-desktop {
   display: none;
 }
 
-/* Ajustes para tabletas y escritorio */
 @media screen and (min-width: 768px) {
-  .banner-container {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0;
-  }
-
-  .banner-content {
-    max-width: 70%;
-    padding: 50px;
-  }
-
-  .banner-title {
-    font-size: 48px;
-  }
-
-  .banner-text {
-    font-size: 22px;
-  }
-
-  .banner-button {
-    font-size: 20px;
-    padding: 16px 32px;
-  }
-
-  .banner-image.mobile {
+  .banner-image.mobile,
+  .banner-content.mobile {
     display: none;
   }
 
-  .Banner_Desktop {
+  .banner-desktop {
     display: flex;
-    flex-direction: column;
-    width: 100%;
     align-items: center;
-  }
-
-  .banner-stats {
-    font-size: 18px;
-    color: #000;
-    display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    align-items: left;
+    height: 100vh;
+    padding: 4rem;
     position: relative;
-    left: -50%;
-    width: 40%;
-    gap: 35px;
+    background: linear-gradient(135deg, #f8f8f8, #fff);
+    overflow: hidden;
   }
-  
-  .banner-stats p {
-    margin: 0;
-    position: relative;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 20px;
-    white-space: nowrap;
-    font-weight: normal;
-    color: #000;
+
+  .animated-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle at 20% 40%, #BC1818 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, #b36161 0%, transparent 50%);
+    opacity: 0.12;
+    z-index: -1;
+    animation: floatBG 12s ease-in-out infinite alternate;
   }
-  
-  .banner-stats p strong {
-    font-size: 30px;
+
+  @keyframes floatBG {
+    0% {
+      background-position: 20% 40%, 80% 70%;
+    }
+    100% {
+      background-position: 25% 35%, 75% 75%;
+    }
+  }
+
+  .banner-desktop-left {
+    width: 50%;
+    z-index: 2;
+  }
+
+  .banner-desktop-content {
+    color: #333;
+    max-width: 90%;
+    padding-right: 2rem;
+  }
+
+  .banner-desktop-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #BC1818;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+  }
+
+  .banner-desktop-title:hover {
+    color: #b36161;
+  }
+
+  .banner-desktop-text {
+    font-size: 1.25rem;
+    color: #444;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    transition: transform 0.2s ease;
+  }
+
+  .banner-desktop-text:hover {
+    transform: scale(1.02);
+  }
+
+  .banner-desktop-button {
+    background-color: #BC1818;
+    color: white;
+    padding: 0.9rem 2.2rem;
+    border-radius: 999px;
     font-weight: bold;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+    box-shadow: 0 10px 30px rgba(188, 24, 24, 0.25);
+    position: relative;
+    overflow: hidden;
   }
-  
-  
-  .banner-image.desktop {
-    display: block;
-    width: 60%;
-    height: auto;
-    object-fit: contain;
-    position: absolute; /* Permite ubicarlo en cualquier parte del contenedor padre */
-    top: -4%; /* Lo ubica en la mitad del contenedor */
-    left: 40%; /* Lo centra horizontalmente */
-    z-index: 100; /* Asegura que esté por encima de otros elementos */
-    pointer-events: none; /* Para que no bloquee la interacción con otros elementos */
-  }
-  
 
-  .banner-image.brands {
+  .banner-desktop-button::before {
+    content: "";
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 300%;
+    height: 300%;
+    border-radius: 50%;
+    transition: transform 0.5s ease;
+    z-index: 0;
+  }
+
+  .banner-desktop-button:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .banner-desktop-button:hover {
+    background-color: #b36161;
+    transform: scale(1.05);
+  }
+
+  .banner-desktop-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .banner-desktop-stats div {
+    text-align: center;
+  }
+
+  .banner-desktop-stats strong {
     display: block;
+    font-size: 2rem;
+    color: #BC1818;
+  }
+
+  .banner-desktop-stats span {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .banner-desktop-right {
+    width: 50%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .banner-desktop-right canvas {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    background: transparent;
+    pointer-events: auto;
+  }
+
+  .banner-brands-image {
+    position: absolute;
+    bottom: 0;
     width: 100%;
-    height: 160px;
-    align-self: center;
-  }
-
-  .General_Info{
-    padding-bottom: 10%;
-  }
-}
-
-/* Ajustes para pantallas grandes */
-@media screen and (min-width: 1024px) {
-  .banner-title {
-    font-size: 56px;
-  }
-
-  .banner-text {
-    font-size: 24px;
-  }
-
-  .banner-button {
-    font-size: 22px;
-    padding: 18px 36px;
-  }
-
-  .banner-stats {
-    font-size: 20px;
-  }
-
-  .banner-image.brands {
-    height: 180px;
-  }
-  .banner-image.desktop {
-    display: block;
-    width: 38%;
-    height: auto;
+    max-height: 120px;
     object-fit: contain;
-    position: absolute; /* Permite ubicarlo en cualquier parte del contenedor padre */
-    top: 3.3%; /* Lo ubica en la mitad del contenedor */
-    left: 62%; /* Lo centra horizontalmente */
-    z-index: 100; /* Asegura que esté por encima de otros elementos */
-    pointer-events: none; /* Para que no bloquee la interacción con otros elementos */
+    opacity: 0.8;
+    z-index: 1;
   }
 }
