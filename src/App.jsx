@@ -12,6 +12,7 @@ import Login from "./Pages/Login/Login";
 import RegisterPage from "./Pages/Register/Register";
 import PanelAdmin from "./Componentes/PanelAdmin/PanelAdmin";
 import Reservations from "./Componentes/Reservations/Reservations";
+import Confirmation from "./Componentes/Reservations/Confirmation";
 
 // Separate component to use useNavigate
 const ProductDetailWrapper = ({ product, onReserve, ...props }) => {
@@ -120,7 +121,7 @@ const App = () => {
       />
       {/* Ruta Registro */}
       <Route path="/register" element={<RegisterPage />} />{" "}
-      {/* <Route path="/admin" element={<PanelAdmin/>} /> */}
+      
       {/* Ruta del panel de administrador - Protegida */}
       {
         <Route
@@ -141,6 +142,8 @@ const App = () => {
           }
         />
       }
+
+      {<Route path="/confirmation" element={<Confirmation/>} /> }
     </Routes>
   );
 };

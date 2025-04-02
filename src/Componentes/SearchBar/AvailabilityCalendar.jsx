@@ -1,107 +1,84 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import React, { useState, useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import "./AvailabilityCalendar.css";
 import calendarIcon from '../../assets/icons/calendar-icon.png';
 
-const AvailabilityCalendar = () => {
-    const [products, setProducts] = useState([]);
-    const [filteredProducts, setFilteredProducts] = useState([]);
-    const [bookedDateRanges, setBookedDateRanges] = useState({});
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const [showCalendar, setShowCalendar] = useState(false);
-    const calendarRef = useRef(null);
+const AvailabilityCalendar = ({ onFilterByDate }) => {
+  const [dateInit, setDateInit] = useState(null);
+  const [dateEnd, setDateEnd] = useState(null);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const calendarRef = useRef(null);
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await axios.get(import.meta.env.VITE_API_URL + "/products");
-                
-                setProducts(response.data);
-                setFilteredProducts(response.data);
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            }
-        };
+  const formatDate = (date) => {
+    if (!date) return '';
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
-        const fetchAvailability = async () => {
-            try {
-                const response = await axios.get(import.meta.env.VITE_API_URL + "/reservations");
-                const reservations = response.data.data;
-                
-                const groupedReservations = {};
-                reservations.forEach(reservation => {
-                    if (!groupedReservations[reservation.productId]) {
-                        groupedReservations[reservation.productId] = [];
-                    }
-                    groupedReservations[reservation.productId].push({
-                        startDate: new Date(reservation.startDate),
-                        endDate: new Date(reservation.endDate)
-                    });
-                });
-                setBookedDateRanges(groupedReservations);
-            } catch (error) {
-                console.error('Error fetching availability:', error);
-            }
-        };
+  const toggleCalendar = () => {
+    setShowCalendar(prev => !prev);
+  };
 
-        fetchProducts();
-        fetchAvailability();
-    }, []);
+  const handleApplyFilter = () => {
+    if (!dateInit || !dateEnd) {
+      alert("Selecciona un rango de fechas primero.");
+      return;
+    }
 
-    const isAvailable = (productId, start, end) => {
-        if (!bookedDateRanges[productId]) return true;
+    const formattedInit = formatDate(dateInit);
+    const formattedEnd = formatDate(dateEnd);
 
-        return !bookedDateRanges[productId].some(reservation =>
-            (start >= reservation.startDate && start <= reservation.endDate) ||
-            (end >= reservation.startDate && end <= reservation.endDate) ||
-            (start <= reservation.startDate && end >= reservation.endDate)
-        );
+    const requestBody = {
+      dateInit: formattedInit,
+      dateEnd: formattedEnd
     };
 
-    useEffect(() => {
-        if (startDate && endDate) {
-            const availableProducts = products.filter(product => isAvailable(product.id, startDate, endDate));
-            setFilteredProducts(availableProducts);
-        } else {
-            setFilteredProducts(products);
-        }
-    }, [startDate, endDate, products]);
+    console.log("📤 Enviando al backend:\n", JSON.stringify(requestBody, null, 2));
 
-    const toggleCalendar = () => {
-        setShowCalendar(prev => !prev);
-    };
+    if (onFilterByDate) {
+      onFilterByDate(formattedInit, formattedEnd);
+    }
 
-    return (
-        <div className="availability-calendar">
-            <div className="calendar-icon-container" onClick={toggleCalendar}>
-                <img src={calendarIcon} alt="Calendario" className={`calendar-icon ${showCalendar ? 'rotated' : ''}`} />
-            </div>
-            {showCalendar && (
-                <div className="calendar-popup" ref={calendarRef}>
-                    <DatePicker
-                        selected={startDate}
-                        onChange={(dates) => {
-                            const [start, end] = dates;
-                            setStartDate(start);
-                            setEndDate(end);
-                        }}
-                        startDate={startDate}
-                        endDate={endDate}
-                        selectsRange
-                        inline
-                    />
-                </div>
-            )}
-            {/*<ul className="product-list">
-                {filteredProducts.map(product => (
-                    <li key={product.id} className="product-item">{product.name}</li>
-                ))}
-            </ul>*/}
+    setShowCalendar(false);
+  };
+
+  const handleCloseCalendar = () => {
+    setShowCalendar(false);
+  };
+
+  return (
+    <div className="availability-calendar">
+      <div className="calendar-icon-container" onClick={toggleCalendar}>
+        <img src={calendarIcon} alt="Calendario" className={`calendar-icon ${showCalendar ? 'rotated' : ''}`} />
+      </div>
+
+      {showCalendar && (
+        <div className="calendar-popup" ref={calendarRef}>
+          <DatePicker
+            selected={dateInit}
+            onChange={(dates) => {
+              const [start, end] = dates;
+              setDateInit(start);
+              setDateEnd(end);
+              if (start) console.log("📅 Fecha inicio:", formatDate(start));
+              if (end) console.log("📅 Fecha fin:", formatDate(end));
+            }}
+            startDate={dateInit}
+            endDate={dateEnd}
+            selectsRange
+            inline
+          />
+          <div className="calendar-buttons">
+            <button onClick={handleApplyFilter} className="apply-button">Aplicar</button>
+            <button onClick={handleCloseCalendar} className="close-button mobile-only">Cerrar</button>
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default AvailabilityCalendar;

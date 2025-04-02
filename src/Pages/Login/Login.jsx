@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ isAuthenticated, userData, onLogin }) => {
+const Login = ({ isAuthenticated, userData, onLogin, onLogout }) => {
   const {
     register,
     handleSubmit,
@@ -30,34 +30,61 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
 
       if (responseLogin.status === 200) {
         const responseLoginData = responseLogin.data.data;
+        const token = responseLoginData.token;
+
         console.log("Inicio de sesión exitoso:", responseLoginData);
 
-        // const responseUser = await axios.post(
-        //   import.meta.env.VITE_API_URL + "/users/find-by-email",
-        //   { email },
-        //   {
-        //     headers: {
-        //       "Content-Type": "application/json"
-        //     },
-        //   }
-        // );
+        // Guardar el token y email
+        localStorage.setItem("token", token);
+        localStorage.setItem("email", email);
 
-        // if (responseUser.status === 200) {
-        //   const responseUserData = responseUser.data.data;
-        //   console.log("Usuario encontrado:", responseUserData);
-        // } else {
-        //   throw new Error("Error al buscar usuario");
-        // }
-        onLogin(
-          responseLoginData.token,
-          JSON.stringify({ ...responseLoginData })
+        // Obtener datos del usuario
+        const responseUser = await axios.post(
+          import.meta.env.VITE_API_URL + "/users/find-by-email",
+          { email },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
-        // Redirigir según el rol del usuario
-        if (responseLoginData.role === "USER") {
-          navigate("/");
+        if (responseUser.status === 200) {
+          const { firstName, lastName } = responseUser.data.data;
+
+          // Guardar info en localStorage
+          localStorage.setItem("nombre", firstName);
+          localStorage.setItem("apellido", lastName);
+          localStorage.setItem("iniciales", `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`);
+
+          console.log("Datos del usuario guardados en localStorage:");
+          console.log("Nombre:", firstName);
+          console.log("Apellido:", lastName);
         } else {
-          navigate("/admin");
+          throw new Error("Error al obtener los datos del usuario");
+        }
+
+        // Enviar token e info al estado global si usas contexto o props
+        onLogin(token, JSON.stringify({ ...responseLoginData }));
+
+        // Verificar si hay una ruta guardada para redireccionar después del login
+        const redirectPath = localStorage.getItem("redirectAfterLogin");
+        
+        if (redirectPath) {
+          // Limpiar la ruta guardada después de usarla
+          localStorage.removeItem("redirectAfterLogin");
+          
+          // Hacemos una redirección directa a la URL completa usando window.location
+          // para asegurar un refresco completo de la página y cargar el componente correctamente
+          window.location.href = redirectPath;
+        } else {
+          // Redireccionar según rol (comportamiento original)
+          if (responseLoginData.role === "USER") {
+            navigate("/");
+          } else {
+            navigate("/admin");
+          }
         }
       } else {
         throw new Error("Error en el inicio de sesión");
@@ -75,7 +102,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
       <Header
         isAuthenticated={isAuthenticated}
         userData={userData}
-        onLogout={() => {}}
+        onLogout={onLogout}
       />
       <div className="back">
         <div className="login">
@@ -92,8 +119,8 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
                 },
               })}
             />
-            {errors.correo && (
-              <span className="error-message">❌{errors.correo.message}</span>
+            {errors.email && (
+              <span className="error-message">❌{errors.email.message}</span>
             )}
 
             <label htmlFor="password">Contraseña</label>
@@ -103,7 +130,7 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
                 required: { value: true, message: "Contraseña es requerida" },
                 minLength: {
                   value: 6,
-                  message: "Password debe tener al menos 6 caracteres",
+                  message: "La contraseña debe tener al menos 6 caracteres",
                 },
               })}
             />
@@ -119,7 +146,6 @@ const Login = ({ isAuthenticated, userData, onLogin }) => {
           </form>
         </div>
       </div>
-
       <Footer />
     </>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import "./ProductDetail.css";
@@ -20,21 +20,40 @@ import calendarIcon from "../../assets/icons/calendar-icon.png";
 
 const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
   const { id } = useParams();
+  const location = useLocation();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [availabilityLoading, setAvailabilityLoading] = useState(true);
   const [availabilityError, setAvailabilityError] = useState(null);
   const [bookedDateRanges, setBookedDateRanges] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [reservationStatus, setReservationStatus] = useState({
-    loading: false,
-    error: null,
-    success: false,
-  });
   const [showModal, setShowModal] = useState(false);
-  
+  const navigate = useNavigate();
+
+  // Recuperar fechas guardadas del localStorage al cargar el componente
+  // pero solo si son para este producto específico
+  useEffect(() => {
+    const savedProductId = localStorage.getItem("selectedProductId");
+    
+    // Solo cargar las fechas si corresponden al producto actual
+    if (savedProductId === id) {
+      const savedStartDate = localStorage.getItem("fechaInicio");
+      const savedEndDate = localStorage.getItem("fechaFin");
+      
+      if (savedStartDate) {
+        setStartDate(new Date(savedStartDate));
+      }
+      if (savedEndDate) {
+        setEndDate(new Date(savedEndDate));
+      }
+    } else {
+      // Si es un producto diferente, limpiar las fechas seleccionadas
+      setStartDate(null);
+      setEndDate(null);
+    }
+  }, [id]);
 
   const fetchAvailability = async () => {
     setAvailabilityLoading(true);
@@ -123,82 +142,92 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
     });
   };
 
-  const handleDateChange = (dates) => {
+  {/*const handleDateChange = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-  };
 
-  const handleReservationSubmit = async () => {
-    if (!startDate || !endDate) {
-      setReservationStatus({
-        loading: false,
-        error: "Por favor selecciona las fechas de inicio y fin",
-        success: false,
-      });
-      return;
+    // Guardar fechas en localStorage
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = `${date.getMonth() + 1}`.padStart(2, "0");
+      const day = `${date.getDate()}`.padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+
+    // Guardar también el ID del producto para asociar las fechas con este producto específico
+    localStorage.setItem("selectedProductId", id);
+    
+    if (start) {
+      localStorage.setItem("fechaInicio", formatDate(start));
+    } else {
+      localStorage.removeItem("fechaInicio");
     }
-
-    if (!isAuthenticated) {
-      setReservationStatus({
-        loading: false,
-        error: "Debes iniciar sesión para hacer una reserva",
-        success: false,
-      });
-      return;
+    
+    if (end) {
+      localStorage.setItem("fechaFin", formatDate(end));
+    } else {
+      localStorage.removeItem("fechaFin");
     }
+  };*/}
 
-    setReservationStatus({
-      loading: true,
-      error: null,
-      success: false,
-    });
+  // Función para convertir una fecha a formato YYYY-MM-DD sin desfase
+const formatDateLocal = (date) => {
+  if (!date) return null;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 
-    try {
-      const isRangeBooked = bookedDateRanges.some((range) => {
-        const rangeStart = new Date(range.startDate);
-        const rangeEnd = new Date(range.endDate);
-        return (
-          (startDate >= rangeStart && startDate <= rangeEnd) ||
-          (endDate >= rangeStart && endDate <= rangeEnd) ||
-          (startDate <= rangeStart && endDate >= rangeEnd)
-        );
-      });
+// Función para parsear una fecha en formato YYYY-MM-DD y convertirla a Date sin desfase
+const parseLocalDate = (str) => {
+  const [year, month, day] = str.split("-");
+  return new Date(Number(year), Number(month) - 1, Number(day));
+};
 
-      if (isRangeBooked) {
-        throw new Error(
-          "El rango de fechas seleccionado incluye fechas no disponibles"
-        );
-      }
+// Cargar fechas del localStorage al montar el componente
+useEffect(() => {
+  const savedProductId = localStorage.getItem("selectedProductId");
 
-      const formattedStartDate = startDate.toISOString().split("T")[0];
-      const formattedEndDate = endDate.toISOString().split("T")[0];
+  if (savedProductId === id) {
+    const savedStartDate = localStorage.getItem("fechaInicio");
+    const savedEndDate = localStorage.getItem("fechaFin");
 
-      const response = await axios.post(
-        import.meta.env.VITE_API_URL + "/reservations",
-        {
-          productId: id,
-          userId: userData.id,
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-        }
-      );
-
-      setReservationStatus({
-        loading: false,
-        error: null,
-        success: true,
-      });
-
-      await fetchAvailability();
-    } catch (error) {
-      setReservationStatus({
-        loading: false,
-        error: error.response?.data?.message || error.message,
-        success: false,
-      });
+    if (savedStartDate) {
+      setStartDate(parseLocalDate(savedStartDate));
     }
-  };
+    if (savedEndDate) {
+      setEndDate(parseLocalDate(savedEndDate));
+    }
+  } else {
+    setStartDate(null);
+    setEndDate(null);
+  }
+}, [id]);
+
+// Guardar fechas seleccionadas en localStorage sin desfase
+const handleDateChange = (dates) => {
+  const [start, end] = dates;
+  setStartDate(start);
+  setEndDate(end);
+
+  localStorage.setItem("selectedProductId", id);
+
+  if (start) {
+    localStorage.setItem("fechaInicio", formatDateLocal(start));
+  } else {
+    localStorage.removeItem("fechaInicio");
+  }
+
+  if (end) {
+    localStorage.setItem("fechaFin", formatDateLocal(end));
+  } else {
+    localStorage.removeItem("fechaFin");
+  }
+};
+
+  
 
   const openAvailabilityModal = () => {
     setShowModal(true);
@@ -206,6 +235,20 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
 
   const closeAvailabilityModal = () => {
     setShowModal(false);
+  };
+
+  const handleReserveClick = () => {
+    if (!isAuthenticated) {
+      // Guardar la ruta actual exacta (con ID del producto) para redireccionar después del login
+      localStorage.setItem("redirectAfterLogin", window.location.pathname);
+      
+      // Guardar el ID del producto actual para poder recuperar las fechas específicas al volver
+      localStorage.setItem("selectedProductId", id);
+      
+      navigate("/login");
+      return;
+    }
+    onReserve(product);
   };
 
   if (loading) return <div className="loading">Cargando...</div>;
@@ -262,7 +305,7 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
           <div className="purchase-section">
             <div className="quantity-controls">
               <div className="price-tag">${product.price}</div>
-              <select className="quantity-select" defaultValue="1">
+              {/*<select className="quantity-select" defaultValue="1">
                 {[...Array(4)].map((_, i) => (
                   <option key={i + 1} value={i + 1}>
                     {i + 1}
@@ -271,7 +314,7 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
               </select>
               <button className="add-to-cart-button desktop-button">
                 Agregar al carrito
-              </button>
+              </button>*/}
 
               <div className="add-to-cart-container">
                 <button className="add-to-cart-button">
@@ -282,7 +325,7 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
                     width="48px"
                     fill="#FFFFFF"
                   >
-                    <path d="M286.79-81Q257-81 236-102.21t-21-51Q215-183 236.21-204t51-21Q317-225 338-203.79t21 51Q359-123 337.79-102t-51 21Zm400 0Q657-81 636-102.21t-21-51Q615-183 636.21-204t51-21Q717-225 738-203.79t21 51Q759-123 737.79-102t-51 21ZM235-741l110 228h288l125-228H235Zm-30-60h589.07q22.97 0 34.95 21 11.98 21-.02 42L694-495q-11 19-28.56 30.5T627-453H324l-56 104h491v60H277q-42 0-60.5-28t.5-63l64-118-152-322H51v-60h117l37 79Zm140 288h288-288Z" />
+                    <path d="M286.79-81Q257-81 236-102.21t-21-51Q215-183 236.21-204t51-21Q317-225 338-203.79t21 51Q759-123 737.79-102t-51 21Zm400 0Q657-81 636-102.21t-21-51Q615-183 636.21-204t51-21Q717-225 738-203.79t21 51ZM235-741l110 228h288l125-228H235Zm-30-60h589.07q22.97 0 34.95 21 11.98 21-.02 42L694-495q-11 19-28.56 30.5T627-453H324l-56 104h491v60H277q-42 0-60.5-28t.5-63l64-118-152-322H51v-60h117l37 79Zm140 288h288-288Z" />
                   </svg>
                 </button>
               </div>
@@ -358,34 +401,9 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
                     />
 
                     <div className="reservation-controls mt-4">
-                      <button
-                        onClick={handleReservationSubmit}
-                        disabled={
-                          reservationStatus.loading || !startDate || !endDate
-                        }
-                        className={`w-full py-2 px-4 rounded-md font-medium text-white 
-                                                    ${
-                                                      !startDate || !endDate
-                                                        ? "bg-gray-400 cursor-not-allowed"
-                                                        : "bg-blue-600 hover:bg-blue-700 transition-colors"
-                                                    }`}
-                      >
-                        {reservationStatus.loading
-                          ? "Procesando..."
-                          : "ACEPTAR"}
+                      <button onClick={handleReserveClick} disabled={!product} className= 'reservation-button'>
+                        Reservar
                       </button>
-
-                      {reservationStatus.error && (
-                        <div className="mt-2 text-red-600 text-sm">
-                          {reservationStatus.error}
-                        </div>
-                      )}
-
-                      {reservationStatus.success && (
-                        <div className="mt-2 text-green-600 text-sm">
-                          ¡Reserva confirmada exitosamente!
-                        </div>
-                      )}
                     </div>
 
                     <div className="calendar-legend">
@@ -510,9 +528,6 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
             </div>
           </div>
         </div>
-        <button onClick={() => onReserve(product)} disabled={!product}>
-          Reservar
-        </button>
       </div>
 
       <Footer />

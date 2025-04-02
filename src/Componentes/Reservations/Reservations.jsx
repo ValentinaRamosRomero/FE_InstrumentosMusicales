@@ -2,19 +2,194 @@ import React, { useEffect, useState } from "react";
 import "../Products/ProductDetail.css";
 import "./Reservations.css";
 import Header from "../Header/Header";
-
+import Calendar from "./Calendar";
+import Footer from "../Footer/Footer";
+import { FaCalendarAlt } from "react-icons/fa";
 import marcaIcon from "../../assets/icons/marca-icon.png";
 import modeloIcon from "../../assets/icons/modelo-icon.png";
 import condicionIcon from "../../assets/icons/condicion-icon.png";
 import origenIcon from "../../assets/icons/origen-icon.png";
 import lanzamientoIcon from "../../assets/icons/lanzamiento-icon.png";
 import medidasIcon from "../../assets/icons/medidas-icon.png";
-import Footer from "../Footer/Footer";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
-const Reservations = ({ product,isAuthenticated, userData }) => {
-  if (!product) {
-    return <p>Cargando...</p>;
-  }
+const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
+  const { id } = useParams();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [bookedDateRanges, setBookedDateRanges] = useState([]);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAvailability = async () => {
+      try {
+        const response = await axios.get(
+          import.meta.env.VITE_API_URL + `/reservations/products/${id}`
+        );
+        const reservationData = response.data.data;
+        setBookedDateRanges(
+          reservationData.map((reservation) => ({
+            startDate: new Date(reservation.startDate),
+            endDate: new Date(reservation.endDate),
+          }))
+        );
+      } catch (error) {
+        console.error("Error cargando fechas reservadas:", error);
+      }
+    };
+
+    fetchAvailability();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const email = localStorage.getItem("email");
+        if (email && !userData) {
+          const response = await axios.get(
+            import.meta.env.VITE_API_URL + `/users/email/${email}`
+          );
+          setUserInfo(response.data);
+        }
+      } catch (error) {
+        console.error("Error al traer datos del usuario:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, [userData]);
+
+  const toggleCalendar = () => {
+    setShowCalendar(!showCalendar);
+  };
+
+  const isDateBooked = (date) => {
+    return bookedDateRanges.some((range) => {
+      const checkDate = new Date(date);
+      checkDate.setHours(0, 0, 0, 0);
+      const start = new Date(range.startDate);
+      const end = new Date(range.endDate);
+      start.setHours(0, 0, 0, 0);
+      end.setHours(0, 0, 0, 0);
+      return checkDate >= start && checkDate <= end;
+    });
+  };
+
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  };
+
+  const calcularDuracion = () => {
+    if (!startDate || !endDate) return "";
+    const diff = endDate - startDate;
+    const dias = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    return dias > 0 ? `${dias} día(s)` : "Fechas inválidas";
+  };
+
+  const handleSubmit = async () => {
+    if (!startDate || !endDate) {
+      alert("Por favor selecciona un rango de fechas válido.");
+      return;
+    }
+
+    // Guardar fechas en localStorage para que estén disponibles en el componente Confirmation
+    localStorage.setItem("fechaInicio", startDate.toISOString().split("T")[0]);
+    localStorage.setItem("fechaFin", endDate.toISOString().split("T")[0]);
+
+    // Formatear fechas a YYYY-MM-DD
+    const formattedStart = startDate.toISOString().split("T")[0];
+    const formattedEnd = endDate.toISOString().split("T")[0];
+
+    // Asegurarse de que hay un email válido
+    const userEmail = currentUser?.email || localStorage.getItem("email");
+
+    if (!userEmail) {
+      alert(
+        "No se ha podido identificar su correo electrónico. Por favor, inicie sesión nuevamente."
+      );
+      return;
+    }
+
+    const reservationData = {
+      startDate: formattedStart,
+      endDate: formattedEnd,
+      userEmail: userEmail,
+      productId: Number(product.id),
+    };
+    console.log("Datos enviados:", reservationData);
+    // Primero navegar a la página de confirmación con estado de carga
+    //navigate("/confirmation", { state: { isLoading: true } });
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No se encontró un token de autenticación.");
+        alert("Tu sesión ha expirado. Inicia sesión nuevamente.");
+        return;
+      }
+
+      const response = await axios.post(
+        import.meta.env.VITE_API_URL + "/reservations/save",
+        reservationData,
+        {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
+      );
+
+      console.log("Respuesta exitosa:", response.data);
+
+      // Solo navegar UNA vez después de completar la operación
+      navigate("/confirmation", {
+        state: {
+          reservationData: reservationData,
+        },
+      });
+    } catch (error) {
+      console.error(
+        "Error al confirmar la reserva:",
+        error.response ? error.response.data : error.message
+      );
+      navigate("/confirmation", {
+        state: {
+          isLoading: false,
+          isSuccess: false,
+        },
+      });
+    }
+  };
+
+  if (!product) return <p>Cargando...</p>;
+
+  useEffect(() => {
+    const storedStart = localStorage.getItem("fechaInicio");
+    const storedEnd = localStorage.getItem("fechaFin");
+
+    const parseLocalDate = (str) => {
+      if (!str) return null;
+      const [year, month, day] = str.split("-");
+      return new Date(Number(year), Number(month) - 1, Number(day));
+    };
+
+    if (storedStart) setStartDate(parseLocalDate(storedStart));
+    if (storedEnd) setEndDate(parseLocalDate(storedEnd));
+  }, []);
+
+  const fallbackUser = {
+    nombre: localStorage.getItem("nombre") || "",
+    apellido: localStorage.getItem("apellido") || "",
+    email: localStorage.getItem("email") || "",
+  };
+
+  const currentUser = userData?.nombre
+    ? userData
+    : userInfo?.nombre
+    ? userInfo
+    : fallbackUser;
 
   const { characteristics } = product;
   const characteristicList = [
@@ -38,34 +213,33 @@ const Reservations = ({ product,isAuthenticated, userData }) => {
     <>
       <Header
         isAuthenticated={isAuthenticated}
-        userData={userData}
-        onLogout={() => {}}
+        userData={currentUser}
+        onLogout={onLogout}
       />
+
       <div className="reservations-container">
-        <div class="progress-container">
-          <div class="step-label">
-            <div class="step-circle step-completed">
-              <span class="checkmark">✓</span>
+        {/* Barra de progreso */}
+        <div className="progress-container">
+          <div className="step-label">
+            <div className="step-circle step-completed">
+              <span className="checkmark">✓</span>
             </div>
-            <span class="label-text">Tus datos</span>
+            <span className="label-text">Tus datos</span>
           </div>
-
-          <div class="connector-line connector-completed"></div>
-
-          <div class="step-circle step-active">
+          <div className="connector-line connector-completed"></div>
+          <div className="step-circle step-active">
             <span>2</span>
           </div>
-
-          <div class="connector-line"></div>
-
-          <div class="step-label">
-            <div class="step-circle step-pending">
-              <span class="checkmark">3</span>
+          <div className="connector-line"></div>
+          <div className="step-label">
+            <div className="step-circle step-pending">
+              <span className="checkmark">3</span>
             </div>
-            <span class="label-text">Paso 2 de 3</span>
+            <span className="label-text">Paso 2 de 3</span>
           </div>
         </div>
 
+        {/* Información del producto */}
         <h2 className="reservationProduct-title">{product.name}</h2>
         <div className="reservationProduct-info">
           <img
@@ -73,7 +247,6 @@ const Reservations = ({ product,isAuthenticated, userData }) => {
             alt={product.name}
             className="reservationProduct-image"
           />
-
           <div className="reservationChars-grid">
             {characteristicList.map((item, index) => (
               <div key={index} className="reservationChar-item">
@@ -88,7 +261,63 @@ const Reservations = ({ product,isAuthenticated, userData }) => {
             ))}
           </div>
         </div>
+
+        {/* Detalles del usuario y fechas */}
+        <div className="Detalles-reservacion">
+          <div className="user-info-row">
+            <div className="user-info-grid">
+              <div>
+                <strong>Nombre:</strong> {currentUser?.nombre}{" "}
+                {currentUser?.apellido}
+              </div>
+              <div>
+                <strong>Correo electrónico:</strong> {currentUser?.email}
+              </div>
+            </div>
+          </div>
+
+          <div className="fechas-seleccionadas">
+            <p>
+              <strong>Fecha de entrega:</strong>{" "}
+              {startDate ? startDate.toLocaleDateString() : "No seleccionada"}
+            </p>
+            <p>
+              <strong>Fecha de devolución:</strong>{" "}
+              {endDate ? endDate.toLocaleDateString() : "No seleccionada"}
+            </p>
+            <p>
+              <strong>Duración total del alquiler:</strong> {calcularDuracion()}
+            </p>
+          </div>
+        </div>
+
+        {/* Icono de calendario */}
+        <div className="calendar-toggle-container">
+          <h3>Selecciona el período de reserva</h3>
+          <button className="calendar-icon-button" onClick={toggleCalendar}>
+            <FaCalendarAlt size={24} />
+            {showCalendar ? " Ocultar calendario" : " Ver calendario"}
+          </button>
+        </div>
+
+        {/* Calendario */}
+        {showCalendar && (
+          <Calendar
+            startDate={startDate}
+            endDate={endDate}
+            onChange={handleDateChange}
+            isDateBooked={isDateBooked}
+          />
+        )}
+
+        {/* Confirmar */}
+        <div className="reservation-actions">
+          <button className="reservation-button" onClick={handleSubmit}>
+            Confirmar Reserva
+          </button>
+        </div>
       </div>
+
       <Footer />
     </>
   );
