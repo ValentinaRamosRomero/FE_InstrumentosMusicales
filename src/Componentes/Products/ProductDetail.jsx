@@ -142,7 +142,7 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
     });
   };
 
-  const handleDateChange = (dates) => {
+  {/*const handleDateChange = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
@@ -169,7 +169,65 @@ const ProductDetail = ({ isAuthenticated, userData, onLogout, onReserve }) => {
     } else {
       localStorage.removeItem("fechaFin");
     }
-  };
+  };*/}
+
+  // Función para convertir una fecha a formato YYYY-MM-DD sin desfase
+const formatDateLocal = (date) => {
+  if (!date) return null;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+// Función para parsear una fecha en formato YYYY-MM-DD y convertirla a Date sin desfase
+const parseLocalDate = (str) => {
+  const [year, month, day] = str.split("-");
+  return new Date(Number(year), Number(month) - 1, Number(day));
+};
+
+// Cargar fechas del localStorage al montar el componente
+useEffect(() => {
+  const savedProductId = localStorage.getItem("selectedProductId");
+
+  if (savedProductId === id) {
+    const savedStartDate = localStorage.getItem("fechaInicio");
+    const savedEndDate = localStorage.getItem("fechaFin");
+
+    if (savedStartDate) {
+      setStartDate(parseLocalDate(savedStartDate));
+    }
+    if (savedEndDate) {
+      setEndDate(parseLocalDate(savedEndDate));
+    }
+  } else {
+    setStartDate(null);
+    setEndDate(null);
+  }
+}, [id]);
+
+// Guardar fechas seleccionadas en localStorage sin desfase
+const handleDateChange = (dates) => {
+  const [start, end] = dates;
+  setStartDate(start);
+  setEndDate(end);
+
+  localStorage.setItem("selectedProductId", id);
+
+  if (start) {
+    localStorage.setItem("fechaInicio", formatDateLocal(start));
+  } else {
+    localStorage.removeItem("fechaInicio");
+  }
+
+  if (end) {
+    localStorage.setItem("fechaFin", formatDateLocal(end));
+  } else {
+    localStorage.removeItem("fechaFin");
+  }
+};
+
+  
 
   const openAvailabilityModal = () => {
     setShowModal(true);
