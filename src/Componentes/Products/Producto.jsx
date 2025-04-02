@@ -37,7 +37,7 @@ const Producto = ({ data, pagina, setPagina, totalPaginas }) => {
               style={{ cursor: "pointer" }} 
             />
             <h3 className="producto-nombre">{instrument.name}</h3>
-            <h4 className="producto-precio">${instrument.pricePerHour} / hora</h4>
+            <h4 className="producto-precio">${instrument.pricePerHour} / día</h4>
   
             <button
               className="agregar-producto-btn"
