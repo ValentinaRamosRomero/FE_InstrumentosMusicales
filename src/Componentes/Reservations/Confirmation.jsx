@@ -1,9 +1,12 @@
 import React from 'react';
 import CheckReserva from "../../assets/ReservaCheck.png";
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 import "./Confirmation.css";
 
 export const Confirmation = () => {
-  return (
+    let navigate = useNavigate();
+
+    return (
     <div className ="container-success">
       {/* Icono de verificación */}
         <img src={CheckReserva} alt="ReservaCheck" 
@@ -18,10 +21,10 @@ export const Confirmation = () => {
 
       {/* Botones */}
       <div className = "container-buttons">
-        <button className = "button-details">
+        <button className = "button-details"  onClick={() => navigate(-1)}>
           Ver detalles
         </button>
-        <button className = "button-home">
+          <button className="button-home" onClick={() => navigate("/")}>
           Ir a inicio
         </button>
       </div>

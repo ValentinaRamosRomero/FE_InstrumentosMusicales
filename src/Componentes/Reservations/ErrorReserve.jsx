@@ -1,9 +1,13 @@
 import React from "react";
 import "./ErrorReserve.css";
 import ErrorReserva from "../../assets/ReservaError.png";
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+
 
 export const ErrorReserve = () => {
-  return (
+    let navigate = useNavigate();
+
+    return (
     <div className="container-error">
       {/* Icono de verificación */}
       <img src={ErrorReserva} alt="ReservaCheck" className="iconReserveError" />
@@ -17,7 +21,7 @@ export const ErrorReserve = () => {
 
       {/* Botones */}
       <div className="container-button">
-        <button className="button-modify">Modificar reserva</button>
+        <button className="button-modify" onClick={() => navigate(-1)}>Modificar reserva</button>
       </div>
     </div>
   );
