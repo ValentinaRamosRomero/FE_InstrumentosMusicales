@@ -52,10 +52,32 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
     setShowProductForm(false);
   };
 
-  const handleViewProduct = (product) => {
-    setSelectedProduct(product);
-    setShowProductEditForm(true);
+
+
+
+
+
+  const handleViewProduct = async (productId) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/products/${productId}`
+      );
+      if (response.data) {
+        setSelectedProduct(response.data);  // Guardar datos completos en el estado
+        setShowProductEditForm(true); // Abrir el formulario después de obtener los datos
+      }
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+
+
+
+
 
   const handleUpdateProduct = (updatedProduct) => {
     // Update the products array with the updated product
@@ -69,6 +91,12 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
   const handleDeleteProduct = (product) => {
     setProductToDelete(product);
     setShowDeleteConfirmation(true);
+  };
+
+  //manejador del boton de cerrado, para q se actualice la lista
+  const handleCloseEditForm = () => {
+    fetchProducts();
+    setShowProductEditForm(false);
   };
 
   const confirmDelete = async () => {
@@ -171,6 +199,7 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
           <ProductEditForm
             product={selectedProduct}
             onClose={() => {
+              handleCloseEditForm();
               setShowProductEditForm(false);
               setSelectedProduct(null);
             }}
@@ -210,7 +239,7 @@ const PanelAdmin = ({ isAuthenticated, userData }) => {
                     </button>
                     <button
                       className="action-button edit "
-                      onClick={() => handleViewProduct(product)}
+                      onClick={() => handleViewProduct(product.id)}
                     >
                       <FaEdit />
                     </button>
