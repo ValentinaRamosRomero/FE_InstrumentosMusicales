@@ -23,7 +23,7 @@ const Producto = ({ data, pagina, setPagina, totalPaginas }) => {
   }
 
   return (
-    <div className="productos-container">
+    <div className="productos-container"  id="productos">
       {data.length === 0 ? (
         <p>No hay instrumentos disponibles.</p>
       ) : (
@@ -64,6 +64,7 @@ const Producto = ({ data, pagina, setPagina, totalPaginas }) => {
     </div>
   );
 };
+
 
 
 // Exportamos el componente Producto para que pueda ser utilizado en otros archivos
