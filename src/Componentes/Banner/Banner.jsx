@@ -1,17 +1,16 @@
 import React from "react";
-import "./Banner.css";
+import { motion } from "framer-motion";
 import mobileImage from "../../assets/mobile_home.png";
-import desktopImage from "../../assets/Musico.png";
 import brandsImage from "../../assets/Marcas.png";
+import GuitarCanvas from "./GuitarCanvas";
+import "./Banner.css";
 
 const Banner = () => {
   return (
     <div className="banner-container">
-      {/* Imagen para dispositivos móviles */}
+      {/* Mobile */}
       <img src={mobileImage} alt="Banner móvil" className="banner-image mobile" />
-
-      {/* Contenido del banner */}
-      <div className="banner-content">
+      <div className="banner-content mobile">
         <h1 className="banner-title">Encuentra el Sonido Perfecto para Ti</h1>
         <p className="banner-text">
           Explora nuestra colección de instrumentos musicales y lleva tu música al siguiente nivel.
@@ -24,17 +23,37 @@ const Banner = () => {
         </div>
       </div>
 
-      {/* Sección exclusiva para escritorio y tablet */}
-      <div className="Banner_Desktop">
-        <div className="General_Info">
-          <div className="banner-stats">
-            <p><strong>200+</strong> Marcas Internacionales</p>
-            <p><strong>2,000+</strong> Productos de calidad</p>
-            <p><strong>30,000+</strong> Clientes Satisfechos</p>
-          </div>
-          <img src={desktopImage} alt="Músico" className="banner-image desktop" />
+      {/* Desktop */}
+      <div className="banner-desktop">
+        <div className="animated-bg"></div>
+
+        <div className="banner-desktop-left">
+          <motion.div 
+            className="banner-desktop-content"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <h1 className="banner-desktop-title">
+              🎸 Encuentra el Sonido Perfecto para Ti
+            </h1>
+            <p className="banner-desktop-text">
+            Explora nuestra colección de instrumentos musicales y lleva tu música al siguiente nivel.
+            ¡Calidad, variedad y el mejor sonido te esperan!
+            </p>
+            <a href="#productos" className="banner-desktop-button">Explorar Catálogo</a>
+
+            <div className="banner-desktop-stats">
+              <div><strong>200+</strong><span>Marcas</span></div>
+              <div><strong>2,000+</strong><span>Instrumentos</span></div>
+              <div><strong>30,000+</strong><span>Clientes Felices</span></div>
+            </div>
+          </motion.div>
         </div>
-        <img src={brandsImage} alt="Marcas" className="banner-image brands" />
+
+        <div className="banner-desktop-right">
+          <GuitarCanvas />
+        </div>
       </div>
     </div>
   );
