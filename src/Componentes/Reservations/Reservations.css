@@ -86,10 +86,10 @@
 
 .reservationProduct-image {
   max-width: 300px;
-  height: auto;
+  height: 20rem;
   border-radius: 10px;
   margin-bottom: 30px;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 /* Características */

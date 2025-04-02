@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BsCheck2Square } from "react-icons/bs";
 import { CgCloseR } from "react-icons/cg";
 
-const UsersSection = (userData) => {
+const UsersSection2 = (userData) => {
   
   const [confirmationMessage, setConfirmationMessage] = useState(null);
 
@@ -165,4 +165,4 @@ const UsersSection = (userData) => {
   );
 };
 
-export default UsersSection;
+export default UsersSection2;
