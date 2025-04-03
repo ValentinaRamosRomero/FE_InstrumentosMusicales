@@ -13,6 +13,8 @@ import lanzamientoIcon from "../../assets/icons/lanzamiento-icon.png";
 import medidasIcon from "../../assets/icons/medidas-icon.png";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import ErrorReserve from "./ErrorReserve";
+import Confirmation from "./Confirmation";
 
 const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
   const { id } = useParams();
@@ -21,7 +23,7 @@ const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
   const [bookedDateRanges, setBookedDateRanges] = useState([]);
   const [showCalendar, setShowCalendar] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
-  const navigate = useNavigate();
+  const [reservationStatus, setReservationStatus] = useState(null); // Nuevo estado
 
   useEffect(() => {
     const fetchAvailability = async () => {
@@ -97,69 +99,36 @@ const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
       return;
     }
 
-    // Guardar fechas en localStorage para que estén disponibles en el componente Confirmation
-    localStorage.setItem("fechaInicio", startDate.toISOString().split("T")[0]);
-    localStorage.setItem("fechaFin", endDate.toISOString().split("T")[0]);
-
     // Formatear fechas a YYYY-MM-DD
     const formattedStart = startDate.toISOString().split("T")[0];
     const formattedEnd = endDate.toISOString().split("T")[0];
 
-    // Asegurarse de que hay un email válido
-    const userEmail = currentUser?.email || localStorage.getItem("email");
-
-    if (!userEmail) {
-      alert(
-        "No se ha podido identificar su correo electrónico. Por favor, inicie sesión nuevamente."
-      );
-      return;
-    }
-
     const reservationData = {
+      productId: product.id,
+      nombre: currentUser?.nombre,
+      apellido: currentUser?.apellido,
+      userEmail: currentUser?.email,
       startDate: formattedStart,
       endDate: formattedEnd,
-      userEmail: userEmail,
-      productId: Number(product.id),
     };
-    console.log("Datos enviados:", reservationData);
-    // Primero navegar a la página de confirmación con estado de carga
-    //navigate("/confirmation", { state: { isLoading: true } });
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No se encontró un token de autenticación.");
-        alert("Tu sesión ha expirado. Inicia sesión nuevamente.");
-        return;
-      }
 
-      const response = await axios.post(
+    try {
+      const token = localStorage.getItem("token"); // Recupera el Bearer Token
+      await axios.post(
         import.meta.env.VITE_API_URL + "/reservations/save",
         reservationData,
         {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Se agrega el Bearer Token
+          },
         }
       );
 
-      console.log("Respuesta exitosa:", response.data);
-
-      // Solo navegar UNA vez después de completar la operación
-      navigate("/confirmation", {
-        state: {
-          reservationData: reservationData,
-        },
-      });
+      setReservationStatus("success"); // Estado de éxito
     } catch (error) {
-      console.error(
-        "Error al confirmar la reserva:",
-        error.response ? error.response.data : error.message
-      );
-      navigate("/confirmation", {
-        state: {
-          isLoading: false,
-          isSuccess: false,
-        },
-      });
+      console.error("Error al confirmar la reserva:", error);
+      setReservationStatus("error"); // Estado de error
     }
   };
 
@@ -208,6 +177,10 @@ const Reservations = ({ product, isAuthenticated, userData, onLogout }) => {
     },
     { icon: medidasIcon, label: "Medidas", value: characteristics.medidas },
   ];
+
+  // Renderizar componentes en función del estado de la reserva
+  if (reservationStatus === "success") return <Confirmation />;
+  if (reservationStatus === "error") return <ErrorReserve />;
 
   return (
     <>
