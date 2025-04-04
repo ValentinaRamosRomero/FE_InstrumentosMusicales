@@ -1,7 +1,4 @@
 /* Estilos generales */
-.product-page {
-  font-family: "Dosis", sans-serif;
-}
 
 .navigation-bar {
   margin-top: 70px;
@@ -20,7 +17,6 @@
 }
 
 .category-title {
-  font-family: "Dosis", sans-serif;
   margin: 0;
   font-size: 1.5rem;
 }
@@ -32,7 +28,6 @@
 }
 
 .product-name {
-  font-family: "Dosis", sans-serif;
   font-size: 2rem;
   margin-bottom: 2rem;
   margin-top: 0px !important;
@@ -70,7 +65,6 @@
 }
 
 .price-tag {
-  font-family: "Dosis", sans-serif;
   font-size: 2rem;
   font-weight: bold;
   color: #333;
@@ -116,7 +110,10 @@
 
 /* Descripción del producto (DIV2) */
 .product-description {
+  font-size: larger;
   line-height: 1.6;
+  display: flex;
+  align-items: center;
 }
 
 /* Sección de características */

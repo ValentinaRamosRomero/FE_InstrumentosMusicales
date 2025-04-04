@@ -45,7 +45,7 @@
 /* Opciones de autenticación como texto */
 .auth-text {
   color: white;
-  font-size: 44px;
+  font-size: 40px;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s ease-in-out;
@@ -65,7 +65,7 @@
 }
 
 .mobile-user-initials {
-  background-color: black;
+  background-color: rgb(101, 100, 100);
   color: white;
   width: 60px;
   height: 60px;
@@ -78,12 +78,11 @@
 }
 
 .mobile-user-avatar {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background-color: #f0f0f0;
+  background-color: rgb(101, 100, 100);
   border: 3px solid white;
-  /* agregar una imagen de avatar como background-image */
 }
 
 /* Ocultar el menú hamburguesa en tablet y desktop */

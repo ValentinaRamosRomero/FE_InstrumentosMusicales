@@ -91,19 +91,19 @@
 .initials {
   font-size: 16px; /* Tamaño de la fuente de las iniciales */
   font-weight: bold; /* Negrita */
-  color:  white;
+  color: white;
   font-family: "Aleo", serif;
 }
 
-.user-initials span{
+.user-initials span {
   font-size: 1.5rem;
 }
 
 .user-icon {
   width: 40px;
   height: 40px;
-  background-color: rgb(101, 100, 100); 
-  border-radius: 50%; 
+  background-color: rgb(101, 100, 100);
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,25 +143,24 @@
 /* Estilos para el botón del panel de administrador */
 .btn-admin-panel {
   background-color: #f2dede;
-  color: #444444; 
+  color: #444444;
   border: none;
-  border-radius: 6px; 
-  padding: 6px 12px; 
+  border-radius: 6px;
+  padding: 6px 12px;
   font-size: 14px;
   cursor: pointer;
   font-weight: 600;
-  display: flex; 
+  display: flex;
   align-items: center;
   justify-content: center;
-  height: 32px; 
-  white-space: nowrap; 
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
-  text-transform: none; 
+  height: 32px;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  text-transform: none;
 }
 
 .btn-admin-panel:hover {
   background-color: #fde9e9;
-  
 }
 
 /* Ajustes para tablets */
@@ -182,13 +181,16 @@
     display: none;
   }
   .user-profile {
-    width: auto;
+    display: none;
   }
   .logo {
     height: 35px;
   }
-  .user-avatar{
-    display: none;
+  .mobile-user-initials {
+    color: white;
+  }
+  .user-icon {
+    background-color: rgb(101, 100, 100);
   }
 }
 
@@ -209,4 +211,3 @@
     height: 28px;
   }
 }
-
