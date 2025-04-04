@@ -50,7 +50,7 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
   }, []);
 
   //Funciones para mapear categorias, marcas a su id correspondiente
-   const getCategoryId = (categoryName) => {
+  const getCategoryId = (categoryName) => {
     const category = categories.find((cat) => cat.name === categoryName);
     return category ? category.id : "";
   };
@@ -59,11 +59,11 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
     return brand ? brand.id : "";
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     if (product && product.id) {
       // Separacion del campo size en alto, ancho y profundidad
       const sizeArray = product.size ? product.size.split("x") : [];
-      
+
       setFormData({
         id: product.id || "", // Add product ID for update
         name: product.name || "",
@@ -160,7 +160,7 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
           },
         }
       );
-      if(response.data && response.data.mensaje){
+      if (response.data && response.data.mensaje) {
         console.log("Product update success:", response.data.mensaje);
         setSuccess(true);
       } else {
@@ -225,10 +225,11 @@ const ProductEditForm = ({ product, onClose, onUpdate }) => {
                 />
               </div>
 
-              <UploadImage formData={formData} 
-              setFormData={setFormData} 
-              defaultImageUrl={product.mainImage}
-              isNewProduct ={false}
+              <UploadImage
+                formData={formData}
+                setFormData={setFormData}
+                defaultImageUrl={product.mainImage}
+                isNewProduct={false}
               />
             </div>
 

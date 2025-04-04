@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import logo from "../../assets/Logo.svg";
@@ -9,6 +9,9 @@ import { useState } from "react";
 const Header = ({ isAuthenticated, userData, onLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Para navegación
+
+  //estado para almacenar las iniciales
+  const [initials, setInitials] = useState("");
 
   // Función para alternar el menú desplegable
   const toggleDropdown = () => {

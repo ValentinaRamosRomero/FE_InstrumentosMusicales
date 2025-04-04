@@ -19,14 +19,19 @@ const Categoria = ({ setSearchResults }) => {
 
   const handleCategoryClick = async (category) => {
     try {
-      const response = await fetch(import.meta.env.VITE_API_URL + "/products/search", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: category }),
-      });
+      const response = await fetch(
+        import.meta.env.VITE_API_URL + "/products/search",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: category }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error(`Error al filtrar por categoría: ${response.statusText}`);
+        throw new Error(
+          `Error al filtrar por categoría: ${response.statusText}`
+        );
       }
 
       const data = await response.json();
