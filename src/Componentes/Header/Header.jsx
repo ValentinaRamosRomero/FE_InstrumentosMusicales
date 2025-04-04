@@ -7,8 +7,6 @@ import MenuHamburguesa from "./MenuHamburguesa";
 import { useState } from "react";
 
 const Header = ({ isAuthenticated, userData, onLogout }) => {
-  //console.log(userData)
-  // Estado para controlar el menú desplegable
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate(); // Para navegación
 
@@ -33,7 +31,6 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
 
   // Verificar si el usuario es administrador
   const isAdmin = userData && userData?.role === "ADMIN";
-  const isInvitado = userData && userData?.role === "USER";
 
   // Recuperacion de las iniciales del user desde el LocalStorage
   useEffect(() => {
@@ -100,6 +97,7 @@ const Header = ({ isAuthenticated, userData, onLogout }) => {
         isAuthenticated={isAuthenticated}
         userData={userData}
         onLogout={handleLogout}
+        initials={initials}
       />
     </header>
   );

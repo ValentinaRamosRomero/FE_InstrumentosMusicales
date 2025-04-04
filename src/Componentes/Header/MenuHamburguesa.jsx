@@ -4,7 +4,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom"; // Importar useNavigate para redirigir
 import user_icon from "../../assets/user-icon.svg";
 
-const MenuHamburguesa = ({ isAuthenticated, userData, onLogout }) => {
+const MenuHamburguesa = ({ isAuthenticated, onLogout, initials }) => {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const navigate = useNavigate(); // Hook para navegación
 
@@ -43,10 +43,9 @@ const MenuHamburguesa = ({ isAuthenticated, userData, onLogout }) => {
           <>
             {/* Mostrar perfil de usuario cuando está autenticado */}
             <div className="mobile-user-profile">
-              <img src={user_icon} alt="user-avatar" className="user-icon" />
+              <img src={user_icon} alt="user-avatar" className="mobile-user-avatar" />
               <div className="mobile-user-initials">
-                {userData?.nombre?.charAt(0)}
-                {userData?.apellido?.charAt(0)}
+               {initials}
               </div>
             </div>
             {/* Opción de cerrar sesión */}
