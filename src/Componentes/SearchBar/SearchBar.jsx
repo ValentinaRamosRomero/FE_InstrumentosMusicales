@@ -9,6 +9,13 @@ const SearchBar = ({ setSearchResults, onSearchByDate }) => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
   useEffect(() => {
+    // Limpiar sugerencias si el query queda vacío
+    if (query.trim() === "") {
+      setSuggestions([]);
+      setSelectedIndex(-1);
+      return;
+    }
+
     if (query.length < 2) {
       setSuggestions([]);
       return;
@@ -84,8 +91,28 @@ const SearchBar = ({ setSearchResults, onSearchByDate }) => {
               className="search-input"
               placeholder="Buscar instrumentos..."
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value;
+                setQuery(value);
+                if (value.trim().length < 2) {
+                  setSuggestions([]);
+                  setSelectedIndex(-1);
+                }
+              }}
               onKeyDown={handleKeyDown}
+              onBlur={() => {
+                // Permitir que se haga clic en una sugerencia antes de ocultarlas
+                setTimeout(() => {
+                  setSuggestions([]);
+                  setSelectedIndex(-1);
+                }, 100);
+              }}
+              onFocus={() => {
+                // Mostrar sugerencias si se vuelve a enfocar y hay texto
+                if (query.length >= 2 && suggestions.length === 0) {
+                  // opcional: podrías volver a hacer fetch aquí
+                }
+              }}
             />
 
             <AvailabilityCalendar onFilterByDate={onSearchByDate} />
@@ -97,7 +124,7 @@ const SearchBar = ({ setSearchResults, onSearchByDate }) => {
         </form>
       </div>
 
-      {suggestions.length > 0 && (
+      {Array.isArray(suggestions) && suggestions.length > 0 && query.length >= 2 && (
         <ul className="suggestions-list">
           {suggestions.map((instrument, index) => (
             <li
