@@ -58,6 +58,8 @@
   align-items: center;
   gap: 12px;
   flex: 1;
+  position: relative; /* IMPORTANTE para que los z-index funcionen */
+  z-index: 0;
 }
 
 /* 📌 Input de búsqueda */
@@ -125,7 +127,7 @@
   padding: 0;
   margin-top: 5px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-  z-index: 999;
+  z-index: 900; /* menor que el del calendario */
   border-radius: 8px;
   opacity: 0.95;
 }

@@ -33,7 +33,7 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 8px;
-  z-index: -99999;
+  z-index: 3000; /* AHORA sí estará por encima de .suggestions-list */
 }
 
 /* Botón de aplicar */
@@ -55,6 +55,11 @@
 .mobile-only {
   display: none;
 }
+
+.react-datepicker-popper {
+  z-index: 3000 !important; /* Más alto que sugerencias */
+}
+
 
 
 /* ========= MOBILE ========= */

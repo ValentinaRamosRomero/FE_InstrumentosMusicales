@@ -3,13 +3,14 @@ import { FaSearch } from "react-icons/fa";
 import "./SearchBar.css";
 import AvailabilityCalendar from "./AvailabilityCalendar";
 
-const SearchBar = ({ setSearchResults, onSearchByDate }) => {
+const SearchBar = ({ setSearchResults }) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [dateInit, setDateInit] = useState(null);
+  const [dateEnd, setDateEnd] = useState(null);
 
   useEffect(() => {
-    // Limpiar sugerencias si el query queda vacío
     if (query.trim() === "") {
       setSuggestions([]);
       setSelectedIndex(-1);
@@ -43,24 +44,37 @@ const SearchBar = ({ setSearchResults, onSearchByDate }) => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (query.length > 1) {
-      try {
-        const response = await fetch(import.meta.env.VITE_API_URL + "/products/search", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: query }),
-        });
 
-        if (!response.ok) throw new Error(`Error en la búsqueda: ${response.statusText}`);
+    const filters = {
+      text: query.trim(),
+      dateInit: dateInit ? formatDate(dateInit) : null,
+      dateEnd: dateEnd ? formatDate(dateEnd) : null,
+    };
 
-        const data = await response.json();
-        setSearchResults(Array.isArray(data) ? data : []);
-        setSuggestions([]);
-      } catch (error) {
-        console.error("Error en la búsqueda:", error);
-        setSearchResults([]);
-      }
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL + "/products/search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(filters),
+      });
+
+      if (!response.ok) throw new Error(`Error en la búsqueda: ${response.statusText}`);
+
+      const data = await response.json();
+      setSearchResults(Array.isArray(data) ? data : []);
+      setSuggestions([]);
+    } catch (error) {
+      console.error("Error en la búsqueda:", error);
+      setSearchResults([]);
     }
+  };
+
+  const formatDate = (date) => {
+    if (!date) return '';
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   const handleKeyDown = (e) => {
@@ -100,22 +114,17 @@ const SearchBar = ({ setSearchResults, onSearchByDate }) => {
                 }
               }}
               onKeyDown={handleKeyDown}
-              onBlur={() => {
-                // Permitir que se haga clic en una sugerencia antes de ocultarlas
-                setTimeout(() => {
-                  setSuggestions([]);
-                  setSelectedIndex(-1);
-                }, 100);
-              }}
-              onFocus={() => {
-                // Mostrar sugerencias si se vuelve a enfocar y hay texto
-                if (query.length >= 2 && suggestions.length === 0) {
-                  // opcional: podrías volver a hacer fetch aquí
-                }
-              }}
+              onBlur={() => setTimeout(() => {
+                setSuggestions([]);
+                setSelectedIndex(-1);
+              }, 100)}
             />
-
-            <AvailabilityCalendar onFilterByDate={onSearchByDate} />
+            <AvailabilityCalendar
+              dateInit={dateInit}
+              dateEnd={dateEnd}
+              setDateInit={setDateInit}
+              setDateEnd={setDateEnd}
+            />
           </div>
           <button className="search-button" type="submit">
             <FaSearch className="search-icon" />
