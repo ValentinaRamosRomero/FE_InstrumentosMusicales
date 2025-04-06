@@ -33,7 +33,7 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
   border-radius: 8px;
-  z-index: 3000; /* AHORA sí estará por encima de .suggestions-list */
+  z-index: 9000; /* AHORA sí estará por encima de .suggestions-list */
 }
 
 /* Botón de aplicar */
